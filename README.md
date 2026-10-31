@@ -1,6 +1,6 @@
 # RODINNÝ ŠTÍT — soutěžní demonstrátor 0.9 + příprava AI 1.0
 
-> **Větev `feature/ai-analysis-1`:** volitelná serverová AI analýza podezřelých SMS (OpenAI, strukturovaný výstup) s limity, denním rozpočtem, souhlasem a lokálním záložním režimem. **Zatím nenasazeno a nezapnuto**; uzavřený test jen na chráněném Vercel Preview – viz [`docs/AI-SETUP.md`](docs/AI-SETUP.md).
+> **Větev `feature/ai-analysis-1` (31. 10. 2026):** serverová AI analýza (OpenAI Responses, strukturovaný výstup) byla nasazena na chráněném Vercel Preview a majitel na telefonu ověřil jeden AI výsledek. **Po jednorázové zkoušce je AI opět vypnutá**; spotřeba tokenů a skutečná cena dosud nejsou potvrzeny serverovými logy. Veřejné GitHub Pages a Production zůstávají bez změny. Nová iterace 1.0 hlídá i to, aby citace modelu byly obsaženy ve zdrojové zprávě. Viz [`docs/AI-SETUP.md`](docs/AI-SETUP.md).
 
 **AI výzva pro Česko 2026 · prevence digitálních podvodů**
 
