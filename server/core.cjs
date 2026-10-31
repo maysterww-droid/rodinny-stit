@@ -81,11 +81,16 @@ function validateResult(p, sourceText = null) {
     name_cs: clip(s && s.name_cs, 80), explanation_cs: clip(s && s.explanation_cs, 300), excerpt: clip(s && s.excerpt, 80)
   })).filter(s => s.name_cs && (!s.excerpt || source === null || source.includes(s.excerpt.toLocaleLowerCase('cs'))));
   if (p.scope === 'not_a_message' && p.risk !== 'uncertain') return null;
-  // Reject a confident conclusion if all supplied evidence quotes were fabricated.
-  if (source !== null && p.risk !== 'uncertain' && p.warning_signals.length && !signals.length) return null;
-  // Never advise erasing potential scam evidence, even if the model suggests doing so.
-  const unsafeDeletion = /\b(?:smažte|vymažte|smazat|vymazat)\b/iu;
-  const steps = p.recommended_steps.slice(0, 5).map(s => clip(s, 240)).filter(s => s && !unsafeDeletion.test(s));
+  // A confident risk label requires an identified signal, not an unsupported guess.
+  if (p.risk !== 'uncertain' && !signals.length) return null;
+  const explanation = clip(p.explanation_cs, 600), uncertainty = clip(p.uncertainty_cs, 300);
+  // Do not forward absolute guarantees or false claims that the sender was verified.
+  const fakeAssurance = /(?:\b(?:zpráva|sms|e-mail|odkaz)\s+(?:je|jsou)\s+(?:(?:zcela|naprosto|určitě|bezpochyby|100\s*%)\s+)?bezpečn|ověřili jsme (?:totožnost|odesílatele)|zaručujeme bezpečn)/iu;
+  if (fakeAssurance.test(explanation) || fakeAssurance.test(uncertainty)) return null;
+  // The model generates advice, but can itself hallucinate a dangerous next step.
+  // Filter such steps server-side, while permitting negated instructions like "Nesmažte".
+  const unsafeStep = /\b(?:smažte|vymažte|smazat|vymazat|odstraňte|odstranit|zlikvidujte)\b|\b(?:sdělte|pošlete|přepošlete|nadiktujte|zadejte|vyplňte|zašlete)\b.{0,90}\b(?:kód|heslo|pin|cvv|frázi|seed phrase|platební kartu|číslo karty)\b|\b(?:klikněte|otevřete|přejděte)\b.{0,45}\b(?:odkaz|link)\b|\b(?:zaplaťte|převeďte|pošlete)\b.{0,80}(?:\b(?:peníze|částku|platbu|zálohu)\b|\d[\d ]{0,10}\s*(?:kč|czk))|\b(?:zavolejte|volejte)\b.{0,60}\b(?:na číslo ve zprávě|na uvedené číslo)\b/iu;
+  const steps = p.recommended_steps.slice(0, 5).map(s => clip(s, 240)).filter(s => s && !unsafeStep.test(s) && !fakeAssurance.test(s));
   if (!steps.length) return null;
   // If an unsafe deletion instruction was removed, replace it with a concrete
   // evidence-preservation step rather than leaving a gap in the advice.
@@ -94,7 +99,7 @@ function validateResult(p, sourceText = null) {
   }
   return {
     risk: p.risk, scope: p.scope, warning_signals: signals,
-    explanation_cs: clip(p.explanation_cs, 600), recommended_steps: steps, uncertainty_cs: clip(p.uncertainty_cs, 300)
+    explanation_cs: explanation, recommended_steps: steps, uncertainty_cs: uncertainty
   };
 }
 
