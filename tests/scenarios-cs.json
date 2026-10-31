@@ -1,0 +1,150 @@
+{
+  "description": "RODINNÝ ŠTÍT 1.2 Czech synthetic scam QA corpus. All examples are invented. Labels are expected LOCAL RULE results, not ground-truth criminal classifications.",
+  "version": "1.2",
+  "cases": [
+    {
+      "id": "child-new-number",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Ahoj mami, mám nové číslo. Pošli mi 5000 Kč ještě dnes. Nevolej."
+    },
+    {
+      "id": "bank-otp",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Bezpečnostní oddělení banky: ihned sdělte SMS ověřovací kód."
+    },
+    {
+      "id": "parcel-fee",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Česká pošta: dnes zaplaťte 49 Kč na https://posta-kontrola.invalid."
+    },
+    {
+      "id": "investment-returns",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Garantovaný výnos 30 %! Investujte 5000 Kč hned."
+    },
+    {
+      "id": "remote-access",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Tady banka. Ihned nainstalujte aplikaci pro vzdálený přístup."
+    },
+    {
+      "id": "police-impersonation",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Tady policie. Ihned převeďte 25000 Kč na bezpečný účet."
+    },
+    {
+      "id": "account-lockout",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Váš účet bude za 10 minut zablokován. Klikněte na https://banka-priklad.invalid a zadejte heslo."
+    },
+    {
+      "id": "urgent-verification-code",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Zavolejte nám do 5 minut. Pošlete ověřovací kód, jinak bude účet zablokován."
+    },
+    {
+      "id": "photos-request",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Pošli mi fotky z oslavy, prosím."
+    },
+    {
+      "id": "arrival-time",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dnes přijdu v 18 hodin, těším se."
+    },
+    {
+      "id": "parcel-delivered",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Česká pošta: Balík byl doručen. Děkujeme."
+    },
+    {
+      "id": "bank-lecture",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dobrý den, banka vás zve na přednášku o finanční gramotnosti."
+    },
+    {
+      "id": "presentation-request",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Prosím pošlete mi prezentaci e-mailem."
+    },
+    {
+      "id": "lunch-amount",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Oběd stál 250 Kč, bylo to výborné."
+    },
+    {
+      "id": "ordinary-web-link",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Podklady jsou na https://example.com, děkuji."
+    },
+    {
+      "id": "library-meeting",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dnes v 17 hodin se uvidíme v knihovně."
+    },
+    {
+      "id": "family-greeting",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Ahoj, přeji hezký víkend!"
+    },
+    {
+      "id": "convert-pdf",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Převeď mi prezentaci do PDF a pošli ji zítra."
+    },
+    {
+      "id": "send-meeting-notes",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dnes pošli prosím zápis z porady."
+    },
+    {
+      "id": "password-change",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Prosím změňte své heslo."
+    },
+    {
+      "id": "standalone-new-number",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Ahoj, mám nové číslo."
+    },
+    {
+      "id": "verify-external-link",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Ověřte si prosím účet přes odkaz https://overeni-priklad.invalid."
+    },
+    {
+      "id": "shipment-notice",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Vaše zásilka byla včera doručena."
+    },
+    {
+      "id": "paid-for-meal",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Minule jsem zaplatila za oběd 150 Kč."
+    }
+  ]
+}
