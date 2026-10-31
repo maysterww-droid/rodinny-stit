@@ -409,7 +409,7 @@ mark{background:#ffe2a6;color:inherit;border-radius:4px;padding:0 2px;box-shadow
 .consent{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:600;color:var(--navy);cursor:pointer}
 .consent input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--blue)}
 .src-badge{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 12px 6px 8px;border-radius:999px;background:#eef3f9;border:1px solid #dbe5f1;color:#3a5376;font-size:13px;font-weight:700}
-.src-badge .ico{width:18px;height:18px;color:var(--mint)}
+.src-badge .ico{width:18px;height:18px;color:#3278bd}
 .src-badge.ai{background:#eef0ff;border-color:#d5d9fb;color:#3b3f9a}.src-badge.ai .ico{color:#5b5fe0}
 .ai-explain{margin-top:12px;padding:14px;border-radius:16px;background:#fff;border:1px solid var(--line);font-size:15px;color:#24405f;line-height:1.5}
 .ai-box[hidden],.ai-consent[hidden]{display:none}
