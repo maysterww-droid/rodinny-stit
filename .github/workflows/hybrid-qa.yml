@@ -1,0 +1,51 @@
+name: Hybrid 1.4 — offline QA
+on:
+  push:
+    branches:
+      - feature/hybrid-consent-1.4
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: hybrid-qa-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  node:
+    name: Node regression and API mocks
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Checkout exact branch commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Run full unit and smoke suite
+        run: npm test
+
+  browser:
+    name: Chromium browser QA (local + mock AI)
+    needs: node
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - name: Checkout exact branch commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Node 22
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
+        with:
+          node-version: '22'
+      - name: Install Playwright (browser QA only)
+        run: npm install --no-save --no-package-lock --ignore-scripts playwright@1.56.0
+      - name: Install Chromium and system libraries
+        run: npx playwright install --with-deps chromium
+      - name: Test mobile and desktop (no paid requests)
+        run: npm run test:browser
