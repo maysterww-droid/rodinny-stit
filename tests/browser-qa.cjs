@@ -98,10 +98,12 @@ for(const w of [360,390,430,1440]){
  await pg.setInputFiles('#shot',{name:'sms.png',mimeType:'image/png',buffer:fs.readFileSync(path.join(root,'assets','apple-touch-icon.png'))});
  ok(await pg.isVisible('#shotPreview')&&await pg.isVisible('#ocrBtn'),`${w} screenshot preview + OCR button`);
  await pg.waitForTimeout(260);if(w===390) await pg.screenshot({path:`${out}/pilot-${w}-8-ocr-ready.png`});
- // a) real path -> CDN blocked -> honest error message
+ // a) deterministic offline path; GitHub runner may reach public CDN.
+ await pg.route('https://cdn.jsdelivr.net/**', route => route.abort());
  await pg.click('#ocrBtn');await pg.waitForFunction(()=>!document.getElementById('ocrBtn').disabled,null,{timeout:20000});
  ok((await pg.textContent('#ocrState')).includes('nezdařilo'),`${w} OCR failure handled when CDN unreachable`);
  // b) mocked engine -> text goes to textarea
+ await pg.unroute('https://cdn.jsdelivr.net/**');
  await pg.evaluate(()=>{window.Tesseract={recognize:async(f,l,o)=>{o.logger({status:'recognizing text',progress:.5});if(l!=='ces+eng')throw Error('lang');return {data:{text:'Vaše zásilka je zadržena. Zaplaťte dnes 49 Kč na https://x.invalid'}};}}});
  await pg.click('#ocrBtn');await pg.waitForTimeout(300);
  ok(await pg.isVisible('#panel-text')&&(await pg.inputValue('#msg')).includes('zásilka'),`${w} OCR (ces+eng) text inserted, switched to Text tab`);
