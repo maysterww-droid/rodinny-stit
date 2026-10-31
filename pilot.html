@@ -183,6 +183,15 @@
   <div><h1 id="resultTitle" class="sr-only">Výsledek kontroly</h1><h2 id="resultHeading">Vysoké riziko podvodu</h2><p id="resultState">Tato zpráva obsahuje několik varovných signálů typických pro podvodné praktiky.</p>
    <div class="meter" aria-hidden="true"><i></i><i></i><i></i></div><span class="sr-only" id="riskLevelText"></span></div>
  </div>
+ <div id="aiReviewOffer" class="ai-review-offer" role="region" aria-labelledby="aiReviewTitle" hidden>
+  <div class="ai-review-head"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg>
+   <div><h2 id="aiReviewTitle">Chcete podrobnější posouzení?</h2>
+    <p id="aiReviewText">Jednoduchá pravidla mohou přehlédnout nový typ podvodu. AI může nabídnout druhý názor, ale nemůže potvrdit bezpečnost zprávy.</p>
+   </div>
+  </div>
+  <button id="aiReviewBtn" class="btn btn-ghost btn-wide" type="button" onclick="prepareAiReview()">Prohlédnout text před AI kontrolou</button>
+  <small>Nic se neodešle automaticky. Nejprve uvidíte upravený text a rozhodnete o souhlasu.</small>
+ </div>
  <p id="aiExplain" class="ai-explain hidden"></p>
  <p id="shareState" class="status hidden" role="status" aria-live="polite"></p>
 
