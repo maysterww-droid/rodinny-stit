@@ -319,7 +319,7 @@ function highlightExcerpts(text, excerpts) {
 function setSource(kind, model = '') {
   const ai = kind === 'ai';
   $('resultSource').className = 'src-badge' + (ai ? ' ai' : '');
-  $('resultSourceIcon').setAttribute('href', ICONS + (ai ? 'i-cpu' : 'i-shield'));
+  $('resultSourceIcon').setAttribute('href', ICONS + (ai ? 'i-cpu' : 'i-info'));
   $('resultSourceText').textContent = ai ? 'AI analýza (pilotní)' + (/mock|simul/i.test(model) ? ' · TESTOVACÍ REŽIM se simulovaným modelem' : '') : 'Kontrola podle lokálních pravidel';
   if (!ai) { $('aiExplain').classList.add('hidden'); $('resultNote').textContent = 'Výsledek pochází z lokálních orientačních pravidel v prohlížeči, nikoli z AI modelu ani databáze podvodů. Neověřuje odesílatele a není zárukou bezpečnosti.'; }
 }
