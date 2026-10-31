@@ -69,15 +69,23 @@ function actualMicroUsd(c, u) { return Math.ceil(u.input * c.priceInPerMTok + u.
 const clip = (s, n) => String(s == null ? '' : s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').trim().slice(0, n);
 
 /** Přísná validace a normalizace výstupu modelu – vše jako prostý text, omezené délky a výčty. */
-function validateResult(p) {
+function validateResult(p, sourceText = null) {
   if (!p || typeof p !== 'object') return null;
   if (!RESPONSE_SCHEMA.properties.risk.enum.includes(p.risk)) return null;
   if (!RESPONSE_SCHEMA.properties.scope.enum.includes(p.scope)) return null;
   if (!Array.isArray(p.warning_signals) || !Array.isArray(p.recommended_steps)) return null;
+  // A model may fabricate a convincing-looking quotation. Never present it as evidence
+  // unless it occurs verbatim in the message actually sent to the model.
+  const source = typeof sourceText === 'string' ? sourceText.toLocaleLowerCase('cs') : null;
   const signals = p.warning_signals.slice(0, 6).map(s => ({
-    name_cs: clip(s && s.name_cs, 80), explanation_cs: clip(s && s.explanation_cs, 300), excerpt: clip(s && s.excerpt, 100)
-  })).filter(s => s.name_cs);
-  const steps = p.recommended_steps.slice(0, 5).map(s => clip(s, 240)).filter(Boolean);
+    name_cs: clip(s && s.name_cs, 80), explanation_cs: clip(s && s.explanation_cs, 300), excerpt: clip(s && s.excerpt, 80)
+  })).filter(s => s.name_cs && (!s.excerpt || source === null || source.includes(s.excerpt.toLocaleLowerCase('cs'))));
+  if (p.scope === 'not_a_message' && p.risk !== 'uncertain') return null;
+  // Reject a confident conclusion if all supplied evidence quotes were fabricated.
+  if (source !== null && p.risk !== 'uncertain' && p.warning_signals.length && !signals.length) return null;
+  // Never advise erasing potential scam evidence, even if the model suggests doing so.
+  const unsafeDeletion = /\\b(?:smažte|vymažte|smazat|vymazat)\\b/iu;
+  const steps = p.recommended_steps.slice(0, 5).map(s => clip(s, 240)).filter(s => s && !unsafeDeletion.test(s));
   if (!steps.length) return null;
   return {
     risk: p.risk, scope: p.scope, warning_signals: signals,
@@ -211,7 +219,7 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
       if (actual > reserve) log({ evt: 'budget_bound_violated', reserve, actual }); // nemá nastat; skutečnost se započítá
       const diff = actual - reserve; // vrácení nevyužité části rezervace (jen po úspěšné odpovědi)
       if (diff < 0) { try { await store.refund({ keys: quotaKeys, amount: -diff }); } catch { /* reservation stays, conservative */ } }
-      const result = validateResult(parsed);
+      const result = validateResult(parsed, text);
       if (!result) { done(502, 'invalid_model_output', { tin: usage.input, tout: usage.output }); return err(res, 502, 'ai_bad_output', allowed); }
       done(200, 'ok', { tin: usage.input, tout: usage.output, risk: result.risk });
       return send(res, 200, { ok: true, mode: 'ai', model: cfg.model, result }, allowed);
