@@ -299,7 +299,7 @@ function analyzeLocal(text = $('msg').value.trim()) {
 const AI = { endpoint: '', available: false, maxChars: 3000, ctl: null, consentSnapshot: null };
 const AI_ERRORS = {
   consent_required: 'Pro AI analýzu je potřeba zaškrtnout souhlas s odesláním textu.',
-  too_long: 'Text je pro AI analýzu příliš dlouhý (max. 3 000 znaků). Zkraťte ho, nebo použijte lokální pravidla.',
+  too_long: 'Text je pro AI analýzu příliš dlouhý (max. 3 000 znaků nebo 6 000 bajtů). Zkraťte ho, nebo použijte lokální pravidla.',
   empty_text: 'Nejdříve vložte text zprávy.',
   quota_user: 'Dosáhli jste limitu AI analýz pro tuto chvíli. Zkuste to později, nebo použijte lokální pravidla.',
   quota_global: 'Denní limit AI analýz pilotu je vyčerpán. Použijte prosím lokální pravidla.',
