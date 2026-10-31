@@ -36,7 +36,7 @@ const sanitized = vm.runInContext("esc('<script>\"&</script>')",ctx);
 assert.equal(sanitized,'&lt;script&gt;&quot;&amp;&lt;/script&gt;');
 assert.ok(!/XMLHttpRequest|api\.openai\.com|sk-[A-Za-z0-9]/.test(source),'No direct provider call or key in client');
 assert.equal((source.match(/fetch\(/g)||[]).length,2,'only health check + consented AI request');
-assert.ok(/if \(!\$\('aiAgree'\)\.checked\)/.test(source),'AI request requires explicit consent');
+assert.ok(/if \(!\$\('aiAgree'\)\.checked\s*\|\|\s*AI\.consentSnapshot === null\s*\|\|\s*AI\.consentSnapshot !== text\)/.test(source),'AI requires explicit consent bound to exact masked text');
 const masked=vm.runInContext("maskForAI('Volej +420 777 123 456, účet 19-123456789/0100, kód 482913, jan@seznam.cz')",ctx);
 assert.ok(!/777|123456789|482913|seznam/.test(masked),'PII masked before AI: '+masked);
 const cfgSrc=require('fs').readFileSync(path.join(__dirname,'..','assets','ai-config.js'),'utf8');
