@@ -9,7 +9,7 @@ const { createMockFetch } = require('../server/mock-provider.cjs');
 
 const ORIGIN = 'https://maysterww-droid.github.io';
 const baseEnv = { AI_ENABLED: 'true', OPENAI_API_KEY: 'sk-test-secret-123', OPENAI_MODEL: 'gpt-5.4-mini', ALLOWED_ORIGINS: ORIGIN,
-  RATE_LIMIT_SALT: 'salt-0123456789abcdef', ALLOW_MEMORY_STORE: 'true', PROVIDER_TIMEOUT_MS: '200' };
+  RATE_LIMIT_SALT: 'salt-0123456789abcdef', ALLOW_MEMORY_STORE: 'true', PROVIDER_TIMEOUT_MS: '200', VERCEL_ENV: 'preview' };
 const SMS = 'Ahoj mami, mám nové číslo, pošli prosím 5000 Kč na tento účet ještě dnes';
 
 function call(handler, { method = 'POST', body, headers = {}, raw } = {}) {
@@ -169,11 +169,15 @@ test('same-origin (Vercel Preview): allowed without ALLOWED_ORIGINS, no CORS hea
   assert.equal(calls.length, 1);
 });
 
-test('AI only in approved Vercel environments (production blocked by default)', async () => {
+test('AI only in approved Vercel environments (production AND missing environment blocked)', async () => {
   const prod = setup({ VERCEL_ENV: 'production' });
   assert.equal((await call(prod.h, { body: ok() })).status, 503);
   assert.equal((await call(prod.h, { method: 'GET' })).json.ai, false);
   assert.equal(prod.calls.length, 0);
+  const unknown = setup({ VERCEL_ENV: '' });
+  assert.equal((await call(unknown.h, { body: ok() })).status, 503);
+  assert.equal((await call(unknown.h, { method: 'GET' })).json.ai, false);
+  assert.equal(unknown.calls.length, 0);
   const prev = setup({ VERCEL_ENV: 'preview' });
   assert.equal((await call(prev.h, { body: ok() })).status, 200);
 });
