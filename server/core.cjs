@@ -35,6 +35,7 @@ function readConfig(env) {
     allowSameOrigin: env.ALLOW_SAME_ORIGIN !== 'false',
     vercelEnv: env.VERCEL_ENV || '',
     allowedVercelEnvs: (env.AI_ALLOWED_VERCEL_ENVS || 'preview').split(',').map(s => s.trim()).filter(Boolean),
+    testExpiresAt: env.AI_TEST_EXPIRES_AT ? Date.parse(env.AI_TEST_EXPIRES_AT) : null,
     salt: env.RATE_LIMIT_SALT || '',
     maxChars: num('MAX_CHARS', 3000),
     maxTextBytes: num('MAX_TEXT_BYTES', 6000),
@@ -124,6 +125,7 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     if (!cfg.salt || cfg.salt.length < 16) return 'no_salt';
     if (!cfg.origins.length && !cfg.allowSameOrigin) return 'no_origins';
     if (!cfg.vercelEnv || !cfg.allowedVercelEnvs.includes(cfg.vercelEnv)) return 'env_not_allowed'; // fail closed: no VERCEL_ENV or production
+    if (cfg.testExpiresAt !== null && (!Number.isFinite(cfg.testExpiresAt) || now() >= cfg.testExpiresAt)) return 'test_window_closed'; // temporary one-call QA, fail closed on expiry
     if (!(cfg.priceInPerMTok > 0) || !(cfg.priceOutPerMTok > 0)) return 'no_pricing';
     if (!(cfg.dailyBudgetUsd > 0) || !(cfg.monthlyBudgetUsd > 0)) return 'no_budget';
     return 'available';
