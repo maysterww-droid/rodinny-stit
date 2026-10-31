@@ -262,7 +262,11 @@ function nextSteps(data) {
 function highlight(text, found) {
   const ranges = [];
   for (const rule of found) {
-    const re = new RegExp(rule.pattern.source, 'gi'); let m, guard = 0;
+    // Kontextové signály mohou mít doslovnou citaci místo regexu.
+    const regexSource = rule.pattern instanceof RegExp ? rule.pattern.source :
+      rule.example ? [...rule.example].map(c => '\\^$.*+?()[]{}|'.includes(c) ? '\\' + c : c).join('') : '';
+    if (!regexSource) continue;
+    const re = new RegExp(regexSource, 'gi'); let m, guard = 0;
     while ((m = re.exec(text)) && guard++ < 50) { if (!m[0]) { re.lastIndex++; continue; } ranges.push([m.index, m.index + m[0].length]); }
   }
   ranges.sort((a, b) => a[0] - b[0]);
