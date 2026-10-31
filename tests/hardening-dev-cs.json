@@ -96,6 +96,11 @@
       "id": "hardening-dev-19",
       "message": "Babi, posli penize, nevolej.",
       "expected": "high"
+    },
+    {
+      "id": "hardening-dev-20",
+      "message": "Pošlete prosím členům naší skupiny seznam úkolů na příští týden.",
+      "expected": "low"
     }
   ]
 }
