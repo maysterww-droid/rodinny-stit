@@ -10,6 +10,7 @@ function start({ port = 8790, env = {}, root = path.join(__dirname, '..') } = {}
   const fullEnv = {
     AI_ENABLED: 'true', OPENAI_API_KEY: 'sk-test-not-a-real-key', OPENAI_MODEL: 'mock-model (simulace)',
     ALLOWED_ORIGINS: `http://localhost:${port}`, RATE_LIMIT_SALT: 'dev-salt-0123456789abcdef', ALLOW_MEMORY_STORE: 'true',
+    VERCEL_ENV: 'preview', // mock-only local fixture; production still requires a protected Vercel Preview
     PRICE_INPUT_PER_MTOK_USD: '0.75', PRICE_OUTPUT_PER_MTOK_USD: '4.5', // simulace – jen pro výpočet limitů
     PROVIDER_TIMEOUT_MS: '1500', ...env
   };
