@@ -46,3 +46,11 @@ for (const [host,exp] of [['maysterww-droid.github.io',''],['localhost',''],['ro
 }
 assert.ok(!/preview|token/i.test(source.replace(/Preview/g,'')),'no preview token handling in client');
 console.log('OK escaped excerpts and no external server analysis');
+
+
+const pilotMarkup=fs.readFileSync(path.join(__dirname,'..','pilot.html'),'utf8');
+const stylesheet=fs.readFileSync(path.join(__dirname,'..','assets','style.css'),'utf8');
+assert.ok(/id="resultSourceIcon" href="assets\/icons\.svg#i-info"/.test(pilotMarkup),'default source label uses neutral information icon');
+assert.ok(/ICONS \+ \(ai \? 'i-cpu' : 'i-info'\)/.test(source),'local source icon is neutral regardless of result risk');
+assert.ok(/\.src-badge \.ico\{[^}]*color:#3278bd/.test(stylesheet),'local source badge is blue, not green success');
+console.log('OK neutral source icon does not imply a safety verdict');
