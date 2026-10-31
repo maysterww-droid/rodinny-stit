@@ -123,7 +123,7 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     if (!store || store.kind === 'memory' && env.ALLOW_MEMORY_STORE !== 'true') return 'no_rate_limit_store';
     if (!cfg.salt || cfg.salt.length < 16) return 'no_salt';
     if (!cfg.origins.length && !cfg.allowSameOrigin) return 'no_origins';
-    if (cfg.vercelEnv && !cfg.allowedVercelEnvs.includes(cfg.vercelEnv)) return 'env_not_allowed'; // např. production bez schválení
+    if (!cfg.vercelEnv || !cfg.allowedVercelEnvs.includes(cfg.vercelEnv)) return 'env_not_allowed'; // fail closed: no VERCEL_ENV or production
     if (!(cfg.priceInPerMTok > 0) || !(cfg.priceOutPerMTok > 0)) return 'no_pricing';
     if (!(cfg.dailyBudgetUsd > 0) || !(cfg.monthlyBudgetUsd > 0)) return 'no_budget';
     return 'available';
