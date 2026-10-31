@@ -310,7 +310,8 @@ const AI_ERRORS = {
   origin_required: 'Požadavek byl odmítnut z bezpečnostních důvodů.',
   origin_not_allowed: 'Požadavek byl odmítnut z bezpečnostních důvodů.',
   offline: 'Nepodařilo se spojit se serverem (jste offline, nebo je služba nedostupná).',
-  cancelled: 'AI analýzu jste přerušili. Požadavek už ale mohl být odeslán; další analýza se automaticky nespustí.'
+  cancelled: 'AI analýzu jste přerušili. Požadavek už ale mohl být odeslán; další analýza se automaticky nespustí.',
+  text_changed: 'Text se během analýzy změnil, proto starý výsledek nezobrazujeme. Předchozí požadavek už mohl být odeslán. Pro novou kontrolu je nutný nový souhlas.'
 };
 function aiSelected() { const r = document.querySelector('input[name="checkMode"]:checked'); return !!r && r.value === 'ai'; }
 /** Automatické skrytí osobních údajů před odesláním (uživatel vidí náhled). */
@@ -372,6 +373,7 @@ async function analyzeWithAI(rawText) {
     const r = await fetch(AI.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: 'cs', consent: true }), signal: AI.ctl.signal, credentials: 'same-origin' });
     let data = null; try { data = await r.json(); } catch { /* ignorovat */ }
     if (!r.ok || !data || !data.ok || data.mode !== 'ai' || !data.result) return aiError((data && data.error) || 'ai_failed');
+    if (maskForAI($('msg').value.trim()) !== text) return aiError('text_changed');
     lastResult = { kind: 'ai', ...data.result, model: String(data.model || '') };
     renderAiResult(lastResult, text); setSource('ai', lastResult.model); go('result');
     syncAiUi();
