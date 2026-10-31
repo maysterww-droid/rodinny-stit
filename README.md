@@ -1,5 +1,8 @@
 # RODINNÝ ŠTÍT — soutěžní demonstrátor 0.9 + příprava AI 1.0
 
+> **Scam Quality 1.2 (31. 10. 2026):** oddělená vývojová větev `feature/scam-quality-1.2`; 100 smyšlených českých scénářů (36 rizikových, 34 běžných, 30 nejednoznačných), jemnější lokální pravidla a přísnější kontrola bezpečnosti výstupu AI. Viz [zpráva o kvalitě 1.2](docs/SCAM-QUALITY-1.2.md). **100/100 platí pouze pro umělou regresní sadu, není to údaj o přesnosti v reálném světě.** Schválený vizuál 1.1 je zálohovaný; AI je vypnutá, veřejný soutěžní web beze změny.
+
+
 > **Větev `feature/ai-analysis-1` (31. 10. 2026):** serverová AI analýza (OpenAI Responses, strukturovaný výstup) byla nasazena na chráněném Vercel Preview a majitel na telefonu ověřil jeden AI výsledek. **Po jednorázové zkoušce je AI opět vypnutá**; spotřeba tokenů a skutečná cena dosud nejsou potvrzeny serverovými logy. Veřejné GitHub Pages a Production zůstávají bez změny. Nová iterace 1.0 hlídá i to, aby citace modelu byly obsaženy ve zdrojové zprávě. Viz [`docs/AI-SETUP.md`](docs/AI-SETUP.md).
 
 **AI výzva pro Česko 2026 · prevence digitálních podvodů**
