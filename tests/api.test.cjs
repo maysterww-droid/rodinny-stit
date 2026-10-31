@@ -295,4 +295,6 @@ test('AI recommendations never tell users to erase potential evidence', () => {
   const result = validateResult(report, 'Pošli peníze dnes');
   assert.deepEqual(result.recommended_steps, ['Neodpovídejte a vše ověřte u blízkého.', 'Nesmažte původní zprávu.']);
   assert.equal(validateResult({ ...report, recommended_steps: ['Vymažte zprávu.'] }, 'Pošli peníze dnes'), null);
+  const restored = validateResult({ ...report, recommended_steps: ['Smažte zprávu.', 'Ověřte odesílatele jinou cestou.'] }, 'Pošli peníze dnes');
+  assert.ok(restored.recommended_steps.some(x => x.includes('Původní zprávu nemažte')));
 });
