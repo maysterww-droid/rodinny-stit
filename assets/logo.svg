@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 148" role="img" aria-labelledby="t d">
+<title id="t">RODINNÝ ŠTÍT</title><desc id="d">Modrý ochranný štít s rodinou pod střechou domu</desc>
+<defs><linearGradient id="g" x1=".12" x2=".89" y1=".02" y2="1"><stop stop-color="#2180e5"/><stop offset="1" stop-color="#073775"/></linearGradient><linearGradient id="w" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff"/><stop offset="1" stop-color="#dff5ff"/></linearGradient></defs>
+<path d="M64 5c20 16 40 19 55 23v47c0 31-17 52-55 68C26 127 9 106 9 75V28C24 24 44 21 64 5Z" fill="url(#g)"/>
+<path d="M64 16c17 12 32 15 44 19v40c0 26-14 44-44 58C34 119 20 101 20 75V35c12-4 27-7 44-19Z" fill="none" stroke="#BDE9FF" stroke-width="3.2" opacity=".85"/>
+<path d="M37 66 64 43l27 23" fill="none" stroke="#79EDDA" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="47" cy="76" r="10" fill="url(#w)"/><circle cx="81" cy="76" r="10" fill="url(#w)"/><circle cx="64" cy="88" r="8.5" fill="#9CF2E0"/>
+<path d="M29 102c0-12 9-18 18-18 7 0 12 3 15 10-6 4-10 10-10 17v11c-9-4-16-9-23-14v-6Z" fill="url(#w)"/>
+<path d="M99 102c0-12-9-18-18-18-7 0-12 3-15 10 6 4 10 10 10 17v11c9-4 16-9 23-14v-6Z" fill="url(#w)"/>
+<path d="M64 98c-10 0-15 7-15 17v7c5 3 10 6 15 8 5-2 10-5 15-8v-7c0-10-5-17-15-17Z" fill="#9CF2E0"/>
+</svg>
