@@ -1,0 +1,246 @@
+PASS 360 index no horizontal overflow
+PASS 360 index images ok 
+PASS 360 hamburger opens menu
+PASS 360 aria-expanded true
+PASS 360 Escape closes menu
+PASS 360 menu link closes menu
+PASS 360 hero CTA opens pilot
+PASS 360 pilot no horizontal overflow
+PASS 360 empty input warning
+PASS 360 demo bank fills textarea
+PASS 360 counter updates
+PASS 360 result screen shown
+PASS 360 bank = high risk
+PASS 360 signals listed (4)
+PASS 360 next steps listed
+PASS 360 never claims message is safe
+PASS 360 highlighted phrases
+PASS 360 browser Back returns to input
+PASS 360 text kept after Back
+PASS 360 Forward returns to result
+PASS 360 verify screen
+PASS 360 done screen
+PASS 360 reset to home
+PASS 360 low result keeps caveat
+PASS 360 moderate result
+PASS 360 user input escaped (no injected img)
+PASS 360 masking removes phone/email/number: Volej [SKRYTÉ TELEFONNÍ ČÍSLO] nebo piš na [SKRYTÝ E-MAIL], účet [SKRYTÉ TELEFONNÍ ČÍSLO]
+PASS 360 image tab
+PASS 360 arrow key switches tab
+PASS 360 screenshot preview + OCR button
+PASS 360 OCR failure handled when CDN unreachable
+PASS 360 OCR (ces+eng) text inserted, switched to Text tab
+PASS 360 emergency screen
+PASS 360 158 link
+PASS 360 money incident
+PASS 360 incident back
+PASS 360 emergency back -> home
+PASS 360 call screen
+PASS 360 ad screen
+PASS 360 training
+PASS 360 wrong answer feedback
+PASS 360 right answer
+PASS 360 training completes
+PASS 360 pilot menu -> after
+PASS 360 deep link #call
+PASS 390 index no horizontal overflow
+PASS 390 index images ok 
+PASS 390 hamburger opens menu
+PASS 390 aria-expanded true
+PASS 390 Escape closes menu
+PASS 390 menu link closes menu
+PASS 390 hero CTA opens pilot
+PASS 390 pilot no horizontal overflow
+PASS 390 empty input warning
+PASS 390 demo bank fills textarea
+PASS 390 counter updates
+PASS 390 result screen shown
+PASS 390 bank = high risk
+PASS 390 signals listed (4)
+PASS 390 next steps listed
+PASS 390 never claims message is safe
+PASS 390 highlighted phrases
+PASS 390 browser Back returns to input
+PASS 390 text kept after Back
+PASS 390 Forward returns to result
+PASS 390 verify screen
+PASS 390 done screen
+PASS 390 reset to home
+PASS 390 low result keeps caveat
+PASS 390 moderate result
+PASS 390 user input escaped (no injected img)
+PASS 390 masking removes phone/email/number: Volej [SKRYTÉ TELEFONNÍ ČÍSLO] nebo piš na [SKRYTÝ E-MAIL], účet [SKRYTÉ TELEFONNÍ ČÍSLO]
+PASS 390 image tab
+PASS 390 arrow key switches tab
+PASS 390 screenshot preview + OCR button
+PASS 390 OCR failure handled when CDN unreachable
+PASS 390 OCR (ces+eng) text inserted, switched to Text tab
+PASS 390 emergency screen
+PASS 390 158 link
+PASS 390 money incident
+PASS 390 incident back
+PASS 390 emergency back -> home
+PASS 390 call screen
+PASS 390 ad screen
+PASS 390 training
+PASS 390 wrong answer feedback
+PASS 390 right answer
+PASS 390 training completes
+PASS 390 pilot menu -> after
+PASS 390 deep link #call
+PASS 430 index no horizontal overflow
+PASS 430 index images ok 
+PASS 430 hamburger opens menu
+PASS 430 aria-expanded true
+PASS 430 Escape closes menu
+PASS 430 menu link closes menu
+PASS 430 hero CTA opens pilot
+PASS 430 pilot no horizontal overflow
+PASS 430 empty input warning
+PASS 430 demo bank fills textarea
+PASS 430 counter updates
+PASS 430 result screen shown
+PASS 430 bank = high risk
+PASS 430 signals listed (4)
+PASS 430 next steps listed
+PASS 430 never claims message is safe
+PASS 430 highlighted phrases
+PASS 430 browser Back returns to input
+PASS 430 text kept after Back
+PASS 430 Forward returns to result
+PASS 430 verify screen
+PASS 430 done screen
+PASS 430 reset to home
+PASS 430 low result keeps caveat
+PASS 430 moderate result
+PASS 430 user input escaped (no injected img)
+PASS 430 masking removes phone/email/number: Volej [SKRYTÉ TELEFONNÍ ČÍSLO] nebo piš na [SKRYTÝ E-MAIL], účet [SKRYTÉ TELEFONNÍ ČÍSLO]
+PASS 430 image tab
+PASS 430 arrow key switches tab
+PASS 430 screenshot preview + OCR button
+PASS 430 OCR failure handled when CDN unreachable
+PASS 430 OCR (ces+eng) text inserted, switched to Text tab
+PASS 430 emergency screen
+PASS 430 158 link
+PASS 430 money incident
+PASS 430 incident back
+PASS 430 emergency back -> home
+PASS 430 call screen
+PASS 430 ad screen
+PASS 430 training
+PASS 430 wrong answer feedback
+PASS 430 right answer
+PASS 430 training completes
+PASS 430 pilot menu -> after
+PASS 430 deep link #call
+PASS 1440 index no horizontal overflow
+PASS 1440 index images ok 
+PASS 1440 desktop nav visible
+PASS 1440 hero CTA opens pilot
+PASS 1440 pilot no horizontal overflow
+PASS 1440 empty input warning
+PASS 1440 demo bank fills textarea
+PASS 1440 counter updates
+PASS 1440 result screen shown
+PASS 1440 bank = high risk
+PASS 1440 signals listed (4)
+PASS 1440 next steps listed
+PASS 1440 never claims message is safe
+PASS 1440 highlighted phrases
+PASS 1440 browser Back returns to input
+PASS 1440 text kept after Back
+PASS 1440 Forward returns to result
+PASS 1440 verify screen
+PASS 1440 done screen
+PASS 1440 reset to home
+PASS 1440 low result keeps caveat
+PASS 1440 moderate result
+PASS 1440 user input escaped (no injected img)
+PASS 1440 masking removes phone/email/number: Volej [SKRYTÉ TELEFONNÍ ČÍSLO] nebo piš na [SKRYTÝ E-MAIL], účet [SKRYTÉ TELEFONNÍ ČÍSLO]
+PASS 1440 image tab
+PASS 1440 arrow key switches tab
+PASS 1440 screenshot preview + OCR button
+PASS 1440 OCR failure handled when CDN unreachable
+PASS 1440 OCR (ces+eng) text inserted, switched to Text tab
+PASS 1440 emergency screen
+PASS 1440 158 link
+PASS 1440 money incident
+PASS 1440 incident back
+PASS 1440 emergency back -> home
+PASS 1440 call screen
+PASS 1440 ad screen
+PASS 1440 training
+PASS 1440 wrong answer feedback
+PASS 1440 right answer
+PASS 1440 training completes
+PASS 1440 deep link #call
+PASS icon i-arrow exists
+PASS icon i-menu exists
+PASS icon i-x exists
+PASS icon i-chevron exists
+PASS icon i-shield exists
+PASS icon i-heart exists
+PASS icon i-alert exists
+PASS icon i-play exists
+PASS icon i-check exists
+PASS icon i-user exists
+PASS icon i-lock exists
+PASS icon i-msg exists
+PASS icon i-scan exists
+PASS icon i-bank exists
+PASS icon i-phone exists
+PASS icon i-family exists
+PASS icon i-clock exists
+PASS icon i-key exists
+PASS icon i-info exists
+PASS icon i-lifebuoy exists
+PASS icon i-grad exists
+PASS icon i-senior exists
+PASS icon i-parent exists
+PASS icon i-chart exists
+PASS icon i-bulb exists
+PASS icon i-doc exists
+PASS icon i-image exists
+PASS icon i-eyeoff exists
+PASS icon i-search exists
+PASS icon i-upload exists
+PASS icon i-coins exists
+PASS icon i-chart-up exists
+PASS icon i-package exists
+PASS icon i-megaphone exists
+PASS icon i-back exists
+PASS icon i-share exists
+PASS icon i-monitor exists
+PASS icon i-cash exists
+PASS rule icon i-clock exists
+PASS rule icon i-cash exists
+PASS rule icon i-phone exists
+PASS rule icon i-key exists
+PASS rule icon i-monitor exists
+PASS rule icon i-eyeoff exists
+PASS rule icon i-bank exists
+PASS rule icon i-link exists
+PASS rule icon i-chart-up exists
+PASS anchor #obsah
+PASS anchor #nahoru
+PASS anchor #jak
+PASS anchor #ukazka
+PASS anchor #pro-koho
+PASS anchor #bezpecnost
+PASS anchor #app
+PASS anchor #home
+PASS anchor #after
+PASS anchor #training
+PASS anchor #call
+PASS asset assets/favicon.svg
+PASS asset assets/apple-touch-icon.png
+PASS asset assets/fonts/inter-latin-wght-normal.woff2
+PASS asset assets/hero-family.svg
+PASS asset assets/style.css
+PASS asset assets/logo.svg
+PASS asset assets/night-home.svg
+PASS asset assets/site.js
+PASS asset assets/app.js
+
+Errors:
+none

@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 640" role="img" aria-labelledby="ht hd">
+<title id="ht">Rodina tří generací společně kontroluje zprávu v telefonu</title>
+<desc id="hd">Původní ilustrace RODINNÝ ŠTÍT: dědeček, rodiče, dcera a babička se dívají do telefonu ve světlém obývacím pokoji.</desc>
+<defs>
+<radialGradient id="bg" cx=".78" cy=".22" r=".95"><stop stop-color="#fff3d6"/><stop offset=".35" stop-color="#f8e6c8"/><stop offset=".7" stop-color="#d8e8f7"/><stop offset="1" stop-color="#bcd6f1"/></radialGradient>
+<radialGradient id="sun" cx=".5" cy=".5" r=".5"><stop stop-color="#fff" stop-opacity=".95"/><stop offset="1" stop-color="#ffe2a6" stop-opacity="0"/></radialGradient>
+<linearGradient id="skin" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f9dcc6"/><stop offset="1" stop-color="#e8b293"/></linearGradient>
+<linearGradient id="skin2" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#f3cbb0"/><stop offset="1" stop-color="#d99d7c"/></linearGradient>
+<linearGradient id="grey" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#f4f4f2"/><stop offset="1" stop-color="#c9ccd1"/></linearGradient>
+<linearGradient id="brown" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#7a4b2c"/><stop offset="1" stop-color="#4c2a17"/></linearGradient>
+<linearGradient id="dark" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#4a3428"/><stop offset="1" stop-color="#2a1c15"/></linearGradient>
+<linearGradient id="blond" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#f1cf8b"/><stop offset="1" stop-color="#c8924c"/></linearGradient>
+<linearGradient id="denim" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#6f93bf"/><stop offset="1" stop-color="#3f6596"/></linearGradient>
+<linearGradient id="cream" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fbf6ee"/><stop offset="1" stop-color="#e3d8c8"/></linearGradient>
+<linearGradient id="navy" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#34507a"/><stop offset="1" stop-color="#1d3354"/></linearGradient>
+<linearGradient id="shirt" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#d7e7f7"/><stop offset="1" stop-color="#a9c6e6"/></linearGradient>
+<linearGradient id="camel" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#e2b685"/><stop offset="1" stop-color="#b98653"/></linearGradient>
+<linearGradient id="pink" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fcd6da"/><stop offset="1" stop-color="#eba6b0"/></linearGradient>
+<linearGradient id="screen" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#5fb4ff"/><stop offset="1" stop-color="#1557c6"/></linearGradient>
+<linearGradient id="fade" x1="0" x2="0" y1="0" y2="1"><stop offset=".66" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#f4f8fd" stop-opacity=".9"/></linearGradient>
+<filter id="soft" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="6"/></filter>
+<filter id="glow" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="14"/></filter>
+<g id="smile-eyes"><path d="M-17 0q6-6 12 0M5 0q6-6 12 0" fill="none" stroke="#3b2418" stroke-width="3.2" stroke-linecap="round"/></g>
+</defs>
+<rect width="800" height="640" fill="url(#bg)"/>
+<!-- window light -->
+<g opacity=".55"><rect x="520" y="-10" width="250" height="300" rx="8" fill="#fff" opacity=".45"/><path d="M645-10v300M520 140h250" stroke="#f1dcb8" stroke-width="10"/></g>
+<circle cx="640" cy="110" r="190" fill="url(#sun)"/>
+<g fill="#fff" opacity=".5" filter="url(#soft)"><circle cx="90" cy="90" r="34"/><circle cx="170" cy="40" r="20"/><circle cx="740" cy="330" r="26"/><circle cx="40" cy="250" r="18"/><circle cx="560" cy="60" r="22"/></g>
+<!-- plant -->
+<g opacity=".8"><path d="M58 640c10-120 30-200 70-260" stroke="#5c8a6a" stroke-width="5" fill="none"/><path d="M128 380c-50 0-80 30-84 60 40 4 74-20 84-60Z" fill="#7fae86"/><path d="M110 430c40-30 80-20 96 6-36 22-72 18-96-6Z" fill="#94c19a"/><path d="M84 500c-40-14-66 4-74 30 32 12 62 2 74-30Z" fill="#7fae86"/><path d="M100 330c-10-40 10-70 34-80 12 34 0 66-34 80Z" fill="#a6cfa9"/></g>
+<!-- sofa -->
+<path d="M40 520c0-40 30-60 70-60h580c40 0 70 20 70 60v120H40Z" fill="#c7d3df"/><path d="M40 560h720v80H40z" fill="#b3c2d1"/>
+
+<!-- DAD (back centre-left) -->
+<g>
+<path d="M265 640c0-150 40-250 115-250s120 90 120 250Z" fill="url(#denim)"/>
+<path d="M352 395l28 40 28-40" fill="#f2f4f7"/><path d="M380 435v205" stroke="#2f527f" stroke-width="3" opacity=".5"/>
+<path d="M362 355h36v42c-6 10-30 10-36 0Z" fill="url(#skin2)"/>
+<ellipse cx="380" cy="282" rx="52" ry="62" fill="url(#skin)"/>
+<ellipse cx="328" cy="292" rx="9" ry="15" fill="url(#skin2)"/><ellipse cx="432" cy="292" rx="9" ry="15" fill="url(#skin2)"/>
+<path d="M328 282c-8-62 22-100 56-100 36 0 60 34 50 98-4-22-12-36-22-42-28 8-58 8-78-2-4 12-6 28-6 46Z" fill="url(#dark)"/>
+<path d="M332 300c2 44 24 66 48 66s46-22 48-66c-6 14-14 22-22 24-14-6-38-6-52 0-8-2-16-10-22-24Z" fill="url(#dark)" opacity=".92"/>
+<path d="M366 326q14 10 28 0" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round"/>
+<path d="M350 270q10-6 20 0M390 270q10-6 20 0" fill="none" stroke="#2a1c15" stroke-width="4" stroke-linecap="round"/>
+<use href="#smile-eyes" x="380" y="292"/>
+<path d="M379 292q-4 14 2 18" fill="none" stroke="#c98a6a" stroke-width="2.4" stroke-linecap="round"/>
+</g>
+
+<!-- MOM (back centre-right) -->
+<g>
+<path d="M455 300c-20 80-10 160 10 200h130c20-60 20-140-6-200Z" fill="url(#brown)"/>
+<path d="M440 640c0-130 34-210 100-210s100 80 100 210Z" fill="url(#cream)"/>
+<path d="M518 400h40v40c-8 10-32 10-40 0Z" fill="url(#skin2)"/>
+<path d="M508 438q30 22 60 0" fill="none" stroke="#d9c9b2" stroke-width="5"/>
+<ellipse cx="538" cy="330" rx="48" ry="58" fill="url(#skin)"/>
+<path d="M486 336c-14-76 26-110 62-108 40 2 66 38 52 104-6-30-16-48-30-56-22 20-56 30-84 30v30Z" fill="url(#brown)"/>
+<path d="M492 330c-14 40-12 90 6 126l22-10c-14-30-18-70-14-104Z" fill="url(#brown)"/>
+<path d="M584 320c14 40 14 90-2 130l-20-6c12-36 14-80 8-112Z" fill="url(#brown)"/>
+<path d="M512 316q10-6 20 0M548 316q10-6 20 0" fill="none" stroke="#4c2a17" stroke-width="3.4" stroke-linecap="round"/>
+<use href="#smile-eyes" x="540" y="336"/>
+<path d="M538 338q-3 12 2 15" fill="none" stroke="#c98a6a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M524 364q15 14 30 0" fill="#fff" stroke="#b7584f" stroke-width="2.6" stroke-linecap="round"/>
+<circle cx="514" cy="352" r="8" fill="#f4a3a0" opacity=".45"/><circle cx="566" cy="352" r="8" fill="#f4a3a0" opacity=".45"/>
+</g>
+
+<!-- GRANDPA (left) -->
+<g>
+<path d="M110 640c0-140 46-220 128-220s128 80 128 220Z" fill="url(#navy)"/>
+<path d="M206 424l32 70 32-70Z" fill="url(#shirt)"/><path d="M238 494v146" stroke="#152742" stroke-width="3"/>
+<circle cx="238" cy="520" r="4" fill="#c7d2e0"/><circle cx="238" cy="566" r="4" fill="#c7d2e0"/>
+<path d="M218 382h40v44c-8 10-32 10-40 0Z" fill="url(#skin2)"/>
+<ellipse cx="238" cy="318" rx="54" ry="62" fill="url(#skin)"/>
+<ellipse cx="184" cy="328" rx="10" ry="16" fill="url(#skin2)"/><ellipse cx="292" cy="328" rx="10" ry="16" fill="url(#skin2)"/>
+<path d="M186 318c-6-28 2-48 16-56 2 16 6 24 12 28-2-14 6-30 24-34 20-2 40 6 48 22 8 14 10 26 6 40-4-12-10-20-18-22 4-14-2-22-12-26 4-4-6-10-30-6-14 6-20 18-22 30-10 2-18 10-24 24Z" fill="url(#grey)"/>
+<path d="M200 300q12-8 26-2M252 298q12-6 26 2" fill="none" stroke="#b7b9bd" stroke-width="5" stroke-linecap="round"/>
+<g fill="none" stroke="#26303d" stroke-width="3"><rect x="196" y="306" width="34" height="26" rx="10"/><rect x="246" y="306" width="34" height="26" rx="10"/><path d="M230 316q8-5 16 0M196 314l-12-4M280 314l12-4"/></g>
+<use href="#smile-eyes" x="238" y="322"/>
+<path d="M240 328q-4 16 3 20" fill="none" stroke="#c98a6a" stroke-width="2.4" stroke-linecap="round"/>
+<path d="M214 352c10 6 18 6 24 2 6 4 14 4 24-2-4 10-14 14-24 12-10 2-20-2-24-12Z" fill="#e4e6e9"/>
+<path d="M222 362q16 12 32 0" fill="#fff" stroke="#9a4d43" stroke-width="2.6" stroke-linecap="round"/>
+<circle cx="204" cy="350" r="9" fill="#f0968e" opacity=".35"/><circle cx="272" cy="350" r="9" fill="#f0968e" opacity=".35"/>
+</g>
+
+<!-- GRANDMA (right) -->
+<g>
+<path d="M560 640c0-130 46-210 118-210s114 80 114 210Z" fill="url(#camel)"/>
+<path d="M650 432q28 34 56 0" fill="none" stroke="#f6efe5" stroke-width="10" stroke-linecap="round"/>
+<path d="M660 396h38v40c-8 10-30 10-38 0Z" fill="url(#skin2)"/>
+<ellipse cx="680" cy="338" rx="50" ry="58" fill="url(#skin)"/>
+<path d="M624 352c-18-30-10-72 14-90 24-20 70-20 92 2 26 24 28 64 10 90-2-26-10-44-22-52-10 12-34 16-58 12-12-2-22-6-28-12-6 14-8 30-8 50Z" fill="url(#grey)"/>
+<g fill="#e9e9e7"><circle cx="636" cy="290" r="14"/><circle cx="660" cy="272" r="15"/><circle cx="690" cy="268" r="15"/><circle cx="716" cy="280" r="14"/><circle cx="730" cy="306" r="12"/><circle cx="626" cy="318" r="12"/></g>
+<g fill="none" stroke="#7a3f52" stroke-width="3"><path d="M640 330q0-14 16-14h12q12 0 12 14t-14 14h-12q-14 0-14-14ZM682 330q0-14 14-14h12q14 0 14 14t-14 14h-12q-14 0-14-14Z"/><path d="M670 326q6-4 12 0"/></g>
+<use href="#smile-eyes" x="682" y="334"/>
+<path d="M680 342q-3 13 2 16" fill="none" stroke="#c98a6a" stroke-width="2.2" stroke-linecap="round"/>
+<path d="M664 370q17 14 34 0" fill="#fff" stroke="#b05665" stroke-width="2.6" stroke-linecap="round"/>
+<circle cx="652" cy="360" r="9" fill="#f4a3a0" opacity=".45"/><circle cx="712" cy="360" r="9" fill="#f4a3a0" opacity=".45"/>
+<circle cx="632" cy="356" r="4" fill="#fff" stroke="#d6c08c" stroke-width="2"/>
+</g>
+
+<!-- GIRL (front centre) -->
+<g>
+<path d="M330 640c0-110 36-170 96-170s92 60 92 170Z" fill="url(#pink)"/>
+<path d="M398 470q28 22 56 0" fill="none" stroke="#f7e3e6" stroke-width="7" stroke-linecap="round"/>
+<path d="M410 440h32v34c-6 8-26 8-32 0Z" fill="url(#skin2)"/>
+<ellipse cx="426" cy="392" rx="44" ry="50" fill="url(#skin)"/>
+<path d="M378 396c-8-50 18-80 50-80 34 0 56 26 48 76-8-20-18-32-30-38-14 10-40 14-62 12-4 8-6 18-6 30Z" fill="url(#blond)"/>
+<path d="M470 360c22 6 34 30 28 64-6 24-20 34-30 30 10-22 12-52 2-94Z" fill="url(#blond)"/>
+<circle cx="466" cy="352" r="6" fill="#f07f9a"/>
+<path d="M398 380q8-5 16 0M432 380q8-5 16 0" fill="none" stroke="#a87437" stroke-width="3" stroke-linecap="round"/>
+<g transform="translate(424 398)"><path d="M-15 0q5-5 10 0M5 0q5-5 10 0" fill="none" stroke="#3b2418" stroke-width="3" stroke-linecap="round"/></g>
+<path d="M424 402q-3 10 2 13" fill="none" stroke="#c98a6a" stroke-width="2" stroke-linecap="round"/>
+<path d="M410 420q15 13 30 0" fill="#fff" stroke="#b7584f" stroke-width="2.4" stroke-linecap="round"/>
+<circle cx="400" cy="414" r="8" fill="#f4a3a0" opacity=".5"/><circle cx="452" cy="414" r="8" fill="#f4a3a0" opacity=".5"/>
+</g>
+
+<!-- PHONE + hands -->
+<g transform="rotate(-12 470 540)">
+<ellipse cx="470" cy="520" rx="70" ry="70" fill="#7cc2ff" opacity=".35" filter="url(#glow)"/>
+<rect x="430" y="470" width="82" height="150" rx="16" fill="#1a2433"/>
+<rect x="436" y="478" width="70" height="134" rx="11" fill="url(#screen)"/>
+<path d="M471 500c8 6 16 8 22 9v14c0 13-9 21-22 26-13-5-22-13-22-26v-14c6-1 14-3 22-9Z" fill="#fff" opacity=".95"/>
+<path d="M463 524l6 6 11-12" fill="none" stroke="#1d6fe0" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="446" y="562" width="50" height="6" rx="3" fill="#fff" opacity=".8"/><rect x="452" y="576" width="38" height="5" rx="2.5" fill="#fff" opacity=".55"/>
+<rect x="446" y="590" width="50" height="12" rx="6" fill="#ffb13d"/>
+</g>
+<path d="M344 540q8 40 56 30l-2-24q-30 6-38-18Z" fill="url(#pink)"/><path d="M392 560c18-20 40-26 56-14 8 8 2 20-12 26-16 8-30 14-44 8Z" fill="url(#skin)"/>
+<path d="M528 520c-6-14-22-18-34-10-8 6-4 18 6 22 12 4 24 4 28-12Z" fill="url(#skin)"/>
+<path d="M486 506c14-4 26 0 30 8M492 520c12-2 22 2 26 8" fill="none" stroke="#d99d7c" stroke-width="2.4" stroke-linecap="round"/>
+<rect width="800" height="640" fill="url(#fade)"/>
+</svg>

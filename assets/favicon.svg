@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 136" role="img" aria-labelledby="lt">
+<title id="lt">RODINNÝ ŠTÍT</title>
+<defs>
+<linearGradient id="rim" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset=".45" stop-color="#d5e2f1"/><stop offset="1" stop-color="#8ea7c6"/></linearGradient>
+<linearGradient id="band" x1=".2" x2=".8" y1="0" y2="1"><stop stop-color="#3a98ff"/><stop offset=".55" stop-color="#1360cf"/><stop offset="1" stop-color="#0a347f"/></linearGradient>
+<linearGradient id="field" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#ffffff"/><stop offset="1" stop-color="#e3efff"/></linearGradient>
+<linearGradient id="fig" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#1b4f9c"/><stop offset="1" stop-color="#0b2d66"/></linearGradient>
+<linearGradient id="roof" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#ffb13d"/><stop offset="1" stop-color="#f07f12"/></linearGradient>
+<linearGradient id="gloss" x1="0" x2=".7" y1="0" y2=".7"><stop stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<clipPath id="fc"><path d="M60 25c13 8.5 26 11.5 37 12.5V66c0 26-16 42.5-37 50.5C39 108.5 23 92 23 66V37.5C34 36.5 47 33.5 60 25Z"/></clipPath>
+</defs>
+<path d="M60 3c18 12.5 36 16.5 54 18.5V64c0 35-22 58-54 70C28 122 6 99 6 64V21.5C24 19.5 42 15.5 60 3Z" fill="url(#rim)" stroke="#7f9bc2" stroke-width="1.2"/>
+<path d="M60 9c17 11.5 33 15.5 48 17.5V64c0 31-19 52.5-48 63.5C31 116.5 12 95 12 64V26.5C27 24.5 43 20.5 60 9Z" fill="url(#band)"/>
+<path d="M60 9c17 11.5 33 15.5 48 17.5V50C85 44 52 38 12 52V26.5C27 24.5 43 20.5 60 9Z" fill="url(#gloss)"/>
+<path d="M60 25c13 8.5 26 11.5 37 12.5V66c0 26-16 42.5-37 50.5C39 108.5 23 92 23 66V37.5C34 36.5 47 33.5 60 25Z" fill="url(#field)"/>
+<g clip-path="url(#fc)">
+<path d="M49.5 44.5 60 35.5l10.5 9" fill="none" stroke="url(#roof)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M53.5 43.5h13v8.5h-13z" fill="url(#roof)"/><path d="M58.3 46.2h3.4V52h-3.4z" fill="#fff"/>
+<circle cx="41" cy="61" r="7.6" fill="url(#fig)"/><circle cx="79" cy="61" r="7.6" fill="url(#fig)"/>
+<path d="M26 104c0-19 6-33 15-33s15 9 16.5 22L52 120H26Z" fill="url(#fig)"/>
+<path d="M94 104c0-19-6-33-15-33s-15 9-16.5 22L68 120h26Z" fill="url(#fig)"/>
+<circle cx="68" cy="80" r="6.3" fill="url(#fig)" stroke="#fff" stroke-width="2.2"/><circle cx="52" cy="80" r="6.3" fill="url(#fig)" stroke="#fff" stroke-width="2.2"/>
+<path d="M57 122c0-18 4.5-31 11-31s11 13 11 31Z" fill="url(#fig)" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/><path d="M41 122c0-18 4.5-31 11-31s11 13 11 31Z" fill="url(#fig)" stroke="#fff" stroke-width="2.2" stroke-linejoin="round"/>
+</g>
+<path d="M60 25c13 8.5 26 11.5 37 12.5V66c0 26-16 42.5-37 50.5C39 108.5 23 92 23 66V37.5C34 36.5 47 33.5 60 25Z" fill="none" stroke="#0a347f" stroke-opacity=".18" stroke-width="1"/>
+</svg>
