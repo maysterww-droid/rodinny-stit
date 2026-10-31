@@ -142,7 +142,7 @@ const SIGNS = [
  {id:'accountUpdate',icon:'i-key',name:'Požadavek na ověření účtu',detail:'Ověření účtu provádějte pouze ve službě otevřené vlastní cestou.',pattern:/(?:úč(?:et|tu).{0,50}(?:vyžaduje|potřebuje).{0,30}(?:ověřen|aktualizac)|ověřte.{0,30}úč(?:et|tu)|aktualizac[ií].{0,15}(?:údajů|účtu))/i},
  {id:'investment',icon:'i-chart-up',name:'Nerealistický příslib',detail:'Garance výnosu, výhry nebo výdělků mohou být manipulací.',pattern:/(?:garantovan[ýá]|zaručen[ýá]|bez rizika|investi[čc]|výhr(?:a|u|y|ou)|vyděláte|výnos|bitcoin|kryptoměn)/i}
 ];
-function classify(text) {
+function classifyLegacy(text) {
   // Kontextové filtry pro běžné české zprávy. Samotné slovo není důkaz podvodu.
   // Kombinace nátlaku, žádosti o peníze, kódů a vzdáleného přístupu zůstávají rizikové.
   const moneyContext = /(?:\d[\d ]{0,10}\s*(?:kč|czk|eur|€)|peníze|peněz|platb|částk|účet|bankovní|faktur|převod|invest|příspěv|finanční dar|poplatek|záloh|poukaz|půjč|pokut)/i.test(text);
@@ -178,6 +178,66 @@ function classify(text) {
   else if (has('link')) action = 'Na odkaz zatím neklikejte. Pokud si chcete službu ověřit, její adresu zadejte sami nebo použijte již známou oficiální aplikaci.';
   else if (found.length) action = 'Nejednejte pod tlakem a ověřte odesílatele nezávisle. Nezapomeňte, že vzhled zprávy ani jméno odesílatele nejsou důkazem pravosti.';
   return { level, found, action };
+}
+
+
+/* Quality 1.3: independent contextual overlay. Preserve source quotations and local-only processing. */
+function classify(text) {
+  const raw = String(text || ''), base = classifyLegacy(raw);
+  let fold = '', start = [], end = [], n = 0;
+  for (const c of raw) {
+    const f = c.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    for (let j=0;j<f.length;j++){ start.push(n); end.push(n+c.length); }
+    fold += f; n += c.length;
+  }
+  const is = re => re.test(fold);
+  const quote = re => {
+    const m = re.exec(fold);
+    return m && m[0].length ? raw.slice(start[m.index],end[m.index+m[0].length-1]) : '';
+  };
+  const money = is(/(?:\b\d[\d ]{0,8}\s*(?:kc|czk|korun|eur)\b|tisic|peniz|penez|uspor|hotovost|zaloha|kauce|poplat|platb|faktur|prevod|invest|vklad|poukaz)/);
+  const paying = is(/(?:posli|poslete|preved|zaplat|uhrad|potrebuj|vyberte|predat|predejte|vloz|sloz|kupte|doplat|nejdrive)/);
+  const urgent = is(/(?:dnes|hned|ihned|okamzit|rychle|do pulnoci|do vecera|nez|jinak|zablok|odpoj|nevolej|nevolejte|nemohu mluvit|nemuzu volat|telefonovat nemuzu|prijdete|propadne)/);
+  const link = is(/(?:https?:\/\/|www\.)/);
+  const qr = is(/(?:\bqr\b.{0,16}\bkod|naskenuj.{0,30}\bqr)/);
+  const authority = is(/(?:policie|policij|banka|bankovn|financni urad|cnb|bankid|portal obcana|kuryr|posta|operator|urad|nemocnic|lekarn|technicka podpora)/);
+  const bankChange = is(/(?:novy.{0,18}ucet|nove.{0,20}udaje|zmenen.{0,25}uctu|jiny ucet|zachrann.{0,12}ucet|bezpecn.{0,12}ucet|bankovni spojeni)/);
+  const familyPhone = is(/(?:nove cislo|jineho cisla|nemohu mluvit|telefonovat nemuzu|mobil.{0,18}(?:nefunguje|rozbit|klekn)|nevolej)/);
+  const family = is(/(?:mami|maminko|babi|tati|syn|dcera|dite)/);
+  const credentials = is(/(?:sd[eě]lte|nadiktuj|preposl|poslete|posli|vypln|zadej|uvedte|fotograf|snimek|send|share).{0,100}(?:kod|pin|hesl|cvv|platebni kart|obnovovac|fr[aá]z|udaj)/);
+  const remote = is(/(?:anydesk|teamviewer|vzdalen.{0,14}(?:pristup|sprav)|sdileni obrazovky)/) && is(/(?:stahn|nainstal|spust|povol|dejte|otevr)/);
+  const cash = is(/(?:vyberte.{0,40}hotovost|predat.{0,30}kuryr|predejte.{0,30}kuryr|kuryr.{0,30}hotovost)/);
+  const threat = is(/(?:zverejnime|rozesleme|vydira|soukrom.{0,12}video|z kamery)/) && (money || paying);
+  const education = is(/(?:na skoleni|seminar|beseda|v novinach|v clanku|v ucebnici|na kurzu|nikomu neposilejte|nikomu nesdelujte|neposilejte nikomu|nesdelujte nikomu|neklikejte na podvodne)/)
+    && !link && !credentials && !(money && paying && urgent);
+  const reference = is(/https?:\/\/example\.com/) && is(/(?:recept|pocasi|predpoved)/) && !paying;
+  const high = (credentials && !education) || remote || threat || cash && (authority || paying) ||
+    money && paying && (urgent || bankChange || (familyPhone && family) || link && authority || qr && authority ||
+      authority && is(/(?:dluh|pokut|urad|bezpec|ucet|dan|lecba)/)) ||
+    authority && link && is(/(?:prihlas|hesl|kod|udaj|pokut|bankovni identita|potvrd)/) ||
+    qr && is(/(?:signal|propojit|zabezpec|ucet)/) && is(/(?:naskenuj|aktivuj|propojt)/);
+  const add = (id, icon, name, detail, re) => {
+    if (base.found.some(x => x.id === id)) return;
+    const example = quote(re);
+    if (example) base.found.push({ id, icon, name, detail, example });
+  };
+  if (high && base.level !== 'high') {
+    if (credentials) add('access','i-key','Žádost o údaje','Nikomu nesdělujte hesla, PIN ani přístupové kódy.',/(?:sd[eě]lte|nadiktuj|preposl|poslete|posli|vypln|zadej|fotograf|snimek).{0,45}/);
+    if (remote) add('install','i-monitor','Vzdálené ovládání','Neznámým osobám nepovolujte přístup k telefonu.',/(?:anydesk|teamviewer|vzdalen.{0,14}(?:pristup|sprav)|sdileni obrazovky)/);
+    if (threat) add('threat','i-eyeoff','Vydírání','Uchovejte zprávu a obraťte se na policii.',/(?:zverejnime|rozesleme|soukrom.{0,12}video|z kamery)/);
+    if (money && paying) add('money','i-cash','Žádost o peníze','Peníze neposílejte bez nezávislého ověření.',/(?:posli|poslete|preved|zaplat|uhrad|potrebuj|vyberte|predat|predejte|vloz|sloz|kupte)/);
+    if (familyPhone) add('newContact','i-phone','Změna kontaktu','Zavolejte na původní známé číslo.',/(?:nove cislo|jineho cisla|nemohu mluvit|nevolej|telefonovat nemuzu)/);
+    if (cash) add('authority','i-bank','Požadavek na hotovost','Hotovost nepředávejte neověřenému kurýrovi.',/(?:vyberte.{0,40}hotovost|predat.{0,30}kuryr|predejte.{0,30}kuryr)/);
+    if (link) add('link','i-link','Odkaz ve zprávě','Na nevyžádaný odkaz neklikejte.',/https?:\/\/\S+|www\.\S+/);
+    if (qr) add('qr','i-scan','QR kód','Před naskenováním ověřte skutečný účel.',/\bqr\b.{0,16}\bkod|naskenuj.{0,30}\bqr/);
+    if (!base.found.length) add('pressure','i-clock','Nátlak nebo neověřená žádost','Zastavte se a ověřte skutečného odesílatele.',/(?:dnes|ihned|nemohu mluvit|bezpecn.{0,12}ucet|zablok|predejte|potrebuj)/);
+    base.level = 'high';
+    base.action = 'Zpráva obsahuje více varovných znaků. Neposílejte peníze, nesdělujte kódy a ověřte žádost jiným způsobem.';
+  } else if (base.level === 'moderate' && (education || reference) && !high) {
+    base.level = 'low'; base.found = [];
+    base.action = 'Nebyl rozpoznán konkrétní nebezpečný požadavek, totožnost odesílatele ale nelze ověřit.';
+  }
+  return base;
 }
 
 /* Konkrétní kroky podle nalezených signálů */
