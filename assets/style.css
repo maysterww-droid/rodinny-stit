@@ -105,12 +105,12 @@ p{margin:0}
 @media (min-width:960px){
  .hero-grid{grid-template-columns:minmax(0,1fr) minmax(0,1.12fr);grid-template-areas:"copy visual" "list visual" "actions visual";grid-template-rows:auto auto 1fr;column-gap:24px;padding:46px 0 56px;align-items:start}
  .hero-visual{margin:0 -40px 0 0;aspect-ratio:auto;height:580px;max-height:none}
- .hero-photo{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 90%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 16%,#000 90%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-composite:intersect}
+ .hero-photo{-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);-webkit-mask-composite:source-in;mask-image:linear-gradient(90deg,transparent 0,#000 6%,#000 94%,transparent 100%),linear-gradient(180deg,transparent 0,#000 16%,#000 84%,transparent 100%);mask-composite:intersect}
  .hero h1{font-size:clamp(56px,5.4vw,80px);margin-top:20px}
  .hero-actions{grid-template-columns:1fr;max-width:400px;margin-top:28px}
  .hero-list{margin-top:26px;gap:12px}
- .hero-shield{right:70px;top:6px;width:150px}.hero-ring{right:20px;top:-30px;width:250px}
- .hand-note{left:90px;top:44px}
+ .hero-shield{right:56px;top:-18px;width:132px}.hero-ring{right:20px;top:-30px;width:250px}
+ .hand-note{left:70px;top:14px}
  .float-card{left:60px;bottom:90px;max-width:270px}
 }
 

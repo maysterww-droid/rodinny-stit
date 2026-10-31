@@ -21,7 +21,7 @@ for(const w of [360,390,430,1440]){
  await pg.screenshot({path:`${out}/index-${w}-full.png`,fullPage:true});
  // hero photo: loaded, not overly cropped; overlays and all images inside viewport
  const crop=await pg.evaluate(()=>{const i=document.querySelector('.hero-photo');const r=i.getBoundingClientRect();const ir=i.naturalWidth/i.naturalHeight,br=r.width/r.height;return {src:i.complete&&i.naturalWidth>0?i.currentSrc.split('/').pop():'',lost:Math.abs(1-Math.min(ir,br)/Math.max(ir,br))};});
- ok(/^hero-family(-(800|1400)\.webp|\.svg)$/.test(crop.src),`${w} hero photo loaded (${crop.src})`);ok(crop.lost<=0.12,`${w} hero photo crop ${(crop.lost*100).toFixed(1)}% <= 12%`);
+ ok(/^hero-family-(800|1400)\.webp$/.test(crop.src),`${w} hero photo loaded (${crop.src})`);ok(crop.lost<=0.12,`${w} hero photo crop ${(crop.lost*100).toFixed(1)}% <= 12%`);
  const cut=await pg.evaluate(()=>{const vw=document.documentElement.clientWidth,bad=[];const box=document.querySelector('.hero-visual').getBoundingClientRect();for(const el of document.querySelectorAll('.hero-shield,.hand-note,.float-card')){const r=el.getBoundingClientRect();if(r.left<0||r.right>vw+0.5||r.left<box.left-1||r.right>box.right+1||r.top<box.top-40)bad.push(el.className);}for(const el of document.querySelectorAll('main img,main .btn,main h1,main h2')){const r=el.getBoundingClientRect();if(r.width&&(r.left<-0.5||r.right>vw+0.5)&&!el.closest('.phones'))bad.push(el.tagName+'.'+el.className);}return bad;});
  ok(!cut.length,`${w} no cut-off hero overlays/images/buttons ${cut}`);
  // all images loaded

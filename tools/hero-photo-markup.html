@@ -1,8 +1,0 @@
-<!-- Aktivace fotografie v index.html (po spuštění tools/prepare-hero.py):
-     1) nahraďte <link rel="preload" href="assets/hero-family.svg" as="image"> tímto: -->
-<link rel="preload" as="image" type="image/webp" imagesrcset="assets/hero-family-800.webp 800w, assets/hero-family-1400.webp 1400w" imagesizes="(min-width: 960px) 680px, 100vw">
-<!-- 2) nahraďte <img class="hero-photo" src="assets/hero-family.svg" ...> tímto: -->
-<picture class="hero-pic">
-    <source type="image/webp" srcset="assets/hero-family-800.webp 800w, assets/hero-family-1400.webp 1400w" sizes="(min-width: 960px) 680px, 100vw">
-    <img class="hero-photo" src="assets/hero-family-1400.jpg" srcset="assets/hero-family-800.jpg 800w, assets/hero-family-1400.jpg 1400w" sizes="(min-width: 960px) 680px, 100vw" alt="Prarodiče, rodiče a dcera sedí spolu na pohovce a s úsměvem se dívají do telefonu" width="1400" height="1120" fetchpriority="high">
-   </picture>

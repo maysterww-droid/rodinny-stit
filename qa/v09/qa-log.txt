@@ -1,4 +1,7 @@
 PASS 360 index no horizontal overflow
+PASS 360 hero photo loaded (hero-family-800.webp)
+PASS 360 hero photo crop 0.0% <= 12%
+PASS 360 no cut-off hero overlays/images/buttons 
 PASS 360 index images ok 
 PASS 360 hamburger opens menu
 PASS 360 aria-expanded true
@@ -44,6 +47,9 @@ PASS 360 training completes
 PASS 360 pilot menu -> after
 PASS 360 deep link #call
 PASS 390 index no horizontal overflow
+PASS 390 hero photo loaded (hero-family-800.webp)
+PASS 390 hero photo crop 0.0% <= 12%
+PASS 390 no cut-off hero overlays/images/buttons 
 PASS 390 index images ok 
 PASS 390 hamburger opens menu
 PASS 390 aria-expanded true
@@ -89,6 +95,9 @@ PASS 390 training completes
 PASS 390 pilot menu -> after
 PASS 390 deep link #call
 PASS 430 index no horizontal overflow
+PASS 430 hero photo loaded (hero-family-1400.webp)
+PASS 430 hero photo crop 0.0% <= 12%
+PASS 430 no cut-off hero overlays/images/buttons 
 PASS 430 index images ok 
 PASS 430 hamburger opens menu
 PASS 430 aria-expanded true
@@ -134,6 +143,9 @@ PASS 430 training completes
 PASS 430 pilot menu -> after
 PASS 430 deep link #call
 PASS 1440 index no horizontal overflow
+PASS 1440 hero photo loaded (hero-family-800.webp)
+PASS 1440 hero photo crop 10.2% <= 12%
+PASS 1440 no cut-off hero overlays/images/buttons 
 PASS 1440 index images ok 
 PASS 1440 desktop nav visible
 PASS 1440 hero CTA opens pilot
@@ -235,9 +247,9 @@ PASS anchor #call
 PASS asset assets/favicon.svg
 PASS asset assets/apple-touch-icon.png
 PASS asset assets/fonts/inter-latin-wght-normal.woff2
-PASS asset assets/hero-family.svg
 PASS asset assets/style.css
 PASS asset assets/logo.svg
+PASS asset assets/hero-family-1400.jpg
 PASS asset assets/night-home.svg
 PASS asset assets/site.js
 PASS asset assets/app.js
