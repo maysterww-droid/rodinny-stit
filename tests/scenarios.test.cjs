@@ -67,3 +67,23 @@ for (const [id, expected] of guidanceChecks) {
     assert.ok(steps.some(s => expected.test(s)), 'missing relevant guidance ' + id + ' in ' + steps.join('; '));
   });
 }
+
+
+// Additional development-only cases for the 1.3 hardening layer.
+// The sealed independent holdouts are deliberately NOT loaded by npm test.
+const devCases = JSON.parse(readFileSync(path.join(__dirname, 'hardening-dev-cs.json'), 'utf8')).cases;
+assert.equal(devCases.length, 19);
+for (const entry of devCases) {
+  test('1.3 contextual development QA: ' + entry.id, () => {
+    const actual = analyze(entry.message);
+    assert.equal(actual.level, entry.expected,
+      entry.id + ': signs ' + actual.found.map(s => s.id).join(', '));
+    for (const signal of actual.found) {
+      assert.ok(entry.message.toLocaleLowerCase('cs').includes(signal.example.toLocaleLowerCase('cs')),
+        entry.id + ': warning excerpt must occur verbatim in source message');
+    }
+    const steps = vm.runInContext('nextSteps(classify(' + JSON.stringify(entry.message) + '))', ctx, { timeout: 1000 });
+    assert.ok(steps.length >= 2 && steps.length <= 5, 'clear next steps');
+    assert.ok(!steps.some(step => /zaručeně bezpečn|zpráva je bezpečná/i.test(step)));
+  });
+}
