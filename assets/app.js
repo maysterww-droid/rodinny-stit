@@ -138,7 +138,25 @@ const SIGNS = [
  {id:'investment',icon:'i-chart-up',name:'Nerealistický příslib',detail:'Zaručený výdělek či výhra bývají manipulační návnadou.',pattern:/(?:garantovan[ýá]|zaručen[ýá]|bez rizika|investi[čc]|výhra|vyděláte|výnos|bitcoin|kryptoměn)/i}
 ];
 function classify(text) {
-  const found = SIGNS.map(rule => { const m = text.match(rule.pattern); return m ? { ...rule, example: m[0] } : null; }).filter(Boolean);
+  // Kontextové filtry pro běžné české zprávy. Samotné slovo není důkaz podvodu.
+  // Kombinace nátlaku, žádosti o peníze, kódů a vzdáleného přístupu zůstávají rizikové.
+  const moneyContext = /(?:\d[\d ]{0,10}\s*(?:kč|czk|eur|€)|peníze|peněz|platb|částk|účet|bankovní|faktur|převod|invest)/i.test(text);
+  const paymentRequest = /(?:pošli|pošlete|poslat|převeď|zaplať|zaplatit|uhrad|investuj|zaplaťte|uhraďte|dluž)/i.test(text);
+  const strongContext = moneyContext || /(?:heslo|ověřovací kód|jednorázový kód|nainstaluj|vzdálený přístup|https?:\/\/|www\.)/i.test(text);
+  const authorityAction = /(?:zaplať|uhrad|pošli|převeď|sděl|zadej|ověř|klik|zablok|heslo|kód|nainstal|ihned|okamžitě|https?:\/\/|www\.)/i.test(text);
+  const found = SIGNS.map(rule => {
+    const m = text.match(rule.pattern);
+    if (!m) return null;
+    // "Dnes v 18 přijdu" není časový nátlak.
+    if (rule.id === 'pressure' && /^dnes$/i.test(m[0]) && !strongContext) return null;
+    // "Pošli mi fotku" ani "převeď soubor" nejsou žádosti o peníze.
+    if (rule.id === 'money' && /^(?:pošli|poslat|pošlete|převeď|převod)$/i.test(m[0]) && !moneyContext) return null;
+    // Zmínka o částce v běžném vyprávění není žádost o platbu.
+    if (rule.id === 'money' && /^\d[\d ]{0,10}\s*(?:kč|czk|eur|€)$/i.test(m[0]) && !paymentRequest) return null;
+    // Zmínka o instituci v běžném sdělení není důkaz jejího napodobování.
+    if (rule.id === 'authority' && /^(?:banka|banky|policie|česká pošta|zásilka|kurýr)$/i.test(m[0]) && !authorityAction) return null;
+    return { ...rule, example: m[0] };
+  }).filter(Boolean);
   const ids = new Set(found.map(x => x.id)); const has = x => ids.has(x);
   const urgent = has('pressure') || has('secrecy');
   let level = 'low';
