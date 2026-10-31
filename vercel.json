@@ -8,7 +8,7 @@
       "main": false
     }
   },
-  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/ai-analysis-1\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/pilot-first-impression-1\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/scam-quality-1.2\" ]",
+  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/ai-analysis-1\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/pilot-first-impression-1\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/scam-quality-1.2\" ] && [ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/hybrid-consent-1.4\" ]",
   "functions": {
     "api/analyze.js": {
       "maxDuration": 30,
