@@ -24,7 +24,7 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     const B = 'http://localhost:8791/';
     const postCount = () => reqs.filter(r => r.startsWith('POST') && r.includes('/api/analyze')).length;
     const shot = async n => { await pg.waitForTimeout(250); await pg.screenshot({ path: `${out}/ai-${w}-${n}.png` }); };
-    const runAI = async text => { await pg.fill('#msg', text); await pg.click('#analyzeBtn'); await pg.waitForFunction(() => !document.getElementById('analyzeBtn').disabled, null, { timeout: 8000 }); await pg.waitForTimeout(200); };
+    const runAI = async text => { await pg.fill('#msg', text); await pg.check('#aiAgree'); await pg.click('#analyzeBtn'); await pg.waitForFunction(() => !document.getElementById('analyzeBtn').disabled, null, { timeout: 8000 }); await pg.waitForTimeout(200); };
     const backHome = async () => { if (await pg.isVisible('#result')) await pg.click('#result .text-btn'); };
 
     await pg.goto(B + 'pilot.html'); await pg.waitForSelector('#aiBox:not([hidden])', { timeout: 5000 });
@@ -37,7 +37,20 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     // lokální režim stále funguje a nic neodesílá
     await pg.fill('#msg', SMS); await pg.click('#analyzeBtn'); await pg.waitForTimeout(200);
     ok((await pg.textContent('#resultSourceText')) === 'Kontrola podle lokálních pravidel' && postCount() === 0, `${w} local mode: labelled local, no POST`);
+    ok(!(await pg.isVisible('#aiReviewOffer')), `${w} high local risk must not offer AI as an override`);
     await backHome();
+
+    // 1.4: VOLUNTARY second opinion for locally low/ambiguous text. Never auto-send.
+    await pg.fill('#msg', 'Pošli mi fotky z oslavy, prosím.');
+    const postsBeforeOffer = postCount();
+    await pg.click('#analyzeBtn');
+    ok(await pg.isVisible('#aiReviewOffer') && postCount() === postsBeforeOffer, `${w} low local result offers second opinion without POST`);
+    await pg.click('#aiReviewBtn');
+    ok(await pg.isVisible('#home') && await pg.isChecked('input[name="checkMode"][value="ai"]') &&
+       !(await pg.isChecked('#aiAgree')) && postCount() === postsBeforeOffer,
+       `${w} review opens masked preview and requires new consent, zero POST`);
+    ok((await pg.textContent('#aiPreview')).includes('Pošli mi fotky'), `${w} offered text preserved for review`);
+
 
     // přepnutí na AI, náhled s maskováním
     await pg.click('label.seg-opt:has(input[value="ai"])');
@@ -62,7 +75,7 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     await pg.screenshot({ path: `${out}/ai-${w}-3-result-high.png` });
     await pg.screenshot({ path: `${out}/ai-${w}-3-result-high-full.png`, fullPage: true });
     await backHome();
-    ok(await pg.isChecked('#aiAgree') === true || true, 'consent state after result');
+    ok(!(await pg.isChecked('#aiAgree')), `${w} consent revoked after every AI attempt`);
 
     // benigní a nejednoznačná zpráva
     await runAI('Dobrý den, porada se koná zítra v deset. Hezký den.');
@@ -97,11 +110,11 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
 
     // zrušení probíhající analýzy
     await pg.route('**/api/analyze', async route => { if (route.request().method() === 'POST') { await new Promise(r => setTimeout(r, 3000)); try { await route.continue(); } catch {} } else route.continue(); });
-    await pg.fill('#msg', SMS); await pg.click('#analyzeBtn'); await pg.waitForTimeout(300);
+    await pg.fill('#msg', SMS); await pg.check('#aiAgree'); await pg.click('#analyzeBtn'); await pg.waitForTimeout(300);
     ok(await pg.isVisible('#cancelAiBtn'), `${w} cancel button during request`);
     if (w === 390) await shot('6-loading');
     await pg.click('#cancelAiBtn'); await pg.waitForTimeout(200);
-    ok((await pg.textContent('#aiMode')).includes('zrušili'), `${w} cancel works`); await pg.unroute('**/api/analyze');
+    ok((await pg.textContent('#aiMode')).includes('přerušili'), `${w} cancel warns that server may already have received request`); await pg.unroute('**/api/analyze');
 
     // odvolání souhlasu
     await pg.click('label.seg-opt:has(input[value="local"])'); await pg.click('label.seg-opt:has(input[value="ai"])');
