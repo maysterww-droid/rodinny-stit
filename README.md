@@ -28,6 +28,10 @@ Jde o **pilotní demonstrátor, nikoli dokončený bezpečnostní produkt**. Ve 
 
 Statický web HTML + CSS + JavaScript, bez backendu a bez build procesu. `index.html` je česká prezentace projektu; `pilot.html` obsahuje samostatnou interaktivní aplikaci; `assets/app.js` vyhodnocovací logiku, `assets/style.css` vizuální systém a `assets/logo.svg` vlastní vektorové logo. GitHub Pages publikuje větev `main` ze složky `/`.
 
+### Kontrola
+
+`node --check assets/app.js` a `node tests/smoke.cjs` — základní automatické kontroly vyhodnocení a ošetření textu. Vizuální kontrola na skutečném mobilním zařízení následuje před zveřejněním pilotu 0.8.
+
 ### Následující vývoj
 
 Ověření na testovacích sadách podvodných scénářů, zpětná vazba seniorů a rodin, bezpečné serverové API pro jazykové modely, rozšíření češtiny a dalších jazyků, důsledná ochrana osobních údajů a dostupné odborné konzultace.
