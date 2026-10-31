@@ -255,3 +255,16 @@ test('Upstash quota reservation uses a single EVAL, and refund is atomic', async
   assert.ok(sent[0].command[1].includes("redis.call('INCRBY',KEYS[5],cost)"));
   assert.ok(sent[0].command[1].includes('\n'), 'script contains real newline characters');
 });
+
+test('temporary owner-only Preview test expires without invoking provider', async () => {
+  const past = setup({ AI_TEST_EXPIRES_AT: '2020-01-01T00:00:00Z' });
+  assert.equal((await call(past.h, { method: 'GET' })).json.ai, false);
+  assert.equal((await call(past.h, { body: ok() })).status, 503);
+  assert.equal(past.calls.length, 0);
+  const malformed = setup({ AI_TEST_EXPIRES_AT: 'invalid' });
+  assert.equal((await call(malformed.h, { body: ok() })).status, 503);
+  assert.equal(malformed.calls.length, 0);
+  const future = setup({ AI_TEST_EXPIRES_AT: '2099-01-01T00:00:00Z' });
+  assert.equal((await call(future.h, { body: ok() })).status, 200);
+  assert.equal(future.calls.length, 1);
+});
