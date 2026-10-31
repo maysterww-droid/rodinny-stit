@@ -43,6 +43,11 @@ const phoneQuad = pg => pg.evaluate(() => { const r = document.querySelector('.p
     ok(fsz >= 10, `${w} SMS on phone readable (${fsz}px)`);
     ok(await pg.evaluate(() => getComputedStyle(document.querySelector('.ph-flag')).opacity === '1'), `${w} suspicious flag visible after scan`);
     ok(/Podezřelé/.test(await pg.textContent('.ph-flag')) && !/bezpečn/i.test(await pg.textContent('.ph-stage')), `${w} scene never says the SMS is safe`);
+    const guard = await pg.evaluate(() => { const g = document.querySelector('.ph-guard'); const op = s => getComputedStyle(g.querySelector(s)).opacity;
+      return { amber: op('.g-amber'), excl: op('.g-excl'), neutral: op('.g-neutral'), check: !!g.querySelector('.g-check, [class*="check"]'), greenFill: [...g.querySelectorAll('stop')].some(st => /#(22c46a|078a45|7cf5a8)/i.test(st.getAttribute('stop-color'))) }; });
+    ok(guard.amber === '1' && guard.excl === '1' && guard.neutral === '0', `${w} final state: amber warning shield with "!"`);
+    ok(!guard.check && !guard.greenFill, `${w} no green check / green shield on suspicious SMS`);
+    ok(await pg.evaluate(() => getComputedStyle(document.querySelector('.ph-orbit.front')).opacity !== '0' && getComputedStyle(document.querySelector('.ph-orbit.back')).zIndex < getComputedStyle(document.querySelector('.ph-device')).zIndex), `${w} green ring kept, back arc behind phone`);
     ok(parseFloat(await pg.evaluate(() => getComputedStyle(document.querySelector('.ph-lead')).fontSize)) >= 16, `${w} lead text ≥ 16 px`);
     const tabs = await pg.$$eval('.tabs4 .tab', ts => ts.map(t => t.getBoundingClientRect().height));
     ok(tabs.length === 4 && tabs.every(h => h >= 48), `${w} 4 tabs with large tap targets`);
@@ -84,9 +89,9 @@ const phoneQuad = pg => pg.evaluate(() => { const r = document.querySelector('.p
     const ctx = await b.newContext({ viewport: { width: 390, height: 520 }, deviceScaleFactor: 2, isMobile: true });
     const pg = await ctx.newPage(); await pg.goto(B, { waitUntil: 'domcontentloaded' });
     const t0 = Date.now(); const frames = [];
-    for (const t of [80, 400, 800, 1100, 1400, 1700, 2300]) { const wait = t - (Date.now() - t0); if (wait > 0) await pg.waitForTimeout(wait); const f = `${out}/anim-390-${String(t).padStart(4, '0')}ms.png`; await pg.screenshot({ path: f }); frames.push(f); }
-    const running = await pg.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length);
-    ok(running === 0, `animation finished, no endless animations (${running} running after 2.3 s)`);
+    for (const t of [80, 500, 900, 1200, 1500, 1750, 2400]) { const wait = t - (Date.now() - t0); if (wait > 0) await pg.waitForTimeout(wait); const f = `${out}/anim-390-${String(t).padStart(4, '0')}ms.png`; await pg.screenshot({ path: f }); frames.push(f); }
+    await pg.waitForTimeout(200); const running = await pg.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length);
+    ok(running === 0, `animation finished, no endless animations (${running} running after 2.6 s)`);
     ok(frames.length === 7, 'animation filmstrip captured');
     await ctx.close();
   }
@@ -96,7 +101,7 @@ const phoneQuad = pg => pg.evaluate(() => { const r = document.querySelector('.p
     const pg = await ctx.newPage(); await pg.goto(B); await pg.waitForTimeout(150);
     ok(await pg.evaluate(() => { const h = document.getElementById('pilotHero'); return !h.classList.contains('play') && h.classList.contains('done'); }), 'reduced motion: no intro animation');
     ok(await pg.evaluate(() => document.querySelectorAll('#pilotHero *').length > 0 && [...document.querySelectorAll('#pilotHero *')].every(e => e.getAnimations().filter(a => a.playState === 'running').length === 0)), 'reduced motion: no running animations in scene');
-    ok(await pg.evaluate(() => getComputedStyle(document.querySelector('.ph-flag')).opacity === '1' && getComputedStyle(document.querySelector('.ph-bubble')).opacity === '1'), 'reduced motion: final state shown immediately');
+    ok(await pg.evaluate(() => getComputedStyle(document.querySelector('.ph-flag')).opacity === '1' && getComputedStyle(document.querySelector('.ph-bubble')).opacity === '1' && getComputedStyle(document.querySelector('.ph-guard .g-amber')).opacity === '1'), 'reduced motion: final warning state shown immediately');
     await pg.screenshot({ path: `${out}/pilot-390-reduced-motion.png` });
     await ctx.close();
   }

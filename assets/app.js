@@ -411,7 +411,7 @@ function playHeroIntro() {
   const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (reduce) { hero.classList.add('done'); return; }
   hero.classList.add('play');
-  setTimeout(() => { hero.classList.remove('play'); hero.classList.add('done'); }, 2400);
+  setTimeout(() => { hero.classList.remove('play'); hero.classList.add('done'); }, 2500);
 }
 
 /* ---------- inicializace (jen v prohlížeči) ---------- */

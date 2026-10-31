@@ -8,10 +8,10 @@ Větev `feature/pilot-first-impression-1` (od `feature/ai-analysis-1`). `main`, 
 - `anim-390-*ms.jpg` – snímky animace (80 → 2300 ms), `pilot-390-reduced-motion.jpg`, `pilot-390-scenario-selected.jpg`, `pilot-390-zoom130.jpg`
 
 ## Shody s referencí
-Pražský hrad + Karlův most za scénou se světlým přechodem; naklopený realistický telefon vpravo s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“; zelený štít s fajfkou, který se po skenování rozsvítí, a zelený prstenec, který obíhá telefon – zadní oblouk za telefonem, přední před ním (jako v referenci); štítek „Kontrola zprávy · pilot 1.0“, velký nadpis a popis vlevo; 4 záložky SMS / E-mail / Obrázek / Hovor; velké pole s počítadlem 0/5000; „Vyzkoušejte ukázkový scénář“ + „Zobrazit další →“ a tři karty (červená „Ahoj mami…“, „Zaplaťte doplatek za balík…“, „E-mail od banky…“); velké modré tlačítko „Zkontrolovat zprávu →“; zelený pruh tří výhod.
+Pražský hrad + Karlův most za scénou se světlým přechodem; naklopený realistický telefon vpravo s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“; varovný štít (neutrální → jantarový „!“) a zelený prstenec, který obíhá telefon – zadní oblouk za telefonem, přední před ním (jako v referenci); štítek „Kontrola zprávy · pilot 1.0“, velký nadpis a popis vlevo; 4 záložky SMS / E-mail / Obrázek / Hovor; velké pole s počítadlem 0/5000; „Vyzkoušejte ukázkový scénář“ + „Zobrazit další →“ a tři karty (červená „Ahoj mami…“, „Zaplaťte doplatek za balík…“, „E-mail od banky…“); velké modré tlačítko „Zkontrolovat zprávu →“; zelený pruh tří výhod.
 
 ## Záměrné rozdíly
-1. Štít je podle reference zelený s fajfkou: během skenování je šedý, pak se rozsvítí zeleně a dokreslí fajfku („kontrola proběhla, ochrana zasáhla“). Aby to nevypadalo jako „SMS je bezpečná“, objeví se hned poté na rohu bubliny varování „Podezřelé“.
+1. Štít **není** zelený s fajfkou (to by mohlo znamenat „SMS je bezpečná“). Při skenování je neutrální (šedomodrý s lupou), po detekci se plynule změní na **jantarový varovný štít s „!“** a u SMS se objeví „Podezřelé“ s krátkým zvýrazněním. Zelený prstenec obíhající telefon zůstává.
 2. Místo telefonního čísla „Neznámé číslo“ (žádné reálné číslo).
 3. Telefon nepřekrývá nadpis – nadpis má proto 3 řádky místo 2.
 4. Větší písmo (popis 16–19 px, záložky 14–15 px, karty 14 px) a vyšší dotykové plochy kvůli seniorům → obrazovka je delší než reference; na ≤ 440 px mají záložky ikonu nad textem.
@@ -20,4 +20,7 @@ Pražský hrad + Karlův most za scénou se světlým přechodem; naklopený rea
 7. Fotografie Prahy: originál 1680×944 od vlastníka (WebP 42 kB / 127 kB).
 
 ## Testy
-`node tests/browser-qa-hero.cjs` (128 kontrol), `node tests/browser-qa.cjs` (267), `node tests/browser-qa-ai.cjs` (99), `npm test` (25) – vše PASS; `node tests/browser-qa-ai.cjs`, `npm test` – bez sítě a placených volání.
+`node tests/browser-qa-hero.cjs` (143 kontrol), `node tests/browser-qa.cjs` (267), `node tests/browser-qa-ai.cjs` (99), `npm test` (25) – vše PASS; `node tests/browser-qa-ai.cjs`, `npm test` – bez sítě a placených volání.
+
+## Animace (cca 2 s, jednou)
+1. 0–0,85 s: scéna Prahy a telefon · 2. 0,7–1,6 s: SMS, zelený prstenec obíhá telefon (zadní oblouk za ním, přední před ním), linka skenování, štít neutrální · 3. 1,45–2,3 s: štít → jantarový „!“, „Podezřelé“ s krátkým zvýrazněním · 4. konec ve varovném stavu, nic nebliká. `prefers-reduced-motion` zobrazí rovnou konečný stav. Viz `animation-filmstrip.jpg`.

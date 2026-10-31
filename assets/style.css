@@ -448,8 +448,6 @@ html{overflow-x:clip}
 .ph-flag .ico{width:1.25em;height:1.25em;color:#e0482c}
 .ph-scan{position:absolute;left:0;right:0;top:-30%;height:28%;background:linear-gradient(180deg,rgba(90,190,255,0) 0%,rgba(90,190,255,.32) 80%,rgba(130,230,255,.9) 100%);opacity:0;pointer-events:none}
 .ph-shield{position:absolute;left:50%;bottom:6%;width:56%;transform:translateX(-50%);display:grid;place-items:center}
-.ph-guard{position:relative;z-index:1;width:72%;height:auto;overflow:visible;filter:drop-shadow(0 0 10px rgba(60,230,130,.85)) drop-shadow(0 0 22px rgba(60,230,130,.55)) drop-shadow(0 6px 10px rgba(4,90,45,.35))}
-.ph-guard .g-check{stroke-dasharray:80;stroke-dashoffset:0}
 .ph-device{z-index:2}
 .ph-shield{z-index:4}
 /* zelený prstenec obíhá telefon: zadní polovina za telefonem, přední před ním */
@@ -466,17 +464,12 @@ html{overflow-x:clip}
 .pilot-hero.play .ph-bubble{animation:phPop .35s .7s cubic-bezier(.2,.9,.3,1.3) both}
 .pilot-hero.play .ph-scan{animation:phScan .6s .95s ease-in-out both}
 .pilot-hero.play .ph-shield{animation:phUp .4s .5s ease-out both}
-.pilot-hero.play .ph-guard{animation:guardOn .5s 1.2s cubic-bezier(.2,.9,.3,1.3) both}
-.pilot-hero.play .ph-guard .g-check{animation:checkDraw .35s 1.4s ease-out both}
-.pilot-hero.play .ph-orbit{animation:phRing .7s 1.25s ease-out both}
-.pilot-hero.play .ph-flag{animation:phPop .35s 1.65s cubic-bezier(.2,.9,.3,1.4) both}
+.pilot-hero.play .ph-orbit{animation:phRing .7s .85s ease-out both}
 @keyframes phBg{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
 @keyframes phUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 @keyframes phPhone{from{opacity:0;transform:translateY(34px) rotateY(-30deg) rotateX(10deg) rotateZ(8deg)}to{opacity:1;transform:rotateY(-16deg) rotateX(5deg) rotateZ(4deg)}}
 @keyframes phPop{from{opacity:0;transform:translateY(6px) scale(.9)}to{opacity:1;transform:none}}
 @keyframes phScan{0%{opacity:0;top:-30%}15%{opacity:1}85%{opacity:1}100%{opacity:0;top:105%}}
-@keyframes guardOn{0%{filter:grayscale(1) brightness(.85) drop-shadow(0 0 0 rgba(60,230,130,0));transform:scale(.9)}55%{filter:grayscale(0) brightness(1.35) drop-shadow(0 0 30px rgba(80,255,160,1)) drop-shadow(0 0 50px rgba(80,255,160,.7));transform:scale(1.08)}100%{filter:drop-shadow(0 0 10px rgba(60,230,130,.85)) drop-shadow(0 0 22px rgba(60,230,130,.55)) drop-shadow(0 6px 10px rgba(4,90,45,.35));transform:scale(1)}}
-@keyframes checkDraw{from{stroke-dashoffset:80}to{stroke-dashoffset:0}}
 @keyframes phRing{0%{opacity:0;transform:translate(-50%,-50%) rotate(-7deg) scale(.55)}60%{opacity:1}100%{transform:translate(-50%,-50%) rotate(-7deg) scale(1)}}
 @media (prefers-reduced-motion:reduce){.pilot-hero *{animation:none!important}}
 
@@ -538,3 +531,22 @@ textarea.input:focus{box-shadow:0 0 0 4px rgba(90,169,255,.22),0 10px 26px rgba(
 }
 
 #panel-text .tools{margin-top:12px}
+
+/* 1.1b · štít: neutrální při skenování → jantarové varování „!“ (žádná zelená fajfka) */
+.ph-guard{position:relative;z-index:1;width:72%;height:auto;overflow:visible;filter:drop-shadow(0 0 10px rgba(255,170,40,.75)) drop-shadow(0 0 22px rgba(255,160,30,.45)) drop-shadow(0 6px 10px rgba(120,60,0,.3))}
+.ph-guard .g-neutral,.ph-guard .g-scan{opacity:0}
+.ph-guard .g-amber,.ph-guard .g-excl{opacity:1}
+.ph-guard .g-excl{transform-box:fill-box;transform-origin:center}
+.pilot-hero.play .ph-guard{animation:guardWarn .6s 1.45s ease-out both}
+.pilot-hero.play .ph-guard .g-neutral{animation:fadeOut .35s 1.45s ease-in both}
+.pilot-hero.play .ph-guard .g-scan{animation:fadeOut .25s 1.45s ease-in both}
+.pilot-hero.play .ph-guard .g-amber{animation:fadeIn .35s 1.45s ease-out both}
+.pilot-hero.play .ph-guard .g-excl{animation:exclPop .4s 1.6s cubic-bezier(.2,.9,.3,1.4) both}
+.pilot-hero.play .ph-flag{animation:phPop .35s 1.6s cubic-bezier(.2,.9,.3,1.4) both,flagGlow .4s 1.9s ease-out both}
+@keyframes fadeOut{from{opacity:1}to{opacity:0}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes exclPop{from{opacity:0;transform:scale(.4)}to{opacity:1;transform:scale(1)}}
+@keyframes guardWarn{0%{filter:drop-shadow(0 0 8px rgba(160,190,230,.6)) drop-shadow(0 6px 10px rgba(30,50,80,.25));transform:scale(1)}
+ 50%{filter:drop-shadow(0 0 20px rgba(255,175,40,1)) drop-shadow(0 0 36px rgba(255,160,30,.7)) drop-shadow(0 6px 10px rgba(120,60,0,.3));transform:scale(1.07)}
+ 100%{filter:drop-shadow(0 0 10px rgba(255,170,40,.75)) drop-shadow(0 0 22px rgba(255,160,30,.45)) drop-shadow(0 6px 10px rgba(120,60,0,.3));transform:scale(1)}}
+@keyframes flagGlow{0%{box-shadow:0 4px 10px rgba(212,47,66,.18)}50%{box-shadow:0 0 0 5px rgba(240,120,40,.25),0 0 18px rgba(240,90,40,.55)}100%{box-shadow:0 4px 10px rgba(212,47,66,.18)}}
