@@ -128,22 +128,27 @@ function maskNumbers() { const e = $('msg'); e.value = e.value.replace(/\b\d{8,}
 /* ---------- pravidla (beze změny logiky z verze 0.8) ---------- */
 const SIGNS = [
  {id:'pressure',icon:'i-clock',name:'Časový nátlak',detail:'Zpráva vás nutí jednat rychle a bez přemýšlení.',pattern:/(?:ihned|okamžitě|urgentn|spěchá|spěchejte|rychle|do \d+ minut|za \d+ minut|dnes|hned|pospěš|neodkladně|nejpozději|teď hned|time limit)/i},
- {id:'money',icon:'i-cash',name:'Požadavek na peníze',detail:'Ve zprávě se žádá platba, převod nebo finanční údaje.',pattern:/(?:pošli|poslat|pošlete|převeď|převod|platbu|zaplať|zaplatit|uhrad|peníze|částku|bankovní účet|\d[\d ]{0,10}\s*(?:kč|czk|eur|€))/i},
+ {id:'money',icon:'i-cash',name:'Požadavek na peníze',detail:'Zpráva žádá platbu, převod, finanční dar nebo peníze.',pattern:/(?:pošli|poslat|pošlete|převeď|převod|platbu|zaplať|zaplatit|uhrad|peníze|částku|bankovní účet|půjč|příspěv|finanční dar|dar pro|poplatek|zálohu|poukazy|\d[\d ]{0,10}\s*(?:kč|czk|eur|€))/i},
  {id:'newContact',icon:'i-phone',name:'Nové kontaktní číslo',detail:'Odesílatel tvrdí, že změnil telefon nebo způsob kontaktu.',pattern:/(?:nové číslo|nový telefon|starý telefon|rozbil|ztratil.*telefon|jiného čísla|new number)/i},
- {id:'access',icon:'i-key',name:'Žádost o kód nebo heslo',detail:'Banka ani úřad po vás nikdy nechtějí kód z SMS ani heslo.',pattern:/(?:pin|heslo|ověřovací kód|jednorázov[ýé]|přihlašovac[íi]|sdělte.*kód|pošlete.*kód|přístupový kód|sms kód)/i},
- {id:'install',icon:'i-monitor',name:'Vzdálený přístup',detail:'Požadavek na instalaci programu nebo přístup k zařízení.',pattern:/(?:nainstaluj|instaluj|aplikaci pro|vzdálený přístup|anydesk|teamviewer|remote access|sdílení obrazovky)/i},
+ {id:'access',icon:'i-key',name:'Žádost o kód nebo heslo',detail:'Neprozrazujte hesla, přihlašovací kódy, údaje z karty ani obnovovací fráze.',pattern:/(?:pin|heslo|ověřovací kód|jednorázov[ýé]|přihlašovac[íi]|sdělte.*kód|pošlete.*kód|přístupový kód|sms kód|cvv|číslo platební karty|obnovovací frázi|seed phrase)/i},
+ {id:'install',icon:'i-monitor',name:'Vzdálený přístup',detail:'Před instalací nebo sdílením obrazovky nezávisle ověřte, kdo to po vás chce.',pattern:/(?:nainstaluj|nainstalova|nainstalujte|instaluj|aplikaci pro|vzdálený přístup|anydesk|teamviewer|remote access|sdílení obrazovky)/i},
  {id:'secrecy',icon:'i-eyeoff',name:'Brání ověření',detail:'Zpráva odrazuje od zavolání nebo nezávislé kontroly.',pattern:/(?:nevolej|nevolat|nikomu neříkej|nikomu to neříkej|tajné|teď nemohu mluvit|neptej se|jenom mi věř)/i},
  {id:'authority',icon:'i-bank',name:'Vydávání se za autoritu',detail:'Odesílatel se odvolává na banku, policii, úřad nebo dopravce.',pattern:/(?:bezpečnostní oddělení|policie|kriminální|banka|banky|finanční úřad|česká pošta|zásilka|kurýr|podpora účtu|zablokován|zablokujeme)/i},
  {id:'link',icon:'i-link',name:'Odkaz ve zprávě',detail:'Odkaz neprokazuje, že jde o oficiální web. Adresa může být podvržená.',pattern:/(?:https?:\/\/|www\.|\b[a-z0-9-]+\.(?:cz|com|eu|net|info|sk)\b)/i},
- {id:'investment',icon:'i-chart-up',name:'Nerealistický příslib',detail:'Zaručený výdělek či výhra bývají manipulační návnadou.',pattern:/(?:garantovan[ýá]|zaručen[ýá]|bez rizika|investi[čc]|výhra|vyděláte|výnos|bitcoin|kryptoměn)/i}
+ {id:'accountChange',icon:'i-bank',name:'Změna účtu pro platbu',detail:'Změnu bankovních údajů ověřte mimo tuto zprávu.',pattern:/(?:nov[ýé]\s+(?:bankovní\s+)?úč(?:et|tu)|změn[ayě].{0,20}(?:bankovní\s+)?úč(?:et|tu)|jin[ýé]\s+(?:bankovní\s+)?úč(?:et|tu))/i},
+ {id:'threat',icon:'i-alert',name:'Vyhrožování nebo vydírání',detail:'Výhrůžka má vyvolat strach a přimět vás jednat bez ověření.',pattern:/(?:jinak.{0,50}(?:zveřej|odpoj|zruš)|zveřejníme vaše|vydír|vyhrož|budeme vás vydírat)/i},
+ {id:'qr',icon:'i-scan',name:'QR kód ve zprávě',detail:'QR kód může vést na neznámý web nebo platbu.',pattern:/(?:qr\s*k[oó]d|naskenuj(?:te)?.{0,10}qr)/i},
+ {id:'support',icon:'i-monitor',name:'Údajná technická podpora',detail:'Tvrzení o podpoře samo neověřuje, kdo skutečně píše.',pattern:/(?:technick(?:é|á|ou)\s+podpor(?:a|y|u)|zákaznick(?:á|é)\s+podpor(?:a|y|u)|it\s+podpor(?:a|y|u))/i},
+ {id:'accountUpdate',icon:'i-key',name:'Požadavek na ověření účtu',detail:'Ověření účtu provádějte pouze ve službě otevřené vlastní cestou.',pattern:/(?:úč(?:et|tu).{0,50}(?:vyžaduje|potřebuje).{0,30}(?:ověřen|aktualizac)|ověřte.{0,30}úč(?:et|tu)|aktualizac[ií].{0,15}(?:údajů|účtu))/i},
+ {id:'investment',icon:'i-chart-up',name:'Nerealistický příslib',detail:'Garance výnosu, výhry nebo výdělků mohou být manipulací.',pattern:/(?:garantovan[ýá]|zaručen[ýá]|bez rizika|investi[čc]|výhr(?:a|u|y|ou)|vyděláte|výnos|bitcoin|kryptoměn)/i}
 ];
 function classify(text) {
   // Kontextové filtry pro běžné české zprávy. Samotné slovo není důkaz podvodu.
   // Kombinace nátlaku, žádosti o peníze, kódů a vzdáleného přístupu zůstávají rizikové.
-  const moneyContext = /(?:\d[\d ]{0,10}\s*(?:kč|czk|eur|€)|peníze|peněz|platb|částk|účet|bankovní|faktur|převod|invest)/i.test(text);
-  const paymentRequest = /(?:pošli|pošlete|poslat|převeď|zaplať|zaplatit|uhrad|investuj|zaplaťte|uhraďte|dluž)/i.test(text);
+  const moneyContext = /(?:\d[\d ]{0,10}\s*(?:kč|czk|eur|€)|peníze|peněz|platb|částk|účet|bankovní|faktur|převod|invest|příspěv|finanční dar|poplatek|záloh|poukaz|půjč|pokut)/i.test(text);
+  const paymentRequest = /(?:pošli|pošlete|poslat|převeď|zaplať|zaplatit|uhrad|investuj|uhraďte|dluž|kupte|kupovat|potřebuj|půjč|prosíme o)/i.test(text);
   const strongContext = moneyContext || /(?:heslo|ověřovací kód|jednorázový kód|nainstaluj|vzdálený přístup|https?:\/\/|www\.)/i.test(text);
-  const authorityAction = /(?:zaplať|uhrad|pošli|převeď|sděl|zadej|ověř|klik|zablok|heslo|kód|nainstal|ihned|okamžitě|https?:\/\/|www\.)/i.test(text);
+  const authorityAction = /(?:zaplať|uhrad|pošli|převeď|sděl|zadej|ověř|klik|zablok|heslo|kód|nainstal|ihned|okamžitě|potřebujeme.{0,60}úč(?:et|tu)|https?:\/\/|www\.)/i.test(text);
   const found = SIGNS.map(rule => {
     const m = text.match(rule.pattern);
     if (!m) return null;
@@ -154,15 +159,18 @@ function classify(text) {
     // Zmínka o částce v běžném vyprávění není žádost o platbu.
     if (rule.id === 'money' && /^\d[\d ]{0,10}\s*(?:kč|czk|eur|€)$/i.test(m[0]) && !paymentRequest) return null;
     // Zmínka o instituci v běžném sdělení není důkaz jejího napodobování.
-    if (rule.id === 'authority' && /^(?:banka|banky|policie|česká pošta|zásilka|kurýr)$/i.test(m[0]) && !authorityAction) return null;
+    if (rule.id === 'authority' && /^(?:banka|banky|policie|finanční úřad|česká pošta|zásilka|kurýr)$/i.test(m[0]) && !authorityAction) return null;
     return { ...rule, example: m[0] };
   }).filter(Boolean);
   const ids = new Set(found.map(x => x.id)); const has = x => ids.has(x);
   const urgent = has('pressure') || has('secrecy');
   let level = 'low';
-  if ((has('money') && (urgent || has('newContact') || has('authority') || has('link') || has('investment'))) ||
+  const credentialRequest = /\b(?:sdělte|pošlete|přepošlete|nadiktujte|zadejte|vyplňte|pošli|zašlete|přečtěte)\b.{0,100}(?:kód|cvv|heslo|obnovovací|fráz|číslo platební karty|seed)/iu.test(text);
+  const remoteControlRequest = has('install') && /(?:anydesk|teamviewer|vzdálený přístup|sdílení obrazovky)/i.test(text);
+  if ((has('money') && (urgent || has('newContact') || has('authority') || has('link') || has('investment') || has('accountChange') || has('threat') || (has('qr') && paymentRequest))) ||
       ((has('access') || has('install')) && (urgent || has('authority') || has('link'))) ||
-      (has('investment') && has('pressure'))) level = 'high';
+      (has('access') && credentialRequest) || remoteControlRequest ||
+      (has('investment') && (has('pressure') || (paymentRequest && /garantovan|zaručen|bez rizika/i.test(text))))) level = 'high';
   else if (found.length) level = 'moderate';
   let action = 'Zprávu berte s obvyklou opatrností. Pokud v ní někdo později požádá o platbu nebo přístupové údaje, situaci ověřte samostatně.';
   if (has('access') || has('install')) action = 'Nikomu nesdělujte kód ani heslo a neinstalujte software na žádost neznámého člověka. Otevřete oficiální službu sami nebo ji kontaktujte přes známé číslo.';
@@ -175,10 +183,14 @@ function classify(text) {
 /* Konkrétní kroky podle nalezených signálů */
 function nextSteps(data) {
   const ids = new Set(data.found.map(x => x.id)); const has = x => ids.has(x); const out = [];
+  if (has('accountChange')) out.push('Změnu bankovního účtu si <b>ověřte přes dříve známý kontakt</b>, nikoliv z čísla ve zprávě.');
+  if (has('qr')) out.push('Neznámý <b>QR kód neskenujte</b> a neposílejte přes něj platbu bez nezávislého ověření.');
+  if (has('threat')) out.push('Uschovejte zprávu a další důkazy. Při vyhrožování se <b>obraťte na Policii ČR</b>.');
+  if (has('accountUpdate')) out.push('Účet ověřujte jen v <b>oficiální aplikaci</b> nebo na webu otevřeném vlastní cestou.');
   if (has('link')) out.push('<b>Neotvírejte odkaz</b> a nic na něm nevyplňujte.');
   if (has('access') || has('install')) out.push('<b>Nesdělujte žádné kódy ani hesla</b> a nic neinstalujte.');
   if (has('money') || has('investment')) out.push('<b>Neposílejte peníze</b>, dokud žádost nezávisle neověříte.');
-  if (has('newContact') || has('secrecy')) out.push('Zavolejte blízkému na <b>původní, dříve uložené číslo</b>.');
+  if (has('newContact') || has('secrecy')) out.push('Pokud se zpráva vydává za blízkého, zavolejte mu na <b>původní, dříve uložené číslo</b>.');
   if (has('authority')) out.push('Instituci kontaktujte <b>sami</b> – přes oficiální aplikaci nebo číslo z karty či webu.');
   if (has('pressure') && out.length < 4) out.push('Nenechte se uspěchat. <b>Na rozhodnutí máte čas.</b>');
   if (!out.length) out.push('Pokud zpráva později požádá o platbu, kód nebo instalaci, <b>zastavte se a ověřte ji</b>.', 'Odesílatele ověřte přes kontakt, který znáte odjinud.');
