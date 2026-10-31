@@ -226,3 +226,32 @@ test('Upstash store uses atomic pipeline INCRBY + EXPIRE NX', async () => {
   assert.deepEqual(sent[0][1], [['INCRBY', 'k', '1'], ['EXPIRE', 'k', '60', 'NX']]);
   assert.equal(upstashStore({ url: '', token: '' }), null);
 });
+
+
+test('Upstash quota reservation uses a single EVAL, and refund is atomic', async () => {
+  const sent = [];
+  const s = upstashStore({
+    url: 'https://example.upstash.io', token: 't',
+    fetchImpl: async (url, options) => {
+      const command = JSON.parse(options.body);
+      sent.push({ url, command });
+      return { ok: true, json: async () => ({ result: command[1].includes('local v1=') ? 'ok' : 1 }) };
+    }
+  });
+  const keys = {
+    hour: 'h', ipDay: 'ipd', globalDay: 'g', dayBudget: 'usd-day', monthBudget: 'usd-month'
+  };
+  const limits = { hour: 5, ipDay: 15, globalDay: 200, dayBudget: 1000000, monthBudget: 5000000 };
+  assert.equal(await s.reserve({ keys, limits, cost: 12000 }), 'ok');
+  await s.refund({ keys, amount: 4000 });
+  assert.equal(sent.length, 2);
+  for (const { url, command } of sent) {
+    assert.equal(url, 'https://example.upstash.io');
+    assert.equal(command[0], 'EVAL');
+  }
+  assert.equal(sent[0].command[2], '5', 'all 5 quota keys checked together');
+  assert.equal(sent[1].command[2], '2', 'both budgets refunded together');
+  assert.ok(sent[0].command[1].includes("v4+cost>"));
+  assert.ok(sent[0].command[1].includes("redis.call('INCRBY',KEYS[5],cost)"));
+  assert.ok(sent[0].command[1].includes('\n'), 'script contains real newline characters');
+});
