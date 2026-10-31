@@ -1,0 +1,101 @@
+{
+  "version": "1.3",
+  "note": "Developer-written fixtures for contextual hardening; distinct from both held-out sets; never use these to report independent accuracy.",
+  "cases": [
+    {
+      "id": "hardening-dev-01",
+      "message": "Ahoj mami, nemůžu mluvit. Potřebuju 4500 Kč dnes.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-02",
+      "message": "Tady policie, peníze předejte kurýrovi.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-03",
+      "message": "Zadejte prosím CVV a číslo platební karty do tohoto formuláře.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-04",
+      "message": "Do večera zaplaťte 50 Kč na https://posta-box.invalid.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-05",
+      "message": "Na zabezpečení účtu nainstalujte AnyDesk a povolte správu.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-06",
+      "message": "Zveřejníme vaše soukromé video. Pošlete 300 EUR.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-07",
+      "message": "K dokončení přihlášení nadiktujte jednorázový kód z SMS.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-08",
+      "message": "Ahoj, jsem na jinem cisle, posli mi 6000 korun dnes.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-09",
+      "message": "Doprava: za nezaplacený přestupek uhraďte 1800 Kč na https://pokuta-online.invalid.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-10",
+      "message": "Přijďte na besedu o ochraně bankovního účtu.",
+      "expected": "low"
+    },
+    {
+      "id": "hardening-dev-11",
+      "message": "Pozor, nikomu neposílejte PIN ani kód.",
+      "expected": "low"
+    },
+    {
+      "id": "hardening-dev-12",
+      "message": "Na https://example.com je recept na bábovku.",
+      "expected": "low"
+    },
+    {
+      "id": "hardening-dev-13",
+      "message": "Na kurzu si vysvětlíme typické investiční podvody.",
+      "expected": "low"
+    },
+    {
+      "id": "hardening-dev-14",
+      "message": "Mám nový telefon a v sobotu tě navštívím.",
+      "expected": "moderate"
+    },
+    {
+      "id": "hardening-dev-15",
+      "message": "Na faktuře uvádíme nový účet. Prosím pošlete platbu dnes.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-16",
+      "message": "Podrobnosti najdete na https://informace-test.invalid.",
+      "expected": "moderate"
+    },
+    {
+      "id": "hardening-dev-17",
+      "message": "Pro přihlášení do skupiny Signal naskenujte QR kód.",
+      "expected": "high"
+    },
+    {
+      "id": "hardening-dev-18",
+      "message": "Těším se na zítřejší setkání.",
+      "expected": "low"
+    },
+    {
+      "id": "hardening-dev-19",
+      "message": "Babi, posli penize, nevolej.",
+      "expected": "high"
+    }
+  ]
+}
