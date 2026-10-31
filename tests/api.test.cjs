@@ -126,7 +126,7 @@ test('daily USD budget can never be exceeded, even with concurrent requests and 
   // simulace zlého případu: poskytovatel účtuje přesně horní mez (nic se nevrací)
   const worstUsage = { input_tokens: maxInputTokens(cfg, longText), output_tokens: cfg.maxOutputTokens };
   const fetchImpl = async (url, init) => ({ ok: true, status: 200, json: async () => ({ status: 'completed', usage: worstUsage,
-    output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify({ risk: 'high', scope: 'message_analysis', warning_signals: [], explanation_cs: 'x', recommended_steps: ['Nic neposílejte.'], uncertainty_cs: '' }) }] }] }) });
+    output: [{ type: 'message', content: [{ type: 'output_text', text: JSON.stringify({ risk: 'uncertain', scope: 'message_analysis', warning_signals: [], explanation_cs: 'Simulovaný výstup pro zátěžový test rozpočtu.', recommended_steps: ['Nic neposílejte.', 'Ověřte zdroj samostatně.'], uncertainty_cs: 'Pouze simulace; žádná kontrola totožnosti.' }) }] }] }) });
   const store = memoryStore();
   const { h } = setup({ DAILY_BUDGET_USD: String(budget), LIMIT_PER_IP_HOUR: '1000', LIMIT_PER_IP_DAY: '1000', LIMIT_GLOBAL_DAY: '1000' }, { fetchImpl, store });
   const results = await Promise.all(Array.from({ length: 12 }, (_, i) => call(h, { body: ok(longText), headers: { 'x-forwarded-for': '10.0.0.' + i } })));
@@ -314,6 +314,8 @@ test('safety: reject confident risk without grounded quotations or with a false 
   assert.equal(validateResult({ ...base, explanation_cs: 'Zpráva je bezpečná.' }, text), null);
   assert.equal(validateResult({ ...base, uncertainty_cs: 'Ověřili jsme odesílatele.' }, text), null);
   assert.equal(validateResult({ ...base, explanation_cs: 'Účet je zcela bezpečný.' }, text), null);
+  assert.equal(validateResult({ ...base, explanation_cs: 'Odkaz je naprosto bezpečný.' }, text), null);
+  assert.equal(validateResult({ ...base, warning_signals: [{ ...base.warning_signals[0], explanation_cs: 'Účet je zcela bezpečný.' }] }, text), null);
 });
 
 test('safety: malicious model recommendations are filtered, safe negations retained', () => {
