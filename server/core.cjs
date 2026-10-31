@@ -120,7 +120,7 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
   function availability() {
     if (!cfg.enabled) return 'disabled';
     if (!cfg.apiKey) return 'not_configured';
-    if (!store || store.kind === 'memory' && env.ALLOW_MEMORY_STORE !== 'true') return 'no_rate_limit_store';
+    if (!store || typeof store.reserve !== 'function' || typeof store.refund !== 'function' || store.kind === 'memory' && env.ALLOW_MEMORY_STORE !== 'true') return 'no_rate_limit_store';
     if (!cfg.salt || cfg.salt.length < 16) return 'no_salt';
     if (!cfg.origins.length && !cfg.allowSameOrigin) return 'no_origins';
     if (!cfg.vercelEnv || !cfg.allowedVercelEnvs.includes(cfg.vercelEnv)) return 'env_not_allowed'; // fail closed: no VERCEL_ENV or production
@@ -179,17 +179,26 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     const month = day.slice(0, 7);
     const reserve = worstCaseMicroUsd(cfg, text); // garantovaná horní mez pro TENTO požadavek
     const budgetMicro = Math.floor(cfg.dailyBudgetUsd * 1e6), monthMicro = Math.floor(cfg.monthlyBudgetUsd * 1e6);
+
+    const quotaKeys = {
+      hour: `rs:ip:h:${hour}:${ipKey}`,
+      ipDay: `rs:ip:d:${day}:${ipKey}`,
+      globalDay: `rs:g:req:${day}`,
+      dayBudget: `rs:g:usd:${day}`,
+      monthBudget: `rs:g:usdm:${month}`
+    };
     try {
-      const [h, d] = [await store.incr(`rs:ip:h:${hour}:${ipKey}`, 1, 3700), await store.incr(`rs:ip:d:${day}:${ipKey}`, 1, 90000)];
-      if (h > cfg.perIpHour || d > cfg.perIpDay) { done(429, 'ip_quota'); return err(res, 429, 'quota_user', allowed); }
-      const g = await store.incr(`rs:g:req:${day}`, 1, 90000);
-      if (g > cfg.globalDay) { done(429, 'global_quota'); return err(res, 429, 'quota_global', allowed); }
-      const spent = await store.incr(`rs:g:usd:${day}`, reserve, 90000);
-      if (spent > budgetMicro) { await store.incr(`rs:g:usd:${day}`, -reserve, 90000); done(429, 'budget_day'); return err(res, 429, 'quota_budget', allowed); }
-      const spentM = await store.incr(`rs:g:usdm:${month}`, reserve, 35 * 86400);
-      if (spentM > monthMicro) {
-        await store.incr(`rs:g:usdm:${month}`, -reserve, 35 * 86400); await store.incr(`rs:g:usd:${day}`, -reserve, 90000);
-        done(429, 'budget_month'); return err(res, 429, 'quota_budget', allowed);
+      // Single atomic Redis EVAL: no provider call unless all quotas and both budgets are reserved.
+      const reservation = await store.reserve({
+        keys: quotaKeys, cost: reserve,
+        limits: { hour: cfg.perIpHour, ipDay: cfg.perIpDay, globalDay: cfg.globalDay,
+          dayBudget: budgetMicro, monthBudget: monthMicro }
+      });
+      if (reservation !== 'ok') {
+        const code = reservation === 'quota_user' ? 'quota_user' : reservation === 'quota_global' ? 'quota_global' : reservation === 'quota_budget' ? 'quota_budget' : 'ai_unavailable';
+        const status = code === 'ai_unavailable' ? 503 : 429;
+        done(status, reservation);
+        return err(res, status, code, allowed);
       }
     } catch { done(503, 'store_down'); return err(res, 503, 'ai_unavailable', allowed); }
 
@@ -199,7 +208,7 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
       const actual = actualMicroUsd(cfg, usage);
       if (actual > reserve) log({ evt: 'budget_bound_violated', reserve, actual }); // nemá nastat; skutečnost se započítá
       const diff = actual - reserve; // vrácení nevyužité části rezervace (jen po úspěšné odpovědi)
-      if (diff) { try { await store.incr(`rs:g:usd:${day}`, diff, 90000); await store.incr(`rs:g:usdm:${month}`, diff, 35 * 86400); } catch { /* rezervace zůstane – bezpečnější směr */ } }
+      if (diff < 0) { try { await store.refund({ keys: quotaKeys, amount: -diff }); } catch { /* reservation stays, conservative */ } }
       const result = validateResult(parsed);
       if (!result) { done(502, 'invalid_model_output', { tin: usage.input, tout: usage.output }); return err(res, 502, 'ai_bad_output', allowed); }
       done(200, 'ok', { tin: usage.input, tout: usage.output, risk: result.risk });
