@@ -87,6 +87,11 @@ function validateResult(p, sourceText = null) {
   const unsafeDeletion = /\b(?:smažte|vymažte|smazat|vymazat)\b/iu;
   const steps = p.recommended_steps.slice(0, 5).map(s => clip(s, 240)).filter(s => s && !unsafeDeletion.test(s));
   if (!steps.length) return null;
+  // If an unsafe deletion instruction was removed, replace it with a concrete
+  // evidence-preservation step rather than leaving a gap in the advice.
+  if (p.risk !== 'uncertain' && steps.length < 5 && !steps.some(s => /uchov|uschov|ulož|nesmaž|důkaz/iu.test(s))) {
+    steps.push('Původní zprávu nemažte; uchovejte ji nebo snímek obrazovky jako případný důkaz.');
+  }
   return {
     risk: p.risk, scope: p.scope, warning_signals: signals,
     explanation_cs: clip(p.explanation_cs, 600), recommended_steps: steps, uncertainty_cs: clip(p.uncertainty_cs, 300)
