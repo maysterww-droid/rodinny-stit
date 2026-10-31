@@ -298,3 +298,47 @@ test('AI recommendations never tell users to erase potential evidence', () => {
   const restored = validateResult({ ...report, recommended_steps: ['Smažte zprávu.', 'Ověřte odesílatele jinou cestou.'] }, 'Pošli peníze dnes');
   assert.ok(restored.recommended_steps.some(x => x.includes('Původní zprávu nemažte')));
 });
+
+
+test('safety: reject confident risk without grounded quotations or with a false safety guarantee', () => {
+  const text = 'Pošli mi 500 Kč ještě dnes.';
+  const base = {
+    risk: 'high', scope: 'message_analysis',
+    warning_signals: [{ name_cs: 'Urgence', explanation_cs: 'Časový tlak.', excerpt: 'dnes' }],
+    explanation_cs: 'Text žádá o peníze.', recommended_steps: ['Neodpovídejte.', 'Uchovejte zprávu.'],
+    uncertainty_cs: 'Totožnost odesílatele není ověřena.'
+  };
+  assert.ok(validateResult(base, text));
+  assert.equal(validateResult({ ...base, warning_signals: [] }, text), null);
+  assert.equal(validateResult({ ...base, warning_signals: [{ ...base.warning_signals[0], excerpt: '' }] }, text), null);
+  assert.equal(validateResult({ ...base, explanation_cs: 'Zpráva je bezpečná.' }, text), null);
+  assert.equal(validateResult({ ...base, uncertainty_cs: 'Ověřili jsme odesílatele.' }, text), null);
+  assert.equal(validateResult({ ...base, explanation_cs: 'Účet je zcela bezpečný.' }, text), null);
+});
+
+test('safety: malicious model recommendations are filtered, safe negations retained', () => {
+  const text = 'Pošli mi peníze ještě dnes.';
+  const base = {
+    risk: 'high', scope: 'message_analysis',
+    warning_signals: [{ name_cs: 'Urgence', explanation_cs: 'Časový tlak.', excerpt: 'dnes' }],
+    explanation_cs: 'Pozor na nátlak.',
+    recommended_steps: [
+      'Odstraňte původní zprávu.',
+      'Sdělte ověřovací kód.',
+      'Klikněte na odkaz ve zprávě.',
+      'Převeďte 5000 Kč.',
+      'Ověřte vše přes oficiální kontakt.'
+    ],
+    uncertainty_cs: 'Totožnost není ověřena.'
+  };
+  const result = validateResult(base, text);
+  assert.ok(result);
+  assert.ok(result.recommended_steps.some(s => s.includes('Ověřte vše')));
+  assert.ok(result.recommended_steps.some(s => s.includes('Původní zprávu nemažte')));
+  assert.ok(!result.recommended_steps.some(s => /^(?:Odstraňte|Sdělte|Klikněte|Převeďte)/.test(s)));
+  assert.equal(validateResult({ ...base, recommended_steps: ['Pošlete heslo.'] }, text), null);
+  const safeNegations = validateResult({
+    ...base, recommended_steps: ['Nesmažte původní zprávu.', 'Nesdělujte své kódy a hesla.']
+  }, text);
+  assert.deepEqual(safeNegations.recommended_steps, ['Nesmažte původní zprávu.', 'Nesdělujte své kódy a hesla.']);
+});
