@@ -1,86 +1,262 @@
-<!doctype html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#2456C7"><title>RODINNÝ ŠTÍT</title><style>
-:root{--bg:#F6F7FB;--text:#17233B;--blue:#2456C7;--amber:#9A5900;--card:#fff;--muted:#64708a;--line:#dfe4ee;--red:#a92c2c;--green:#176b4d}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:18px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}.app{max-width:520px;margin:auto;min-height:100vh;padding:18px 18px 96px}.brand{display:flex;align-items:center;gap:12px;margin:4px 0 22px}.shield{width:44px;height:44px;border-radius:14px;background:var(--blue);display:grid;place-items:center;color:#fff;font-size:25px}.brand b{display:block;font-size:19px}.brand small{color:var(--muted)}h1{font-size:30px;line-height:1.12;margin:8px 0 10px}h2{font-size:24px;line-height:1.2}.lead{color:var(--muted);margin:0 0 22px}.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:18px;margin:14px 0;box-shadow:0 7px 24px #17233b0a}.btn{width:100%;border:0;border-radius:15px;padding:16px 18px;font:700 18px system-ui;cursor:pointer;margin:7px 0}.primary{background:var(--blue);color:#fff}.secondary{background:#e9eefb;color:var(--blue)}.danger{background:#fff0ef;color:var(--red);border:1px solid #f1c7c3}.ghost{background:#fff;border:1px solid var(--line);color:var(--text)}input[type=file]{width:100%;padding:13px;border:1px dashed #aeb9cc;border-radius:15px;background:#f8faff;margin:6px 0 12px} .preview{width:100%;max-height:280px;object-fit:contain;border-radius:14px;border:1px solid var(--line);background:#f4f6fa;margin:8px 0}.maskbar{display:flex;gap:8px;flex-wrap:wrap}.maskbar button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 11px;font-weight:700;color:var(--text)}.state{padding:16px;border-radius:16px;margin:12px 0}.state.warn{background:#fff4df;color:#714100}.state.neutral{background:#eef3ff;color:#254171}.state.calm{background:#e9f7f1;color:#175a43} textarea{width:100%;min-height:160px;border:1px solid #cbd3e1;border-radius:15px;padding:15px;font:17px/1.45 system-ui;resize:vertical;background:#fff;color:var(--text)}label{font-weight:700;display:block;margin-bottom:8px}.hint{font-size:15px;color:var(--muted)}.pill{display:inline-block;border-radius:999px;padding:6px 10px;background:#fff4df;color:var(--amber);font-weight:700;font-size:14px;margin:4px 5px 4px 0}.quote{border-left:4px solid #e0a84e;padding:8px 12px;background:#fff9ee;border-radius:0 12px 12px 0;margin:10px 0}.status{padding:14px;border-radius:15px;background:#fff4df;color:#714100;font-weight:700}.ok{background:#e9f7f1;color:var(--green)}.step{font-size:14px;color:var(--muted);font-weight:700;letter-spacing:.04em;text-transform:uppercase}.hidden{display:none}.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:10px}.bottom>div{max-width:520px;margin:auto;display:flex;gap:8px}.bottom button{flex:1;border:0;background:transparent;padding:9px;color:var(--muted);font-weight:700}.bottom .active{color:var(--blue)}.emergency{margin-top:18px}.tiny{font-size:13px;color:var(--muted)}.check{display:flex;gap:10px;align-items:flex-start;margin:12px 0}.choice{display:flex;gap:12px;align-items:center;text-align:left}.choice .ico{font-size:27px;min-width:38px}.choice small{display:block;color:var(--muted);font-weight:500;margin-top:3px}.herohelp{background:#eef3ff;border:1px solid #d5e0fb;border-radius:18px;padding:15px;margin:16px 0}.action{background:#edf3ff;border:2px solid #cddcfa;border-radius:20px;padding:18px;margin:14px 0}.action b{font-size:21px;display:block;margin-bottom:5px}.why{margin-top:8px}.check i{font-style:normal;background:#e9eefb;color:var(--blue);min-width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:800}@media(max-width:380px){body{font-size:17px}h1{font-size:27px}.app{padding:14px 14px 90px}}
-</style><script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script></head><body><main class="app">
-<div class="brand"><div class="shield">♢</div><div><b>RODINNÝ ŠTÍT</b><small>Семейный цифровой защитник • Pilot RU 0.7</small></div></div>
-<section id="home"><h1>Не уверены, можно ли доверять?</h1><p class="lead">Покажите Семейному щиту подозрительное сообщение, звонок или рекламу. Мы поможем понять, <b>что от вас хотят</b> и <b>что безопасно сделать дальше</b>.</p><div class="herohelp"><b>Главное правило</b><br>Не спешите платить, сообщать коды или устанавливать программы, пока не проверили просьбу другим способом.</div><div class="card"><b>Что произошло?</b><button class="btn ghost choice" onclick="startMessage()"><span class="ico">💬</span><span>Мне написали<small>SMS, WhatsApp, Messenger, e-mail или другой чат</small></span></button><button class="btn ghost choice" onclick="startCall()"><span class="ico">☎</span><span>Мне позвонили<small>Банк, полиция, родственник, поддержка или неизвестный</small></span></button><button class="btn ghost choice" onclick="startAd()"><span class="ico">▣</span><span>Я увидел подозрительную рекламу<small>Инвестиции, выигрыш, знаменитость или слишком выгодное предложение</small></span></button></div><button class="btn danger emergency" onclick="go('after')">⚠ Я уже отправил деньги или данные</button><p class="tiny">Пилот помогает выбрать безопасное действие. Он не подтверждает личность человека и не определяет достоверность фото, голоса или видео.</p></section>
-<section id="input" class="hidden"><span class="step">Сообщение • шаг 1 из 3</span><h2>Покажите, что вам написали</h2><p class="lead">Можно вставить текст или добавить скриншот. Текст со скриншота распознаётся прямо в браузере и перед проверкой всегда остаётся редактируемым.</p><div id="aiMode" class="state neutral"><b>Анализ:</b> сначала защищённый AI API; если он недоступен — локальные правила без отправки текста.</div><div class="card"><label>1. Добавьте скриншот — необязательно</label><input id="shot" type="file" accept="image/*" onchange="loadShot(event)"><img id="shotPreview" class="preview hidden" alt="Предпросмотр скриншота"><div id="ocrState" class="state neutral hidden"></div><button id="ocrBtn" class="btn secondary hidden" onclick="runOCR()">Распознать текст со скриншота</button><label for="msg">2. Проверьте распознанный текст</label><textarea id="msg" placeholder="Или вставьте сообщение вручную: Мам, это мой новый номер. Срочно переведи деньги…"></textarea><div class="maskbar"><button onclick="maskPhones()">Скрыть телефоны</button><button onclick="maskEmails()">Скрыть e-mail</button><button onclick="maskNumbers()">Скрыть длинные номера</button></div><p class="hint">Изображение не отправляется в наш сервер: OCR выполняется в браузере. При первом распознавании библиотеке нужны интернет и языковые данные. OCR может ошибаться — обязательно прочитайте текст перед проверкой. Никогда не вставляйте пароль, PIN или одноразовый код.</p><button class="btn primary" onclick="analyze()">3. Я проверил текст — проверить ситуацию</button><button class="btn ghost" onclick="demo()">Заполнить демонстрационный пример</button><button class="btn ghost" onclick="go('home')">Назад</button></div></section>
-<section id="result" class="hidden"><span class="step">Сообщение • шаг 2 из 3</span><h2 id="resultTitle">Результат проверки</h2><div id="resultState" class="state neutral"></div><div id="resultAction" class="action"></div><div class="card why"><b>Что заметил Семейный щит</b><div id="signals"></div><p id="resultNote" class="hint"></p></div><button id="verifyBtn" class="btn primary" onclick="go('verify')">Показать, как правильно проверить</button><button class="btn ghost" onclick="go('input')">Вернуться к сообщению</button></section>
-<section id="verify" class="hidden"><span class="step">Шаг 3 из 3</span><h2>Проверьте запрос независимо</h2><div class="card"><div class="check"><i>1</i><div><b>Не используйте контакт из сообщения.</b><br><span class="hint">Не звоните на новый номер только потому, что он указан в подозрительном сообщении.</span></div></div><div class="check"><i>2</i><div><b>Позвоните по номеру, который вы уже знаете.</b><br><span class="hint">Или используйте другой ранее известный способ связи.</span></div></div><div class="check"><i>3</i><div><b>Подтвердите саму просьбу.</b><br><span class="hint">Если человек не отвечает, это не означает, что запрос подтверждён.</span></div></div></div><button class="btn primary" onclick="verified(true)">Проверил: просьба настоящая</button><button class="btn danger" onclick="verified(false)">Проверил: близкий этого не отправлял</button><button class="btn ghost" onclick="go('result')">Назад</button></section>
-<section id="done" class="hidden"><h2 id="doneTitle"></h2><div id="doneBox" class="status ok"></div><button class="btn primary" onclick="resetAll()">Проверить другое сообщение</button></section>
-<section id="call" class="hidden"><span class="step">Подозрительный звонок</span><h2>Не выполняйте просьбу во время звонка</h2><p class="lead">Пилот пока не слушает и не записывает звонки. Ответьте на три вопроса.</p><div class="card"><div class="check"><i>1</i><div>Просили назвать код, пароль или данные карты?</div></div><div class="check"><i>2</i><div>Просили перевести деньги или установить программу?</div></div><div class="check"><i>3</i><div>Торопили или запрещали завершить звонок?</div></div></div><div class="action"><b>Завершите звонок и проверьте организацию самостоятельно.</b>Откройте официальное приложение или используйте контакт, который вы знали до этого звонка.</div><button class="btn primary" onclick="go('home')">Понятно</button></section>
-<section id="ad" class="hidden"><span class="step">Подозрительная реклама</span><h2>Не переходите к оплате из рекламы</h2><p class="lead">Фото знаменитости, логотип компании или убедительный текст сами по себе ничего не подтверждают.</p><div class="action"><b>Сначала найдите предложение через официальный источник.</b>Не используйте ссылку из самой рекламы для проверки её подлинности.</div><div class="card"><b>Пилот не будет утверждать, что изображение — дипфейк.</b><p class="hint">На этом этапе подлинность изображения не установлена. Мы проверяем безопасный следующий шаг, а не угадываем происхождение картинки.</p></div><button class="btn primary" onclick="go('home')">Понятно</button></section>
-<section id="after" class="hidden"><span class="step">Помощь после случившегося</span><h2>Что уже произошло?</h2><p class="lead">Выберите только то, что уже произошло. Нам не нужны номер карты, пароль или код.</p><button class="btn danger" onclick="afterMoney()">Я отправил деньги</button><button class="btn ghost" onclick="afterAccess()">Я передал код или пароль</button><button class="btn ghost" onclick="go('afterSoftware')">Я установил программу или дал удалённый доступ</button><button class="btn ghost" onclick="go('home')">Назад</button></section>
-<section id="afterMoney" class="hidden"><h2>Действуйте сразу через известный канал банка</h2><div class="card"><p><b>1.</b> Свяжитесь со своим банком через официальное приложение, данные на карте или другой контакт, который вы уже знаете.</p><p><b>2.</b> Сообщите, что отправили платёж после подозрительного запроса, и следуйте проверенным инструкциям банка.</p><p><b>3.</b> Не полагайтесь на дальнейшие сообщения человека, который просил перевести деньги.</p></div><p class="hint">RODINNÝ ŠTÍT не обещает возврат денег и не придумывает телефонные номера банков.</p><button class="btn primary" onclick="go('home')">Понятно</button></section>
-<section id="afterAccess" class="hidden"><h2>Остановите дальнейший доступ</h2><div class="card"><p><b>1.</b> Используйте доверенное устройство и откройте официальный способ восстановления аккаунта.</p><p><b>2.</b> Смените пароль и завершите незнакомые сеансы по инструкциям самого сервиса.</p><p><b>3.</b> Если этот пароль использовался где-то ещё, смените его и там.</p></div><button class="btn primary" onclick="go('home')">Понятно</button></section>
-<section id="afterSoftware" class="hidden"><h2>Не продолжайте выполнять команды звонящего</h2><div class="card"><p><b>1.</b> Прекратите сеанс удалённого доступа и не подтверждайте новые запросы.</p><p><b>2.</b> С доверенного устройства свяжитесь с банком или сервисом через известный официальный канал, если во время доступа открывались финансовые или важные аккаунты.</p><p><b>3.</b> Обратитесь за очной технической помощью, если не уверены, что удалённый доступ полностью остановлен.</p></div><p class="hint">Пилот не выдаёт случайные команды удаления программ: действия зависят от устройства и установленного ПО.</p><button class="btn primary" onclick="go('home')">Понятно</button></section>
-<section id="training" class="hidden"><span class="step">Тренировка • 1 из 3</span><h2 id="trainTitle">Как бы вы поступили?</h2><div class="card"><p id="trainStory"><b>«Папа, это мой новый номер. Телефон сломался. Срочно переведи 8 000 Kč, потом всё объясню. Только не звони.»</b></p></div><div id="trainChoices"><button class="btn ghost" onclick="trainAnswer(0)">Перевести небольшую сумму для проверки</button><button class="btn ghost" onclick="trainAnswer(1)">Позвонить близкому по старому известному номеру</button><button class="btn ghost" onclick="trainAnswer(2)">Спросить у нового номера семейный секрет</button></div><div id="trainFeedback" class="hidden"></div><button class="btn ghost" onclick="go('home')">Закончить тренировку</button></section>
-<section id="settings" class="hidden"><span class="step">Настройки пилота</span><h2>Просто и без скрытого наблюдения</h2><div class="card"><b>Язык</b><p class="hint">Сейчас: Русский — пилот. Перед конкурсной подачей основной интерфейс будет на чешском.</p></div><div class="card"><b>Данные</b><p class="hint">История проверок по умолчанию не хранится. Не вводите пароли, PIN и одноразовые коды.</p></div><div class="card"><b>Офлайн</b><p class="hint">Базовые проверенные инструкции должны оставаться доступны без сети.</p></div><button class="btn primary" onclick="go('home')">Готово</button></section>
-</main><nav class="bottom"><div><button class="active" onclick="go('home')">✓ Проверка</button><button onclick="startTraining()">Обучение</button><button onclick="go('settings')">Настройки</button></div></nav>
-<script>
-const sections=[...document.querySelectorAll('main section')];function go(id){sections.forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');scrollTo(0,0)}
-function startMessage(){go('input')}function startCall(){go('call')}function startAd(){go('ad')}
-function demo(){document.getElementById('msg').value='Мам, привет, это я. У меня новый номер. Мне срочно нужно оплатить счёт 12 500 Kč. Пожалуйста, не звони, я сейчас на встрече. Переведи деньги на этот счёт.';go('input')}
-function esc(s){return s.replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
-let currentShot=null;
-function loadShot(e){const f=e.target.files&&e.target.files[0];const img=document.getElementById('shotPreview'), st=document.getElementById('ocrState'), b=document.getElementById('ocrBtn');if(!f)return;if(!f.type.startsWith('image/')){currentShot=null;b.classList.add('hidden');st.className='state warn';st.textContent='Этот файл не похож на изображение. Выберите скриншот или вставьте текст вручную.';st.classList.remove('hidden');return}currentShot=f;img.src=URL.createObjectURL(f);img.classList.remove('hidden');b.classList.remove('hidden');st.className='state neutral';st.innerHTML='<b>Скриншот готов.</b><br>Нажмите «Распознать текст». Изображение обрабатывается локально в браузере.';st.classList.remove('hidden')}
-async function runOCR(){const st=document.getElementById('ocrState'),b=document.getElementById('ocrBtn'),msg=document.getElementById('msg');if(!currentShot)return; if(!window.Tesseract){st.className='state warn';st.innerHTML='<b>OCR сейчас недоступен.</b><br>Проверьте интернет или вставьте текст вручную. Без распознавания безопасные инструкции всё равно доступны.';return}b.disabled=true;b.textContent='Распознаю…';st.className='state neutral';st.innerHTML='<b>Распознавание…</b><br>Первый запуск может занять некоторое время: загружаются языковые данные.';try{const r=await Tesseract.recognize(currentShot,'rus+eng',{logger:m=>{if(m.status==='recognizing text'&&m.progress){st.innerHTML='<b>Распознавание… '+Math.round(m.progress*100)+'%</b><br>Изображение остаётся в браузере.'}}});const text=(r.data&&r.data.text||'').trim();if(text){msg.value=text;st.className='state calm';st.innerHTML='<b>Текст распознан.</b><br>Теперь прочитайте его и исправьте ошибки OCR. Анализ начнётся только после вашего нажатия кнопки ниже.'}else{st.className='state warn';st.innerHTML='<b>Не удалось уверенно прочитать текст.</b><br>Введите сообщение вручную или попробуйте более чёткий скриншот.'}}catch(e){st.className='state warn';st.innerHTML='<b>Распознавание не удалось.</b><br>Вставьте текст вручную. Пилот не будет подставлять выдуманный результат.'}finally{b.disabled=false;b.textContent='Распознать ещё раз'}}
-function maskPhones(){let e=document.getElementById('msg');e.value=e.value.replace(/(?:\+?\d[\d ()-]{7,}\d)/g,'[ТЕЛЕФОН СКРЫТ]')}
-function maskEmails(){let e=document.getElementById('msg');e.value=e.value.replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi,'[E-MAIL СКРЫТ]')}
-function maskNumbers(){let e=document.getElementById('msg');e.value=e.value.replace(/\b\d{8,}\b/g,'[НОМЕР СКРЫТ]')}
-async function analyze(){
- const t=document.getElementById('msg').value.trim();if(!t){alert('Сначала подтвердите или вставьте текст сообщения.');return}
- const mode=document.getElementById('aiMode');mode.className='state neutral';mode.innerHTML='<b>Анализирую подтверждённый текст…</b><br>Скриншот не отправляется. На сервер уходит только текст из поля.';
- try{
-   const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),12000);
-   const r=await fetch('/api/analyze',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text:t}),signal:ctrl.signal});clearTimeout(timer);
-   if(!r.ok)throw new Error('api');
-   const data=await r.json();
-   if(!data||!data.analysis)throw new Error('schema');
-   renderAI(data.analysis,t);mode.className='state calm';mode.innerHTML='<b>AI-анализ выполнен.</b><br>Безопасное действие выбрано из фиксированного сценария, а не придумано моделью.';return;
- }catch(e){
-   mode.className='state warn';mode.innerHTML='<b>AI-анализ сейчас недоступен.</b><br>Использованы локальные правила. Текст не отправлен внешней модели.';
-   localAnalyze(t);
- }
-}
-function renderAI(a,t){
- const allowed=['relative_money','bank_support_access','child_account','investment_ad','ordinary','ambiguous'];
- if(!allowed.includes(a.scenario))return localAnalyze(t);
- const play=playbook(a.playbook_id,a.scenario);
- let title=a.scenario==='ordinary'?'Явных признаков риска не найдено':a.scenario==='ambiguous'?'Недостаточно данных для уверенного вывода':'Найдены признаки риска';
- document.getElementById('resultTitle').textContent=title;
- const rs=document.getElementById('resultState');rs.className='state '+(title.startsWith('Найдены')?'warn':title.startsWith('Явных')?'calm':'neutral');
- rs.innerHTML=title.startsWith('Найдены')?'<b>Остановитесь перед следующим действием.</b> AI нашёл признаки, которые требуют независимой проверки.':title.startsWith('Явных')?'<b>В тексте нет очевидной опасной просьбы.</b> Это не подтверждает личность отправителя.':'<b>Контекста недостаточно.</b> Не выполняйте необычную просьбу, пока не проверите её другим способом.';
- document.getElementById('resultAction').innerHTML='<b>'+esc(play.title)+'</b>'+esc(play.body);
- const sig=(a.signals||[]).slice(0,3).filter(x=>x&&typeof x.quote==='string'&&t.includes(x.quote));
- document.getElementById('signals').innerHTML=sig.length?sig.map(x=>`<div class="quote"><span class="pill">${esc(x.label||'Признак')}</span><br>«${esc(x.quote)}»</div>`).join(''):'<p class="hint">AI не вернул точных цитат, прошедших проверку по исходному тексту. Мы не показываем придуманные цитаты.</p>';
- document.getElementById('resultNote').textContent='AI помогает разобрать просьбу, но не подтверждает личность, подлинность изображения, голоса или источника. Источник не проверялся.';
- document.getElementById('verifyBtn').style.display=a.scenario==='ordinary'?'none':'block';go('result');
-}
-function playbook(id,scenario){
- const p={
-  RELATIVE_MONEY:{title:'Пока не переводите деньги.',body:' Свяжитесь с близким по номеру или каналу, который вы знали раньше. Не используйте новый контакт из сообщения для подтверждения.'},
-  BANK_SUPPORT:{title:'Не сообщайте код, пароль и не устанавливайте программу.',body:' Завершите контакт и самостоятельно откройте официальный сервис или используйте ранее известный канал организации.'},
-  CHILD_ACCOUNT:{title:'Не вводите логин, пароль или код по этой ссылке.',body:' Позовите взрослого и откройте игру или сервис самостоятельно, не через присланную ссылку.'},
-  INVESTMENT_AD:{title:'Не переходите к оплате из рекламы.',body:' Найдите предложение через первичный официальный источник. Изображение знаменитости или логотип сами по себе ничего не подтверждают.'},
-  MANUAL_VERIFY:{title:'Не спешите выполнять просьбу.',body:' Если она связана с деньгами, кодом, доступом или необычной ссылкой — сначала независимо проверьте отправителя.'},
-  ORDINARY:{title:'Продолжайте с обычной осторожностью.',body:' Если позже появится просьба о деньгах, коде, пароле или установке программы — остановитесь и проверьте её отдельно.'}
- };return p[id]||p[scenario==='ordinary'?'ORDINARY':'MANUAL_VERIFY'];
-}
-function localAnalyze(t){const rules=[['Новый контакт',/(нов(ый|ого)\s*(номер|телефон)|новый контакт|new number)/i],['Срочность',/(срочно|быстро|прямо сейчас|немедленно|urgent|скорее)/i],['Просьба о деньгах',/(оплат|перевед|переводи|пришли|отправь|сч[её]т|кч|kč|eur|руб|деньг)/i],['Код или пароль',/(код|парол|otp|pin|одноразов)/i],['Установка или доступ',/(установ|программ|приложен|удаленн|удалённ|доступ|anydesk|teamviewer)/i],['Мешает независимой проверке',/(не звони|не могу говорить|никому не говори|секрет|не рассказывай)/i]];const found=rules.filter(r=>r[1].test(t));const money=found.some(r=>r[0]=='Просьба о деньгах'), access=found.some(r=>r[0]=='Код или пароль'||r[0]=='Установка или доступ'), pressure=found.some(r=>r[0]=='Срочность'||r[0]=='Мешает независимой проверке'), newc=found.some(r=>r[0]=='Новый контакт');let title,state,action,note,verify=true;if((money||access)&&(pressure||newc)){title='Найдены признаки риска';state='<b>Остановитесь перед следующим действием.</b> Сообщение содержит сочетание признаков, при котором просьбу лучше проверить независимо.';action=access?'<b>Не сообщайте код, пароль и не устанавливайте программу.</b>Откройте официальный сервис самостоятельно или свяжитесь с организацией через уже известный канал.':'<b>Пока не переводите деньги.</b>Свяжитесь с человеком по номеру или каналу, который вы знали раньше.';note='Локальные правила: эти признаки не доказывают мошенничество.'}else if(found.length){title='Недостаточно данных для уверенного вывода';state='<b>Есть отдельные настораживающие признаки, но контекста недостаточно.</b>';action='<b>Не спешите выполнять просьбу.</b>Если сообщение просит деньги, код, пароль, установку программы или переход по ссылке — сначала проверьте отправителя другим способом.';note='Локальные правила специально не выдают уверенный вердикт, когда данных мало.'}else{title='Явных признаков риска не найдено';state='<b>В тексте не обнаружены очевидные признаки из текущего набора правил.</b>';action='<b>Это не подтверждает личность отправителя.</b>Если просьба необычная или связана с деньгами, доступом или кодами, всё равно проверьте её независимо.';note='Отсутствие найденных признаков не означает «безопасно».';verify=false}document.getElementById('resultTitle').textContent=title;const rs=document.getElementById('resultState');rs.innerHTML=state;rs.className='state '+(title.startsWith('Найдены')?'warn':title.startsWith('Явных')?'calm':'neutral');document.getElementById('resultAction').innerHTML=action;document.getElementById('signals').innerHTML=found.length?found.slice(0,3).map(r=>`<div class="quote"><span class="pill">${esc(r[0])}</span><br>${signalText(r[0])}</div>`).join(''):'<p class="hint">Локальные правила не нашли срочность, просьбу о деньгах/коде/доступе, новый контакт или запрет на независимую проверку.</p>';document.getElementById('resultNote').textContent=note;document.getElementById('verifyBtn').style.display=verify?'block':'none';go('result')}
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kontrola podezřelé zprávy | RODINNÝ ŠTÍT – interaktivní pilot</title>
+<meta name="description" content="Interaktivní pilot RODINNÝ ŠTÍT: zkontrolujte podezřelou zprávu, zjistěte varovné signály a bezpečný další krok. Česky, bez registrace.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body class="app">
+<a class="skip" href="#app">Přeskočit na obsah</a>
+<header class="site-header">
+ <div class="wrap header-in">
+  <a class="brand" href="index.html" aria-label="RODINNÝ ŠTÍT – o projektu"><img src="assets/logo.svg" alt="" width="44" height="50">RODINNÝ ŠTÍT</a>
+  <nav class="nav" aria-label="Navigace pilotu">
+   <a href="#home" data-go="home">Kontrola zprávy</a><a href="#after" data-go="after">Rychlá pomoc</a><a href="#training" data-go="training">Trénink</a><a href="index.html">O projektu</a>
+  </nav>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="appMenu" aria-label="Otevřít menu" data-menu-btn>
+   <svg class="ico i-open" aria-hidden="true"><use href="assets/icons.svg#i-menu"/></svg><svg class="ico i-close" aria-hidden="true"><use href="assets/icons.svg#i-x"/></svg>
+  </button>
+ </div>
+ <nav class="mobile-menu" id="appMenu" aria-label="Mobilní navigace pilotu" hidden>
+  <a href="#home" data-go="home">Kontrola zprávy <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="#after" data-go="after">Už se něco stalo – rychlá pomoc <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="#call" data-go="call">Podezřelý telefonát <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="#training" data-go="training">Trénink rozpoznávání <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="index.html">O projektu <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+ </nav>
+</header>
 
-function signalText(x){return {'Новый контакт':'Отправитель утверждает, что использует новый способ связи.','Срочность':'Сообщение подталкивает к быстрому решению.','Просьба о деньгах':'В сообщении просят совершить денежное действие.','Код или пароль':'В сообщении запрашиваются данные доступа или одноразовый код.','Установка или доступ':'Просят установить программу или предоставить доступ к устройству.','Мешает независимой проверке':'Сообщение мешает обычным способом проверить личность отправителя.','Недостаточно данных':'По тексту недостаточно данных для уверенного вывода. Личность отправителя всё равно не подтверждена.'}[x]||'Обнаружен признак, который стоит проверить независимо.'}
-function verified(real){go('done');document.getElementById('doneTitle').textContent=real?'Запрос проверен':'Хорошо, что вы проверили до перевода';document.getElementById('doneBox').textContent=real?'Проверка через ранее известный канал подтвердила, что просьба действительно исходит от близкого. Дальнейшее решение остаётся за вами.':'Близкий подтвердил, что не отправлял это сообщение. Не переводите деньги по исходному запросу и не продолжайте общение через этот контакт.'}
-function afterMoney(){go('afterMoney')}function afterAccess(){go('afterAccess')}
-let trainStep=0;
-const trainings=[
- {story:'«Папа, это мой новый номер. Телефон сломался. Срочно переведи 8 000 Kč, потом всё объясню. Только не звони.»',choices:['Перевести небольшую сумму для проверки','Позвонить близкому по старому известному номеру','Спросить у нового номера семейный секрет'],correct:1,ok:'Верно. Независимый контакт через уже известный номер проверяет саму личность отправителя.',bad:'Это не подтверждает личность отправителя. Безопаснее связаться с близким через ранее известный канал.'},
- {story:'«Служба безопасности банка. Назовите код из SMS, иначе счёт будет заблокирован через 5 минут.»',choices:['Назвать код, раз звонят из банка','Завершить звонок и открыть официальное приложение банка','Попросить звонящего назвать мои данные'],correct:1,ok:'Верно. Код не сообщаем. Проверяем ситуацию через самостоятельно открытый официальный канал.',bad:'Не продолжайте проверку внутри подозрительного звонка. Завершите его и используйте известный официальный канал.'},
- {story:'Реклама: «Известный предприниматель открыл платформу с гарантированным доходом. Осталось 12 мест — зарегистрируйтесь сейчас.»',choices:['Открыть ссылку и посмотреть отзывы на странице','Найти заявление и сервис независимо от рекламной ссылки','Внести минимальную сумму, чтобы проверить'],correct:1,ok:'Верно. Сначала проверяем утверждение и источник независимо от самой рекламы.',bad:'Сама реклама контролирует ссылку и содержимое страницы. Проверять нужно вне неё, через независимый источник.'}
-];
-function startTraining(){trainStep=0;renderTraining();go('training')}
-function renderTraining(){const x=trainings[trainStep];document.querySelector('#training .step').textContent=`Тренировка • ${trainStep+1} из ${trainings.length}`;document.getElementById('trainStory').innerHTML='<b>'+esc(x.story)+'</b>';document.getElementById('trainChoices').innerHTML=x.choices.map((c,i)=>`<button class="btn ghost" onclick="trainAnswer(${i})">${esc(c)}</button>`).join('');document.getElementById('trainFeedback').className='hidden';}
-function trainAnswer(i){const x=trainings[trainStep], good=i===x.correct, f=document.getElementById('trainFeedback');f.className='status '+(good?'ok':'');f.innerHTML='<b>'+(good?'Правильное безопасное действие.':'Лучше выбрать другой шаг.')+'</b><br>'+esc(good?x.ok:x.bad)+(good?`<button class="btn primary" onclick="nextTraining()">${trainStep+1<trainings.length?'Следующая ситуация':'Завершить'}</button>`:'');}
-function nextTraining(){if(trainStep+1<trainings.length){trainStep++;renderTraining()}else go('home')}
-function resetAll(){document.getElementById('msg').value='';currentShot=null;document.getElementById('shot').value='';document.getElementById('shotPreview').classList.add('hidden');document.getElementById('ocrState').classList.add('hidden');document.getElementById('ocrBtn').classList.add('hidden');go('home')}
-if(!navigator.onLine){document.querySelector('.brand small').textContent='Офлайн-режим • безопасные инструкции доступны'}
-</script></body></html>
+<main class="app-main" id="app">
+
+<!-- ============ 1. KONTROLA ZPRÁVY ============ -->
+<section class="screen active" id="home" aria-labelledby="home-title" tabindex="-1">
+ <span class="pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 0.9</span>
+ <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
+ <p class="lead">Vložte text nebo snímek obrazovky. Pilot vyhledá varovné signály podle vysvětlitelných pravidel a poradí, jak postupovat.</p>
+
+ <div class="tabs" role="tablist" aria-label="Způsob zadání">
+  <button class="tab" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true" type="button" data-tab="text"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-doc"/></svg>Text</button>
+  <button class="tab" role="tab" id="tab-image" aria-controls="panel-image" aria-selected="false" tabindex="-1" type="button" data-tab="image"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-image"/></svg>Obrázek</button>
+  <button class="tab" role="tab" id="tab-call" aria-controls="panel-call" aria-selected="false" tabindex="-1" type="button" data-tab="call"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg>Hovor</button>
+ </div>
+
+ <div id="panel-text" role="tabpanel" aria-labelledby="tab-text">
+  <div class="textbox">
+   <label class="sr-only" for="msg">Text podezřelé zprávy</label>
+   <textarea class="input" id="msg" maxlength="5000" placeholder="Sem vložte podezřelou zprávu, e-mail nebo SMS…" aria-describedby="msgCount privacyHint"></textarea>
+   <span class="counter" id="msgCount" aria-live="off">0/5000</span>
+  </div>
+  <div class="tools">
+   <span class="hint" id="privacyHint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-eyeoff"/></svg>Skrýt:</span>
+   <button type="button" class="chip" onclick="maskPhones()">Telefony</button>
+   <button type="button" class="chip" onclick="maskEmails()">E-maily</button>
+   <button type="button" class="chip" onclick="maskNumbers()">Dlouhá čísla</button>
+  </div>
+  <button class="btn btn-primary btn-wide" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg>Zkontrolovat zprávu</button>
+  <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Není připojen živý AI model. Nevkládejte hesla, PIN ani kódy.</span></div>
+ </div>
+
+ <div id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden>
+  <label class="drop" for="shot">
+   <span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-upload"/></svg></span>
+   <b>Vyberte snímek obrazovky</b>
+   <small>PNG nebo JPG do 8 MB · obrázek zůstává ve vašem prohlížeči</small>
+   <input id="shot" type="file" accept="image/*" onchange="loadShot(event)">
+  </label>
+  <img class="preview hidden" id="shotPreview" alt="Náhled vybraného snímku obrazovky">
+  <div id="ocrState" class="status hidden" role="status" aria-live="polite"></div>
+  <div class="progress hidden" id="ocrProgress" aria-hidden="true"><i></i></div>
+  <button class="btn btn-primary btn-wide hidden" id="ocrBtn" type="button" onclick="runOCR()" style="margin-top:12px"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Rozpoznat text z obrázku</button>
+  <div class="mode"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Rozpoznávání češtiny a angličtiny (Tesseract.js) běží v prohlížeči. Při prvním použití se stáhnou jazyková data. Rozpoznaný text můžete před kontrolou opravit a anonymizovat.</span></div>
+ </div>
+
+ <div id="panel-call" role="tabpanel" aria-labelledby="tab-call" hidden>
+  <div class="card">
+   <div class="alert-box"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-alert"/></svg><span><b>Chce volající kód, peníze nebo instalaci programu? Hovor ukončete.</b></span></div>
+   <div class="flag"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-key"/></svg></span><div><b>Žádá kód, heslo nebo číslo karty</b><p>Banka ani policie je po telefonu nikdy nechtějí.</p></div></div>
+   <div class="flag"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-coins"/></svg></span><div><b>Chce převést peníze na „bezpečný účet“</b><p>Žádný takový účet neexistuje.</p></div></div>
+   <button class="btn btn-primary btn-wide" type="button" onclick="go('call')">Celý postup při telefonátu <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></button>
+  </div>
+ </div>
+
+ <h2 class="subhead">Nebo vyzkoušejte ukázkový scénář:</h2>
+ <div class="rows">
+  <button class="row" type="button" onclick="demo('bank')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-bank"/></svg></span><span class="row-t"><b>Podezřelá SMS od banky</b><small>Blokace účtu a žádost o kód</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row" type="button" onclick="go('call')"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg></span><span class="row-t"><b>Falešný hovor od policie</b><small>Jak bezpečně reagovat</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row" type="button" onclick="demo('invest')"><span class="round amber"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chart-up"/></svg></span><span class="row-t"><b>Investiční podvod</b><small>Zaručený výnos a časový tlak</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row" type="button" onclick="demo('relative')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-family"/></svg></span><span class="row-t"><b>Zpráva od „syna/dcery“</b><small>Nové číslo a naléhavá platba</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row" type="button" onclick="demo('parcel')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-package"/></svg></span><span class="row-t"><b>Zadržená zásilka</b><small>Malý poplatek přes odkaz</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+ </div>
+
+ <div class="help">
+  <div class="help-h"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lifebuoy"/></svg><div><h2>Rychlá pomoc</h2><p>Vyberte, co potřebujete:</p></div></div>
+  <div class="rows">
+   <button class="row g" type="button" onclick="startMessage()"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-msg"/></svg></span><span class="row-t"><b>Nevím, zda je to podvod</b><small>Zkontrolovat zprávu</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+   <button class="row a" type="button" onclick="go('after')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-alert"/></svg></span><span class="row-t"><b>Už jsem poslal(a) peníze nebo údaje</b><small>Co dělat teď</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+   <button class="row r" type="button" onclick="go('call')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg></span><span class="row-t"><b>Podezřelý telefonát</b><small>Jak bezpečně reagovat</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+   <button class="row" type="button" onclick="go('ad')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-megaphone"/></svg></span><span class="row-t"><b>Podezřelá reklama</b><small>Výhra, investice, slavná tvář</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+   <button class="row" type="button" onclick="startTraining()"><span class="round mint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-grad"/></svg></span><span class="row-t"><b>Chci se naučit podvody rozpoznat</b><small>3 krátké tréninkové situace</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  </div>
+ </div>
+
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b>Jde o soutěžní pilot. Vyhodnocení je orientační, vychází z lokálních pravidel, nikoli ze živého AI modelu, a není zárukou bezpečnosti. Používejte raději smyšlené nebo anonymizované příklady.</div></div>
+</section>
+
+<!-- ============ 2. VÝSLEDEK ============ -->
+<section class="screen" id="result" aria-labelledby="resultTitle" tabindex="-1">
+ <div class="bar">
+  <button class="text-btn" type="button" onclick="go('home')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button>
+  <div class="bar-actions"><button class="icon-btn" type="button" onclick="shareResult()" aria-label="Sdílet doporučení s blízkými"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-share"/></svg></button></div>
+ </div>
+ <div class="risk high" id="resultRisk">
+  <span class="risk-ico"><svg class="ico" aria-hidden="true"><use id="riskIcon" href="assets/icons.svg#i-alert"/></svg></span>
+  <div><h1 id="resultTitle" class="sr-only">Výsledek kontroly</h1><h2 id="resultHeading">Vysoké riziko podvodu</h2><p id="resultState">Tato zpráva obsahuje několik varovných signálů typických pro podvodné praktiky.</p>
+   <div class="meter" aria-hidden="true"><i></i><i></i><i></i></div><span class="sr-only" id="riskLevelText"></span></div>
+ </div>
+ <p id="shareState" class="status hidden" role="status" aria-live="polite"></p>
+
+ <h2 class="subhead" id="signalsHead">Co v této zprávě vzbuzuje podezření?</h2>
+ <div id="signals" class="signals"></div>
+ <details class="msg-view"><summary>Zobrazit zprávu se zvýrazněnými signály</summary><div id="msgMarked"></div></details>
+
+ <div class="next">
+  <h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Doporučený další krok</h2>
+  <ol class="numbered" id="nextSteps"></ol>
+  <p class="sr-only" id="resultAction"></p>
+  <button class="btn btn-primary btn-wide" id="verifyBtn" type="button" onclick="go('verify')">Jak žádost nezávisle ověřit <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></button>
+ </div>
+ <div class="stack">
+  <button class="btn btn-ghost btn-wide" type="button" onclick="resetAll()">Zkontrolovat jinou zprávu</button>
+  <button class="btn btn-ghost btn-wide" type="button" onclick="go('after')"><svg class="ico" aria-hidden="true" style="color:var(--amber)"><use href="assets/icons.svg#i-lifebuoy"/></svg>Už jsem jednal(a) – co teď?</button>
+ </div>
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b><span id="resultNote">Výsledek pochází z lokálních orientačních pravidel v prohlížeči, nikoli z AI modelu ani databáze podvodů. Neověřuje odesílatele a není zárukou bezpečnosti.</span></div></div>
+</section>
+
+<!-- ============ 3. OVĚŘENÍ ============ -->
+<section class="screen" id="verify" aria-labelledby="verify-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="go('result')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět k výsledku</button></div>
+ <span class="pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Nezávislé ověření</span>
+ <h1 id="verify-title">Jak žádost bezpečně ověřit?</h1>
+ <p class="lead">Podvodník umí napodobit jméno i číslo. Ověření musí proběhnout jinou cestou, než přišla zpráva.</p>
+ <div class="card" style="margin-top:16px">
+  <ol class="numbered" style="padding:0">
+   <li><div><b>Nepoužívejte kontakt ze zprávy.</b><br>Nové číslo ani odkaz ve zprávě nejsou ověřením totožnosti.</div></li>
+   <li><div><b>Ozvěte se přes známý kanál.</b><br>Zavolejte na dříve uložené číslo nebo sami otevřete oficiální aplikaci.</div></li>
+   <li><div><b>Potvrďte konkrétní žádost.</b><br>Když druhá strana nereaguje, neznamená to, že je zpráva pravá.</div></li>
+  </ol>
+ </div>
+ <h2 class="subhead">Jak ověření dopadlo?</h2>
+ <div class="rows">
+  <button class="row g" type="button" onclick="verified(true)"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg></span><span class="row-t"><b>Ověřil(a) jsem: žádost je pravá</b><small>Potvrzeno přes dříve známý kontakt</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row r" type="button" onclick="verified(false)"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-x"/></svg></span><span class="row-t"><b>Ověřil(a) jsem: zpráva byla podvodná</b><small>Co dělat dál</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+ </div>
+</section>
+
+<section class="screen" id="done" aria-labelledby="doneTitle" tabindex="-1">
+ <div class="card" style="margin-top:8px">
+  <span class="done-ico"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg></span>
+  <h1 id="doneTitle">Správný krok</h1>
+  <p class="lead" id="doneBox" style="margin:8px 0 18px">Dobře, že jste si situaci ověřili.</p>
+  <div class="stack"><button class="btn btn-primary btn-wide" type="button" onclick="resetAll()">Zkontrolovat další zprávu</button><button class="btn btn-ghost btn-wide" id="doneHelp" type="button" onclick="go('after')">Rychlá pomoc po incidentu</button></div>
+ </div>
+</section>
+
+<!-- ============ TELEFONÁT ============ -->
+<section class="screen" id="call" aria-labelledby="call-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="goBack()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button></div>
+ <span class="pill" style="color:var(--red)"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg>Podezřelý telefonát</span>
+ <h1 id="call-title">Volá vám „banka“ nebo „policie“?</h1>
+ <p class="lead">Rozhoduje bezpečný postup, ne přesvědčivý hlas. Hlas lze dnes i uměle napodobit.</p>
+ <div class="card" style="margin-top:16px">
+  <div class="alert-box"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-alert"/></svg><span><b>Žádá-li volající kód, peníze nebo instalaci programu, hovor ukončete.</b></span></div>
+  <div class="flag"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-key"/></svg></span><div><b>Chce kód, heslo nebo číslo karty</b><p>Jednorázové kódy nikdy nesdělujte během nevyžádaného hovoru.</p></div></div>
+  <div class="flag"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-clock"/></svg></span><div><b>Vyhrožuje okamžitou blokací nebo trestem</b><p>Časový tlak je nejčastější manipulační technika.</p></div></div>
+  <div class="flag"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-monitor"/></svg></span><div><b>Chce instalaci aplikace nebo sdílení obrazovky</b><p>Neinstalujte nic podle pokynů volajícího.</p></div></div>
+  <div class="flag"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-coins"/></svg></span><div><b>Navrhuje převod na „bezpečný účet“</b><p>Banka ani policie nic takového po klientech nežádají.</p></div></div>
+ </div>
+ <div class="next"><h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Co udělat teď</h2><ol class="numbered"><li>Hovor ukončete. Nemusíte být zdvořilí.</li><li>Sami otevřete oficiální aplikaci banky nebo zavolejte na číslo z karty či z jejího webu.</li><li>Pokud jste už něco sdělili nebo nainstalovali, pokračujte do rychlé pomoci.</li></ol>
+  <button class="btn btn-primary btn-wide" type="button" onclick="go('after')">Rychlá pomoc po incidentu <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></button></div>
+</section>
+
+<!-- ============ REKLAMA ============ -->
+<section class="screen" id="ad" aria-labelledby="ad-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="goBack()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button></div>
+ <span class="pill" style="color:var(--amber)"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-megaphone"/></svg>Podezřelá reklama</span>
+ <h1 id="ad-title">Vypadá nabídka až příliš dobře?</h1>
+ <p class="lead">Fotografie slavné osobnosti ani známé logo nejsou důkazem důvěryhodnosti.</p>
+ <div class="risk moderate" style="margin-top:16px"><span class="risk-ico"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-alert"/></svg></span><div><h2>Neověřená nabídka</h2><p>Zaručený výdělek, časový tlak a platba přes odkaz jsou důvod se zastavit.</p><div class="meter" aria-hidden="true"><i></i><i></i><i></i></div></div></div>
+ <div class="next"><h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Co udělat teď</h2><ol class="numbered"><li>Neplaťte a nic nevyplňujte přes odkaz v reklamě.</li><li>Tvrzení ověřte z nezávislých oficiálních zdrojů, ne z recenzí na stejném webu.</li><li>U investic si ověřte, zda má firma oprávnění od České národní banky.</li></ol></div>
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div>Pilot neurčuje, zda je fotografie nebo video deepfake. Pomáhá jen předejít rizikovému rozhodnutí.</div></div>
+</section>
+
+<!-- ============ PO INCIDENTU ============ -->
+<section class="screen" id="after" aria-labelledby="after-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="goBack()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button></div>
+ <span class="pill" style="color:var(--red)"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lifebuoy"/></svg>Rychlá pomoc</span>
+ <h1 id="after-title">Už se něco stalo?</h1>
+ <p class="lead">Nepanikařte – rychlé jednání pomáhá. Vyberte situaci. Nikde nezadávejte čísla účtů ani hesla.</p>
+ <div class="rows" style="margin-top:16px">
+  <button class="row r" type="button" onclick="go('afterMoney')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-cash"/></svg></span><span class="row-t"><b>Poslal(a) jsem peníze</b><small>Ihned kontaktovat banku</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row a" type="button" onclick="go('afterAccess')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-key"/></svg></span><span class="row-t"><b>Sdělil(a) jsem kód nebo heslo</b><small>Zabezpečit přístupy</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+  <button class="row a" type="button" onclick="go('afterSoftware')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-monitor"/></svg></span><span class="row-t"><b>Nainstaloval(a) jsem program</b><small>Zastavit vzdálený přístup</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
+ </div>
+ <h2 class="subhead">Důležitá čísla</h2>
+ <div class="sos">
+  <a href="tel:158"><b>158</b><small>Policie ČR</small></a>
+  <a href="tel:112"><b>112</b><small>Jednotné evropské číslo tísňového volání</small></a>
+ </div>
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-bank"/></svg><div><b>Číslo své banky</b>Najdete ho na platební kartě, v oficiální aplikaci nebo na webu banky. Nepoužívejte číslo ze zprávy ani od volajícího.</div></div>
+</section>
+
+<section class="screen" id="afterMoney" aria-labelledby="am-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="go('after')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button></div>
+ <span class="pill" style="color:var(--red)"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-cash"/></svg>Pomoc po incidentu</span>
+ <h1 id="am-title">Odeslal(a) jste peníze?</h1>
+ <div class="alert-box" style="margin-top:12px"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-clock"/></svg><span><b>Jednejte hned.</b> Čím dříve banku kontaktujete, tím větší je šance platbu zastavit. Vrácení peněz ale nelze slíbit.</span></div>
+ <div class="next"><h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Postupujte takto</h2><ol class="numbered"><li>Zavolejte své bance přes oficiální aplikaci nebo číslo z karty.</li><li>Nahlaste podezření na podvodnou platbu a požádejte o další postup.</li><li>Uschovejte zprávy, čísla a potvrzení platby. Zvažte oznámení Policii ČR (158).</li><li>Na další žádosti podvodníka už nereagujte.</li></ol></div>
+ <div class="sos"><a href="tel:158"><b>158</b><small>Policie ČR</small></a><a href="tel:112"><b>112</b><small>Tísňové volání</small></a></div>
+ <button class="btn btn-ghost btn-wide" type="button" onclick="go('home')" style="margin-top:16px">Zpět na úvod</button>
+</section>
+
+<section class="screen" id="afterAccess" aria-labelledby="aa-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="go('after')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button></div>
+ <span class="pill" style="color:var(--amber)"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-key"/></svg>Pomoc po incidentu</span>
+ <h1 id="aa-title">Sdělil(a) jste heslo nebo kód?</h1>
+ <div class="next"><h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Postupujte takto</h2><ol class="numbered"><li>Šlo-li o banku, volejte jí ihned přes oficiální číslo.</li><li>Na důvěryhodném zařízení otevřete službu napřímo (ne z odkazu) a změňte heslo.</li><li>Odhlaste neznámá zařízení a zapněte dvoufázové ověření.</li><li>Pokud jste stejné heslo používal(a) jinde, změňte ho i tam.</li></ol></div>
+ <button class="btn btn-ghost btn-wide" type="button" onclick="go('home')" style="margin-top:16px">Zpět na úvod</button>
+</section>
+
+<section class="screen" id="afterSoftware" aria-labelledby="as-title" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="go('after')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button></div>
+ <span class="pill" style="color:var(--amber)"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-monitor"/></svg>Pomoc po incidentu</span>
+ <h1 id="as-title">Má někdo přístup k vašemu zařízení?</h1>
+ <div class="next"><h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Postupujte takto</h2><ol class="numbered"><li>Ukončete hovor a odpojte zařízení od internetu (Wi-Fi i data).</li><li>Z jiného, důvěryhodného zařízení kontaktujte banku a zabezpečte účty.</li><li>Program pro vzdálený přístup odinstalujte. Nejste-li si jistí, vyhledejte odbornou pomoc.</li><li>Neinstalujte nic dalšího podle pokynů neznámého člověka.</li></ol></div>
+ <button class="btn btn-ghost btn-wide" type="button" onclick="go('home')" style="margin-top:16px">Zpět na úvod</button>
+</section>
+
+<!-- ============ TRÉNINK ============ -->
+<section class="screen" id="training" aria-labelledby="trainTitle" tabindex="-1">
+ <div class="bar"><button class="text-btn" type="button" onclick="go('home')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button><div class="dots" aria-hidden="true"><i id="trainDot0" class="on"></i><i id="trainDot1"></i><i id="trainDot2"></i></div></div>
+ <span class="pill" style="color:var(--mint)" id="trainStepLabel">Trénink · 1 ze 3</span>
+ <h1 id="trainTitle">Jak byste reagovali?</h1>
+ <p class="lead">Vyberte krok, který vás nejlépe ochrání.</p>
+ <div class="card" style="margin-top:16px">
+  <div class="story"><div class="who"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-msg"/></svg>Smyšlená situace</div><div id="trainStory"></div></div>
+  <h2 class="subhead">Co uděláte?</h2>
+  <div class="choices" id="trainChoices"></div>
+  <div id="trainFeedback" class="status hidden" role="status" aria-live="polite"></div>
+ </div>
+</section>
+</main>
+
+<footer class="app-footer">RODINNÝ ŠTÍT · veřejný soutěžní pilot 0.9 · <a href="index.html">O projektu</a><br>Orientační kontrola podle pravidel v prohlížeči. Neověřuje identitu odesílatele ani pravost obrazu či hlasu a nezaručuje bezpečnost.</footer>
+<script src="assets/site.js" defer></script>
+<script src="assets/app.js" defer></script>
+</body>
+</html>

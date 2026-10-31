@@ -1,28 +1,194 @@
 <!doctype html>
 <html lang="cs">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#133b68"><meta name="description" content="RODINNÝ ŠTÍT — pilotní AI asistent pro prevenci digitálních podvodů v rodinách.">
-<title>RODINNÝ ŠTÍT | AI výzva pro Česko</title>
-<style>
-:root{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;color:#183052;background:#f4f7fb}*{box-sizing:border-box}body{margin:0}.wrap{max-width:860px;margin:0 auto;padding:26px 18px 60px}.logo{display:flex;gap:11px;align-items:center;font-weight:850;letter-spacing:.025em}.shield{display:grid;place-items:center;background:#1763bd;color:white;font-size:28px;width:48px;height:48px;border-radius:15px}header{padding:48px 0 24px}h1{font-size:clamp(36px,7vw,58px);letter-spacing:-.04em;line-height:1.05;margin:20px 0 14px}h2{font-size:24px;margin:0 0 12px}p{line-height:1.65;color:#445878;font-size:17px}.tag{font-size:13px;letter-spacing:.05em;text-transform:uppercase;font-weight:800;color:#1763bd}.lead{font-size:21px;max-width:700px}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:25px 0 12px}a.button{display:inline-block;border-radius:14px;padding:16px 21px;text-decoration:none;font-weight:800;background:#1763bd;color:white}a.button.light{background:#e2eaf7;color:#184779}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin-top:22px}.card{background:white;border:1px solid #dfe7f2;border-radius:20px;padding:22px}.card strong{font-size:19px}.card p{margin-bottom:0}.note{border-left:4px solid #e09b28;background:#fff7e8;border-radius:10px;padding:15px 18px;margin:28px 0;color:#695020;line-height:1.5}footer{border-top:1px solid #d9e3f1;margin-top:35px;padding-top:20px;color:#66748c;font-size:13px}@media(max-width:630px){.grid{grid-template-columns:1fr}header{padding-top:26px}.lead{font-size:19px}a.button{width:100%;text-align:center}}
-</style></head>
-<body><div class="wrap">
-<div class="logo"><div class="shield">♢</div> RODINNÝ ŠTÍT</div>
-<header>
-<div class="tag">AI výzva pro Česko 2026 · Soutěžní pilot 0.7</div>
-<h1>Digitální bezpečí začíná jednou otázkou: Je to podvod?</h1>
-<p class="lead">Praktický pomocník pro rodiny, seniory a každého, kdo potřebuje srozumitelně prověřit podezřelou zprávu a vědět, jak bezpečně postupovat.</p>
-<div class="actions"><a class="button" href="pilot.html">Otevřít interaktivní pilot →</a><a class="button light" href="#jak-to-funguje">Jak projekt funguje</a></div>
-<p><small>Aktuální pilot je v ruštině; česká lokalizace je plánována. Ukázka je optimalizovaná pro mobilní telefon.</small></p>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>RODINNÝ ŠTÍT | Ochrana rodiny před digitálními podvody</title>
+<meta name="description" content="RODINNÝ ŠTÍT pomáhá rodinám a seniorům rozpoznat podvodné zprávy, falešné hovory a manipulaci a ukáže bezpečný další krok. Soutěžní pilot pro AI výzvu pro Česko 2026.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:title" content="RODINNÝ ŠTÍT – víc jistoty v digitálním světě pro celou rodinu">
+<meta property="og:description" content="Srozumitelný průvodce, který pomáhá rozpoznat podvody a bezpečně se rozhodovat online.">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="cs_CZ">
+<meta property="og:image" content="assets/og-image.jpg">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="preload" href="assets/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" as="image" type="image/webp" imagesrcset="assets/hero-family-800.webp 800w, assets/hero-family-1400.webp 1400w" imagesizes="(min-width: 960px) 680px, 100vw">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<a class="skip" href="#obsah">Přeskočit na obsah</a>
+
+<header class="site-header">
+ <div class="wrap header-in">
+  <a class="brand" href="#nahoru" aria-label="RODINNÝ ŠTÍT – úvod"><img src="assets/logo.svg" alt="" width="44" height="50">RODINNÝ ŠTÍT</a>
+  <nav class="nav" aria-label="Hlavní navigace">
+   <a href="#jak">Jak to funguje</a><a href="#ukazka">Ukázka</a><a href="#pro-koho">Pro koho</a><a href="#bezpecnost">Bezpečnost</a>
+  </nav>
+  <a class="btn btn-primary header-cta" href="pilot.html">Vyzkoušet pilot <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></a>
+  <button class="menu-btn" type="button" aria-expanded="false" aria-controls="mobileMenu" aria-label="Otevřít menu" data-menu-btn>
+   <svg class="ico i-open" aria-hidden="true"><use href="assets/icons.svg#i-menu"/></svg><svg class="ico i-close" aria-hidden="true"><use href="assets/icons.svg#i-x"/></svg>
+  </button>
+ </div>
+ <nav class="mobile-menu" id="mobileMenu" aria-label="Mobilní navigace" hidden>
+  <a href="#jak">Jak to funguje <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="#ukazka">Ukázka aplikace <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="#pro-koho">Pro koho <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a href="#bezpecnost">Bezpečnost a soukromí <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></a>
+  <a class="btn btn-primary" href="pilot.html">Vyzkoušet interaktivní pilot <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></a>
+ </nav>
 </header>
-<section id="jak-to-funguje" class="grid">
-<div class="card"><strong>01 · Podezřelá zpráva</strong><p>Vložte SMS, e-mail nebo text ze snímku obrazovky. Pilot umí rozpoznat text obrázku přímo v prohlížeči (OCR).</p></div>
-<div class="card"><strong>02 · Varovné signály</strong><p>Zaměřuje se na časový nátlak, požadavky na platby a ověřovací kódy, vydávání se za jiné osoby a další rizikové vzorce.</p></div>
-<div class="card"><strong>03 · Bezpečný další krok</strong><p>Neposkytuje jen abstraktní varování. Vysvětluje, jak si žádost nezávisle ověřit, než člověk klikne nebo zaplatí.</p></div>
-<div class="card"><strong>04 · Pomoc po incidentu</strong><p>Samostatné scénáře pro situace, kdy už člověk poslal peníze, sdělil přístupový údaj nebo umožnil vzdálený přístup.</p></div>
+
+<main id="obsah">
+<section class="hero" id="nahoru" aria-labelledby="hero-title">
+ <div class="wrap hero-grid">
+  <div class="hero-copy">
+   <span class="badge"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg>Pomocník pro bezpečnější digitální život</span>
+   <h1 id="hero-title">RODINNÝ ŠTÍT</h1>
+   <p class="hero-sub">Pomáhá rozpoznat podvody, chránit rodinu a bezpečně se rozhodovat online.</p>
+  </div>
+
+  <div class="hero-visual">
+   <picture class="hero-pic">
+    <source type="image/webp" srcset="assets/hero-family-800.webp 800w, assets/hero-family-1400.webp 1400w" sizes="(min-width: 960px) 680px, 100vw">
+    <img class="hero-photo" src="assets/hero-family-1400.jpg" srcset="assets/hero-family-800.jpg 800w, assets/hero-family-1400.jpg 1400w" sizes="(min-width: 960px) 680px, 100vw" alt="Prarodiče, rodiče a dcera sedí spolu na pohovce a s úsměvem se dívají do telefonu" width="1400" height="1120" fetchpriority="high">
+   </picture>
+   <div class="hero-ring" aria-hidden="true"></div>
+   <img class="hero-shield" src="assets/logo.svg" alt="" width="190" height="215">
+   <p class="hand-note" aria-hidden="true">Větší jistota v&nbsp;digitálním světě pro celou rodinu <svg aria-hidden="true"><use href="assets/icons.svg#i-heart"/></svg></p>
+   <div class="float-card" aria-hidden="true">
+    <span class="dot"><svg class="ico"><use href="assets/icons.svg#i-alert"/></svg></span>
+    <span><b>Pozor, možný podvod</b><small>Nové číslo + spěch + žádost o&nbsp;peníze</small></span>
+   </div>
+  </div>
+
+  <div class="hero-actions">
+   <a class="btn btn-primary" href="pilot.html">Vyzkoušet interaktivní pilot <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></a>
+   <a class="btn btn-ghost" href="#jak"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-play"/></svg>Jak projekt funguje</a>
+  </div>
+
+  <ul class="hero-list">
+   <li><span class="tick"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg></span>Kontroluje podezřelé zprávy, e-maily a&nbsp;snímky</li>
+   <li><span class="tick"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg></span>Upozorňuje na varovné signály a&nbsp;manipulaci</li>
+   <li><span class="tick"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg></span>Srozumitelně vysvětluje rizika</li>
+   <li><span class="tick"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg></span>Doporučuje konkrétní další kroky</li>
+  </ul>
+ </div>
+ <div class="wrap trust" aria-label="Základní vlastnosti pilotu">
+  <div><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-user"/></svg>Bez registrace</div>
+  <div><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lock"/></svg>Text zůstává v&nbsp;prohlížeči</div>
+  <div><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-heart"/></svg>Česky a&nbsp;lidsky</div>
+ </div>
 </section>
-<div class="note"><strong>Transparentnost pilotu:</strong> Ve veřejné statické ukázce není připojeno živé serverové AI API. Pokud není dostupné, pilot používá transparentní lokální bezpečnostní pravidla. Neprovádí forenzní ověření fotografie, hlasu ani videa a nezaručuje, že konkrétní zpráva je bezpečná. Integrace serverové AI analýzy a česká lokalizace jsou další kroky vývoje.</div>
-<section class="card"><h2>Proč projekt vznikl?</h2><p>Podvodníci využívají strach, autoritu a časový nátlak. Lidé často potřebují rychlou, jednoduchou a lidsky srozumitelnou pomoc v okamžiku rozhodnutí. RODINNÝ ŠTÍT chce z technologií AI udělat praktický bezpečnostní nástroj pro každodenní život.</p><div class="actions"><a class="button" href="pilot.html">Vyzkoušet scénáře pilotu →</a></div></section>
-<footer>RODINNÝ ŠTÍT · Samostatný soutěžní prototyp · Říjen 2026 · Bez ukládání platebních údajů v této statické ukázce</footer>
-</div></body></html>
+
+<section class="section" id="jak" aria-labelledby="jak-title">
+ <div class="wrap">
+  <div class="sec-head center"><span class="kicker">Jednoduše ve 3 krocích</span><h2 id="jak-title">Jak to funguje?</h2></div>
+  <ol class="steps">
+   <li class="step"><span class="step-ico"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-msg"/></svg></span><div><h3>1. Vložíte zprávu</h3><p>SMS, e-mail nebo snímek obrazovky. Osobní údaje můžete jedním klepnutím skrýt.</p></div></li>
+   <li class="step"><span class="step-ico"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg></span><div><h3>2. Pilot ji zkontroluje</h3><p>Hledá typické znaky podvodu: spěch, falešnou autoritu, odkazy a&nbsp;žádosti o&nbsp;peníze či kódy.</p></div></li>
+   <li class="step"><span class="step-ico mint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg></span><div><h3>3. Dostanete doporučení</h3><p>Srozumitelně uvidíte, co je podezřelé a&nbsp;jak bezpečně postupovat dál.</p></div></li>
+  </ol>
+ </div>
+</section>
+
+<section class="wrap" id="ukazka" aria-labelledby="ukazka-title">
+ <div class="showcase">
+  <div class="sec-head"><span class="kicker">Ukázka aplikace</span><h2 id="ukazka-title">Od podezřelé zprávy k&nbsp;bezpečnému kroku</h2><p>Takto vypadá kontrola v&nbsp;interaktivním pilotu. Vyzkoušet si ji můžete na smyšlených příkladech.</p></div>
+  <div class="phones" aria-hidden="true">
+   <div class="phone">
+    <div class="phone-bar"><span><img src="assets/logo.svg" alt="">RODINNÝ ŠTÍT</span><svg class="ico"><use href="assets/icons.svg#i-menu"/></svg></div>
+    <div class="pk">KONTROLA ZPRÁVY</div>
+    <h3>Zkontrolujte podezřelou zprávu</h3>
+    <p class="pp">Vložte text nebo snímek obrazovky. Ukážeme varovné signály a&nbsp;bezpečný postup.</p>
+    <div class="ptabs"><i class="on">Text</i><i>Obrázek</i><i>Hovor</i></div>
+    <div class="parea">Sem vložte podezřelou zprávu…</div>
+    <div class="pbtn">Zkontrolovat zprávu</div>
+    <div class="prow"><span class="pi"><svg class="ico"><use href="assets/icons.svg#i-bank"/></svg></span>Podezřelá SMS od banky</div>
+    <div class="prow"><span class="pi r"><svg class="ico"><use href="assets/icons.svg#i-phone"/></svg></span>Falešný hovor od policie</div>
+    <div class="prow"><span class="pi"><svg class="ico"><use href="assets/icons.svg#i-family"/></svg></span>Zpráva od „syna“</div>
+   </div>
+   <div class="phone">
+    <div class="phone-bar"><span><img src="assets/logo.svg" alt="">RODINNÝ ŠTÍT</span><svg class="ico"><use href="assets/icons.svg#i-menu"/></svg></div>
+    <div class="prisk"><span class="big">!</span><span><b>Vysoké riziko podvodu</b><small>Zpráva obsahuje několik varovných signálů typických pro podvody.</small></span></div>
+    <div class="prow"><span class="pi r"><svg class="ico"><use href="assets/icons.svg#i-clock"/></svg></span><span>Časový nátlak<small>„Okamžitě“ – snaha o&nbsp;rychlé rozhodnutí</small></span></div>
+    <div class="prow"><span class="pi r"><svg class="ico"><use href="assets/icons.svg#i-bank"/></svg></span><span>Falešná autorita<small>Vydává se za banku</small></span></div>
+    <div class="prow"><span class="pi r"><svg class="ico"><use href="assets/icons.svg#i-key"/></svg></span><span>Žádost o&nbsp;kód<small>Banka kód nikdy nechce</small></span></div>
+    <div class="pnext"><b><svg class="ico"><use href="assets/icons.svg#i-shield"/></svg>Doporučený další krok</b><ol><li>Neklikejte na odkaz.</li><li>Nesdělujte kódy ani hesla.</li><li>Zavolejte bance na oficiální číslo.</li></ol></div>
+   </div>
+  </div>
+  <p class="show-note"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Veřejný pilot kontroluje text pomocí vysvětlitelných pravidel přímo v&nbsp;prohlížeči. Napojení jazykového modelu na zabezpečený server je plánovaná další fáze.</span></p>
+ </div>
+</section>
+
+<section class="section" id="situace" aria-labelledby="sit-title">
+ <div class="wrap">
+  <div class="sec-head"><span class="kicker">Praktické situace</span><h2 id="sit-title">Pomoc ve chvíli, kdy ji potřebujete</h2></div>
+  <div class="tiles">
+   <article class="tile"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-msg"/></svg></span><h3>Podezřelé SMS a&nbsp;e-maily</h3><p>Nové číslo blízkého, zásilka, naléhavá platba.</p></article>
+   <article class="tile"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg></span><h3>Falešné telefonáty</h3><p>Volá „banka“, „policie“ nebo „technická podpora“.</p></article>
+   <article class="tile"><span class="round amber"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lifebuoy"/></svg></span><h3>Pomoc po incidentu</h3><p>Co dělat, když už odešly peníze nebo údaje.</p></article>
+   <article class="tile"><span class="round mint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-grad"/></svg></span><h3>Krátký trénink</h3><p>Tři modelové situace k&nbsp;procvičení.</p></article>
+  </div>
+ </div>
+</section>
+
+<section class="wrap" id="pro-koho" aria-labelledby="koho-title">
+ <div class="audience-wrap">
+  <div class="sec-head"><span class="kicker">Pro každého, kdo chce být online v&nbsp;bezpečí</span><h2 id="koho-title">Pro koho je RODINNÝ ŠTÍT?</h2></div>
+  <div class="aud-grid">
+   <article class="aud"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-senior"/></svg></span><div><h3>Senioři</h3><p class="lead">Větší jistota při komunikaci online.</p></div></article>
+   <article class="aud"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-parent"/></svg></span><div><h3>Rodiče</h3><p class="lead">Ochrana dětí v&nbsp;digitálním světě.</p></div></article>
+   <article class="aud"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-family"/></svg></span><div><h3>Rodiny</h3><p class="lead">Společné bezpečné návyky.</p></div></article>
+   <article class="aud"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-user"/></svg></span><div><h3>Každý z&nbsp;nás</h3><p class="lead">Bez technických znalostí.</p></div></article>
+  </div>
+  <div class="facts">
+   <div class="fact"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chart"/></svg><div><b>Online podvodů v&nbsp;Česku přibývá.</b><p>Podvodníci spoléhají na strach, spěch a&nbsp;důvěru v&nbsp;blízké nebo v&nbsp;instituce.</p></div></div>
+   <div class="fact tip"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-bulb"/></svg><div><b>Prevence je nejúčinnější ochrana.</b><p>Zastavit se, ověřit a&nbsp;teprve potom jednat.</p></div></div>
+  </div>
+ </div>
+</section>
+
+<section class="section" id="bezpecnost" aria-labelledby="bez-title">
+ <div class="wrap">
+  <div class="sec-head"><span class="kicker">Poctivě o&nbsp;pilotu</span><h2 id="bez-title">Raději přiznat nejistotu než slibovat falešné bezpečí</h2></div>
+  <div class="honest">
+   <div class="hcard yes"><h3><span class="round mint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg></span>Co pilot dělá</h3><ul>
+    <li><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg>Kontroluje text vysvětlitelnými pravidly přímo ve vašem prohlížeči.</li>
+    <li><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg>Rozpozná text ze snímku (OCR) bez nahrání na náš server.</li>
+    <li><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-check"/></svg>Vysvětlí varovné signály a&nbsp;doporučí bezpečný postup.</li>
+   </ul></div>
+   <div class="hcard no"><h3><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg></span>Co pilot zatím nedělá</h3><ul>
+    <li><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-x"/></svg>Nepoužívá živý serverový AI model – ten je plánovaná další fáze.</li>
+    <li><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-x"/></svg>Neověřuje odesílatele ani pravost fotografie, hlasu či videa.</li>
+    <li><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-x"/></svg>Nezaručuje bezpečnost a&nbsp;nenahrazuje banku ani Policii ČR.</li>
+   </ul></div>
+  </div>
+ </div>
+</section>
+
+<section class="wrap" aria-labelledby="end-title">
+ <div class="closing">
+  <picture class="closing-pic">
+   <source type="image/webp" srcset="assets/night-home-800.webp 800w, assets/night-home-1600.webp 1600w" sizes="(min-width: 960px) 1180px, 100vw">
+   <img src="assets/night-home-1600.jpg" srcset="assets/night-home-800.jpg 800w, assets/night-home-1600.jpg 1600w" sizes="(min-width: 960px) 1180px, 100vw" alt="Rodinný dům v noci s teplým světlem v oknech" loading="lazy" width="1600" height="900">
+  </picture>
+  <div class="closing-in">
+   <img class="closing-logo" src="assets/logo.svg" alt="" width="96" height="109">
+   <h2 id="end-title">RODINNÝ ŠTÍT</h2>
+   <p>Více bezpečí pro ty, na kterých vám záleží.</p>
+   <a class="btn btn-light" href="pilot.html">Vyzkoušet pilot <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></a>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer class="wrap footer">
+ <a class="brand" href="#nahoru"><img src="assets/logo.svg" alt="" width="28" height="32">RODINNÝ ŠTÍT</a>
+ <div>© 2026 · Nezávislý soutěžní pilot pro AI výzvu pro Česko 2026. Nejde o&nbsp;službu policie, banky ani státní správy.</div>
+ <a href="https://github.com/maysterww-droid/rodinny-stit" target="_blank" rel="noopener noreferrer">Zdrojový kód na GitHubu</a>
+</footer>
+<script src="assets/site.js" defer></script>
+</body>
+</html>

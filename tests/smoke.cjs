@@ -1,0 +1,38 @@
+// RODINNÝ ŠTÍT client-side smoke checks. Run: node tests/smoke.cjs
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const vm = require('node:vm');
+const path = require('node:path');
+const source = fs.readFileSync(path.join(__dirname,'..','assets','app.js'),'utf8');
+const ctx = {document:{querySelectorAll:()=>[]},window:{},console};
+vm.createContext(ctx);vm.runInContext(source,ctx,{timeout:2000});
+const evaluate = text => vm.runInContext('classify('+JSON.stringify(text)+')',ctx,{timeout:1000});
+const examples = [
+ ['new family number','Ahoj mami, mám nové číslo, urgentně pošli 8000 Kč. Nevolej.', 'high'],
+ ['fake bank OTP','Bezpečnostní oddělení banky: ihned sdělte ověřovací kód SMS.', 'high'],
+ ['parcel link payment','Česká pošta: dnes zaplaťte 49 Kč na https://zasilka.invalid.', 'high'],
+ ['investment pressure','Garantovaný výnos! Investujte 5000 Kč hned.', 'high'],
+ ['password only','Prosím změňte své heslo.', 'moderate'],
+ ['new phone only','Mám nové číslo. Ahoj!', 'moderate'],
+ ['ordinary conversation','Dobrý den, porada se koná zítra v deset. Hezký den.', 'low'],
+ ['blank-ish non danger','Přeji krásný víkend a děkuji za pomoc.', 'low']
+];
+for(const [label,text,expectation] of examples){
+ const output=evaluate(text);assert.equal(output.level,expectation,label);
+ console.log('OK',label,output.level);
+}
+for (const name of ['relative','bank','parcel','invest']) {
+ const lvl=vm.runInContext('classify(demoExamples['+JSON.stringify(name)+']).level',ctx);
+ assert.equal(lvl,'high','demo '+name);console.log('OK demo',name,lvl);
+}
+const marked=vm.runInContext("highlight('<b>Pošli</b> peníze ihned', classify('<b>Pošli</b> peníze ihned').found)",ctx);
+assert.ok(!marked.includes('<b>')&&marked.includes('&lt;b&gt;')&&marked.includes('<mark>'),'highlight escapes input and marks signals');
+console.log('OK highlight escapes and marks');
+const steps=vm.runInContext("nextSteps(classify(demoExamples.parcel))",ctx);
+assert.ok(steps.length>=3&&steps.some(x=>/odkaz/.test(x))&&steps.some(x=>/banku/.test(x)),'parcel steps');
+const lowSteps=vm.runInContext("nextSteps(classify('Hezký den.'))",ctx);
+assert.ok(lowSteps.every(x=>!/bezpečn[áý]\b/.test(x)),'no safety claim');console.log('OK next steps');
+const sanitized = vm.runInContext("esc('<script>\"&</script>')",ctx);
+assert.equal(sanitized,'&lt;script&gt;&quot;&amp;&lt;/script&gt;');
+assert.ok(!/fetch\(|XMLHttpRequest|\/api\/analyze/.test(source),'No network/AI backend request in app.js');
+console.log('OK escaped excerpts and no external server analysis');
