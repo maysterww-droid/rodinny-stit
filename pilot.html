@@ -36,12 +36,35 @@
 
 <!-- ============ 1. KONTROLA ZPRÁVY ============ -->
 <section class="screen active" id="home" aria-labelledby="home-title" tabindex="-1">
- <span class="pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 1.0</span>
- <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
- <p class="lead">Vložte text nebo snímek obrazovky. Pilot vyhledá varovné signály podle vysvětlitelných pravidel a poradí, jak postupovat.</p>
+ <div class="pilot-hero" id="pilotHero">
+  <div class="ph-bg" aria-hidden="true">
+   <picture>
+    <source type="image/webp" srcset="assets/prague-800.webp 800w, assets/prague-1600.webp 1600w" sizes="100vw">
+    <img src="assets/prague-1600.jpg" srcset="assets/prague-800.jpg 800w, assets/prague-1600.jpg 1600w" sizes="100vw" alt="" width="1600" height="900" fetchpriority="high">
+   </picture>
+  </div>
+  <div class="ph-copy">
+   <span class="pill ph-pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 1.0</span>
+   <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
+   <p class="ph-lead">Vložte SMS, e-mail, snímek obrazovky nebo popis hovoru. Ukážeme varovné signály a poradíme, co dělat dál.</p>
+  </div>
+  <div class="ph-stage" role="img" aria-label="Ukázka: telefon s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“, kterou štít RODINNÝ ŠTÍT kontroluje a označuje jako podezřelou.">
+   <div class="ph-device">
+    <div class="ph-screen">
+     <div class="ph-status"><span>14:27</span><i class="ph-island"></i><span class="ph-sig"><i></i><i></i><i></i></span></div>
+     <div class="ph-sender"><span class="ph-avatar"><svg class="ico"><use href="assets/icons.svg#i-user"/></svg></span><b>Neznámé číslo</b><small>SMS · dnes</small></div>
+     <div class="ph-bubble">Ahoj mami, mám nové číslo. Pošli mi prosím 5000&nbsp;Kč ještě dnes.</div>
+     <div class="ph-flag"><svg class="ico"><use href="assets/icons.svg#i-alert"/></svg>Podezřelé</div>
+     <i class="ph-scan"></i>
+    </div>
+   </div>
+   <div class="ph-shield"><i class="ph-ring"></i><img src="assets/logo.svg" alt="" width="64" height="73"></div>
+  </div>
+ </div>
 
- <div class="tabs" role="tablist" aria-label="Způsob zadání">
-  <button class="tab" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true" type="button" data-tab="text"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-doc"/></svg>Text</button>
+ <div class="tabs tabs4" role="tablist" aria-label="Co chcete zkontrolovat">
+  <button class="tab" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true" type="button" data-tab="text"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-msg"/></svg>SMS</button>
+  <button class="tab" role="tab" id="tab-email" aria-controls="panel-text" aria-selected="false" tabindex="-1" type="button" data-tab="email"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-mail"/></svg>E-mail</button>
   <button class="tab" role="tab" id="tab-image" aria-controls="panel-image" aria-selected="false" tabindex="-1" type="button" data-tab="image"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-image"/></svg>Obrázek</button>
   <button class="tab" role="tab" id="tab-call" aria-controls="panel-call" aria-selected="false" tabindex="-1" type="button" data-tab="call"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg>Hovor</button>
  </div>
@@ -49,14 +72,16 @@
  <div id="panel-text" role="tabpanel" aria-labelledby="tab-text">
   <div class="textbox">
    <label class="sr-only" for="msg">Text podezřelé zprávy</label>
-   <textarea class="input" id="msg" maxlength="5000" placeholder="Sem vložte podezřelou zprávu, e-mail nebo SMS…" aria-describedby="msgCount privacyHint"></textarea>
+   <textarea class="input" id="msg" maxlength="5000" placeholder="Sem vložte podezřelou SMS nebo zprávu…" aria-describedby="msgCount privacyHint"></textarea>
    <span class="counter" id="msgCount" aria-live="off">0/5000</span>
   </div>
-  <div class="tools">
-   <span class="hint" id="privacyHint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-eyeoff"/></svg>Skrýt:</span>
-   <button type="button" class="chip" onclick="maskPhones()">Telefony</button>
-   <button type="button" class="chip" onclick="maskEmails()">E-maily</button>
-   <button type="button" class="chip" onclick="maskNumbers()">Dlouhá čísla</button>
+  <div class="quick">
+   <div class="quick-h"><h2><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-bolt"/></svg>Vyzkoušejte ukázkový scénář</h2><a href="#moreScenarios" class="quick-more" id="quickMore">Zobrazit další <svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-arrow"/></svg></a></div>
+   <div class="quick-list" role="group" aria-label="Smyšlené ukázkové zprávy">
+    <button type="button" class="qcard red" data-demo="newnumber" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-user"/></svg><span>„Ahoj mami, mám nové číslo…“</span></button>
+    <button type="button" class="qcard" data-demo="parcel" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-package"/></svg><span>„Zaplaťte doplatek za balík…“</span></button>
+    <button type="button" class="qcard" data-demo="bankmail" aria-pressed="false"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-bank"/></svg><span>„E-mail od banky…“</span></button>
+   </div>
   </div>
   <div id="aiBox" class="ai-box" hidden>
    <div class="seg" role="radiogroup" aria-label="Způsob kontroly">
@@ -69,9 +94,15 @@
     <label class="consent"><input type="checkbox" id="aiAgree"><span>Souhlasím s odesláním tohoto upraveného textu k AI analýze.</span></label>
    </div>
   </div>
-  <button class="btn btn-primary btn-wide" id="analyzeBtn" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg><span>Zkontrolovat zprávu</span></button>
+  <button class="btn btn-primary btn-wide btn-xl" id="analyzeBtn" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg><span>Zkontrolovat zprávu</span></button>
   <button class="btn btn-ghost btn-wide hidden" id="cancelAiBtn" type="button" onclick="cancelAi()" style="margin-top:8px">Zrušit AI analýzu</button>
   <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Není připojen živý AI model. Nevkládejte hesla, PIN ani kódy.</span></div>
+  <div class="tools">
+   <span class="hint" id="privacyHint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-eyeoff"/></svg>Skrýt:</span>
+   <button type="button" class="chip" onclick="maskPhones()">Telefony</button>
+   <button type="button" class="chip" onclick="maskEmails()">E-maily</button>
+   <button type="button" class="chip" onclick="maskNumbers()">Dlouhá čísla</button>
+  </div>
  </div>
 
  <div id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden>
@@ -97,7 +128,13 @@
   </div>
  </div>
 
- <h2 class="subhead">Nebo vyzkoušejte ukázkový scénář:</h2>
+ <div class="trust-strip">
+  <div><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-shield"/></svg><span><b>Rychlá kontrola</b><small>Během pár sekund</small></span></div>
+  <div><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lock"/></svg><span><b>Výchozí režim v prohlížeči</b><small>Text se neodesílá</small></span></div>
+  <div><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-family"/></svg><span><b>Pro celou rodinu</b><small>Jednoduše a srozumitelně</small></span></div>
+ </div>
+
+ <h2 class="subhead" id="moreScenarios" tabindex="-1">Další ukázkové scénáře a situace:</h2>
  <div class="rows">
   <button class="row" type="button" onclick="demo('bank')"><span class="round"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-bank"/></svg></span><span class="row-t"><b>Podezřelá SMS od banky</b><small>Blokace účtu a žádost o kód</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>
   <button class="row" type="button" onclick="go('call')"><span class="round red"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-phone"/></svg></span><span class="row-t"><b>Falešný hovor od policie</b><small>Jak bezpečně reagovat</small></span><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-chevron"/></svg></button>

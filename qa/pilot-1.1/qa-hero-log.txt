@@ -1,0 +1,131 @@
+PASS 360 intro animation starts
+PASS 360 animation plays once and ends (~2 s)
+PASS 360 no horizontal scroll
+PASS 360 all hero images loaded 
+PASS 360 Prague photo (WebP) used
+PASS 360 phone fully inside viewport (193–353)
+PASS 360 phone does not cover heading or text (0 lines touch)
+PASS 360 phone not cut by hero bottom
+PASS 360 SMS on phone readable (10.62px)
+PASS 360 suspicious flag visible after scan
+PASS 360 scene never says the SMS is safe
+PASS 360 lead text ≥ 16 px
+PASS 360 4 tabs with large tap targets
+PASS 360 scenario fills text, no automatic check
+PASS 360 selected scenario highlighted
+PASS 360 bank e-mail scenario switches to E-mail tab
+PASS 360 only one scenario pressed
+PASS 360 editing clears scenario highlight
+PASS 360 new-number SMS → local high risk
+PASS 360 Back returns to first screen
+PASS 360 ArrowRight → E-mail tab
+PASS 360 → Obrázek tab (OCR panel)
+PASS 360 → Hovor tab
+PASS 360 "Zobrazit další" scrolls to more scenarios
+PASS 360 no horizontal scroll at 130 % text zoom
+PASS 390 intro animation starts
+PASS 390 animation plays once and ends (~2 s)
+PASS 390 no horizontal scroll
+PASS 390 all hero images loaded 
+PASS 390 Prague photo (WebP) used
+PASS 390 phone fully inside viewport (214–384)
+PASS 390 phone does not cover heading or text (0 lines touch)
+PASS 390 phone not cut by hero bottom
+PASS 390 SMS on phone readable (11.505px)
+PASS 390 suspicious flag visible after scan
+PASS 390 scene never says the SMS is safe
+PASS 390 lead text ≥ 16 px
+PASS 390 4 tabs with large tap targets
+PASS 390 scenario fills text, no automatic check
+PASS 390 selected scenario highlighted
+PASS 390 bank e-mail scenario switches to E-mail tab
+PASS 390 only one scenario pressed
+PASS 390 editing clears scenario highlight
+PASS 390 new-number SMS → local high risk
+PASS 390 Back returns to first screen
+PASS 390 ArrowRight → E-mail tab
+PASS 390 → Obrázek tab (OCR panel)
+PASS 390 → Hovor tab
+PASS 390 "Zobrazit další" scrolls to more scenarios
+PASS 390 no horizontal scroll at 130 % text zoom
+PASS 430 intro animation starts
+PASS 430 animation plays once and ends (~2 s)
+PASS 430 no horizontal scroll
+PASS 430 all hero images loaded 
+PASS 430 Prague photo (WebP) used
+PASS 430 phone fully inside viewport (238–425)
+PASS 430 phone does not cover heading or text (0 lines touch)
+PASS 430 phone not cut by hero bottom
+PASS 430 SMS on phone readable (12.685px)
+PASS 430 suspicious flag visible after scan
+PASS 430 scene never says the SMS is safe
+PASS 430 lead text ≥ 16 px
+PASS 430 4 tabs with large tap targets
+PASS 430 scenario fills text, no automatic check
+PASS 430 selected scenario highlighted
+PASS 430 bank e-mail scenario switches to E-mail tab
+PASS 430 only one scenario pressed
+PASS 430 editing clears scenario highlight
+PASS 430 new-number SMS → local high risk
+PASS 430 Back returns to first screen
+PASS 430 ArrowRight → E-mail tab
+PASS 430 → Obrázek tab (OCR panel)
+PASS 430 → Hovor tab
+PASS 430 "Zobrazit další" scrolls to more scenarios
+PASS 430 no horizontal scroll at 130 % text zoom
+PASS 768 intro animation starts
+PASS 768 animation plays once and ends (~2 s)
+PASS 768 no horizontal scroll
+PASS 768 all hero images loaded 
+PASS 768 Prague photo (WebP) used
+PASS 768 phone fully inside viewport (515–744)
+PASS 768 phone does not cover heading or text (0 lines touch)
+PASS 768 phone not cut by hero bottom
+PASS 768 SMS on phone readable (14px)
+PASS 768 suspicious flag visible after scan
+PASS 768 scene never says the SMS is safe
+PASS 768 lead text ≥ 16 px
+PASS 768 4 tabs with large tap targets
+PASS 768 scenario fills text, no automatic check
+PASS 768 selected scenario highlighted
+PASS 768 bank e-mail scenario switches to E-mail tab
+PASS 768 only one scenario pressed
+PASS 768 editing clears scenario highlight
+PASS 768 new-number SMS → local high risk
+PASS 768 Back returns to first screen
+PASS 768 ArrowRight → E-mail tab
+PASS 768 → Obrázek tab (OCR panel)
+PASS 768 → Hovor tab
+PASS 768 "Zobrazit další" scrolls to more scenarios
+PASS 1440 intro animation starts
+PASS 1440 animation plays once and ends (~2 s)
+PASS 1440 no horizontal scroll
+PASS 1440 all hero images loaded 
+PASS 1440 Prague photo (WebP) used
+PASS 1440 phone fully inside viewport (911–1157)
+PASS 1440 phone does not cover heading or text (0 lines touch)
+PASS 1440 phone not cut by hero bottom
+PASS 1440 SMS on phone readable (14px)
+PASS 1440 suspicious flag visible after scan
+PASS 1440 scene never says the SMS is safe
+PASS 1440 lead text ≥ 16 px
+PASS 1440 4 tabs with large tap targets
+PASS 1440 scenario fills text, no automatic check
+PASS 1440 selected scenario highlighted
+PASS 1440 bank e-mail scenario switches to E-mail tab
+PASS 1440 only one scenario pressed
+PASS 1440 editing clears scenario highlight
+PASS 1440 new-number SMS → local high risk
+PASS 1440 Back returns to first screen
+PASS 1440 ArrowRight → E-mail tab
+PASS 1440 → Obrázek tab (OCR panel)
+PASS 1440 → Hovor tab
+PASS 1440 "Zobrazit další" scrolls to more scenarios
+PASS animation finished, no endless animations (0 running after 2.3 s)
+PASS animation filmstrip captured
+PASS reduced motion: no intro animation
+PASS reduced motion: no running animations in scene
+PASS reduced motion: final state shown immediately
+
+Errors:
+none

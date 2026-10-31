@@ -413,3 +413,118 @@ mark{background:#ffe2a6;color:inherit;border-radius:4px;padding:0 2px;box-shadow
 .src-badge.ai{background:#eef0ff;border-color:#d5d9fb;color:#3b3f9a}.src-badge.ai .ico{color:#5b5fe0}
 .ai-explain{margin-top:12px;padding:14px;border-radius:16px;background:#fff;border:1px solid var(--line);font-size:15px;color:#24405f;line-height:1.5}
 .ai-box[hidden],.ai-consent[hidden]{display:none}
+
+/* ================= 1.1 · první dojem pilotu (Praha + telefon) ================= */
+html{overflow-x:clip}
+.pilot-hero{position:relative;margin:-18px 0 0;margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);padding:22px max(16px,calc(50vw - 380px)) 18px;min-height:clamp(380px,104vw,470px);isolation:isolate;overflow:hidden}
+.ph-bg{position:absolute;inset:0;z-index:-1}
+.ph-bg picture,.ph-bg img{display:block;width:100%;height:100%}
+.ph-bg img{object-fit:cover;object-position:74% 40%}
+.ph-bg::after{content:"";position:absolute;inset:0;background:
+ linear-gradient(90deg,rgba(244,248,254,.9) 0%,rgba(244,248,254,.72) 30%,rgba(244,248,254,.12) 54%,rgba(244,248,254,0) 66%),
+ linear-gradient(180deg,rgba(244,248,254,.35) 0%,rgba(244,248,254,0) 30%,rgba(244,248,254,0) 62%,#f2f7fd 100%)}
+.ph-copy{position:relative;z-index:2;max-width:min(56%,440px)}
+.ph-pill{background:rgba(255,255,255,.94);padding:7px 12px 7px 9px;border-radius:999px;box-shadow:var(--sh-s);border:1px solid #dbe6f5;font-size:11.5px;letter-spacing:.06em;white-space:nowrap;position:relative;z-index:3}
+.pilot-hero h1{font-size:clamp(28px,7.9vw,52px);line-height:1.05;margin:14px 0 10px;font-weight:900;letter-spacing:-.035em;color:#0a2350;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.ph-lead{font-size:clamp(16px,4.2vw,19px);line-height:1.45;color:#2c4467;font-weight:500;max-width:30ch}
+/* telefon */
+.ph-stage{position:absolute;z-index:1;right:max(18px,calc(50vw - 380px));top:clamp(70px,19vw,90px);width:clamp(140px,38vw,230px);perspective:1100px}
+.ph-device{position:relative;aspect-ratio:9/18.6;border-radius:clamp(26px,8vw,40px);padding:clamp(5px,1.6vw,8px);
+ background:linear-gradient(140deg,#6b7a90 0%,#1d2533 18%,#0b1019 55%,#3a4659 100%);
+ box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.28),inset 0 0 0 3px #0a0e15,-14px 26px 44px rgba(10,35,80,.32),-4px 8px 14px rgba(10,35,80,.25);
+ transform:rotateY(-16deg) rotateX(5deg) rotateZ(4deg);transform-style:preserve-3d}
+.ph-device::before{content:"";position:absolute;right:-3px;top:22%;width:3px;height:16%;border-radius:2px;background:linear-gradient(#495468,#1b2230)}
+.ph-device::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(118deg,rgba(255,255,255,.22) 0%,rgba(255,255,255,0) 32%,rgba(255,255,255,0) 70%,rgba(255,255,255,.08) 100%)}
+.ph-screen{position:relative;height:100%;border-radius:calc(clamp(26px,8vw,40px) - 6px);overflow:hidden;background:linear-gradient(180deg,#f3f6fa 0%,#e7edf5 60%,#dfe7f1 100%);padding:clamp(8px,2.4vw,12px) clamp(8px,2.4vw,12px)}
+.ph-status{display:flex;align-items:center;justify-content:space-between;font-size:clamp(8px,2.3vw,11px);font-weight:700;color:#1b2533}
+.ph-island{width:30%;height:clamp(8px,2.4vw,13px);border-radius:10px;background:#0b1019}
+.ph-sig{display:flex;gap:1.5px;align-items:flex-end}.ph-sig i{width:2.5px;background:#1b2533;border-radius:1px}.ph-sig i:nth-child(1){height:4px}.ph-sig i:nth-child(2){height:6px}.ph-sig i:nth-child(3){height:8px}
+.ph-sender{display:flex;flex-direction:column;align-items:center;gap:2px;margin:clamp(8px,2.6vw,14px) 0 clamp(8px,2.4vw,12px);text-align:center}
+.ph-avatar{display:grid;place-items:center;width:clamp(26px,8vw,40px);height:clamp(26px,8vw,40px);border-radius:50%;background:linear-gradient(180deg,#a9b6c8,#7f8ea4);color:#fff}
+.ph-avatar .ico{width:60%;height:60%}
+.ph-sender b{font-size:clamp(9px,2.6vw,13px);color:#1b2533}.ph-sender small{font-size:clamp(7.5px,2vw,10px);color:#6b7a8f}
+.ph-bubble{position:relative;background:#fff;border-radius:16px 16px 16px 5px;padding:clamp(7px,2.2vw,11px);font-size:clamp(10px,2.95vw,14px);line-height:1.35;color:#16202e;box-shadow:0 2px 8px rgba(16,40,74,.1);font-weight:500}
+.ph-flag{display:inline-flex;align-items:center;gap:4px;margin-top:8px;padding:4px 9px 4px 6px;border-radius:999px;background:#fff1ee;border:1px solid #f7c3b9;color:#c2381c;font-size:clamp(9px,2.6vw,12.5px);font-weight:800;box-shadow:0 4px 10px rgba(212,47,66,.18)}
+.ph-flag .ico{width:1.25em;height:1.25em;color:#e0482c}
+.ph-scan{position:absolute;left:0;right:0;top:-30%;height:28%;background:linear-gradient(180deg,rgba(90,190,255,0) 0%,rgba(90,190,255,.32) 80%,rgba(130,230,255,.9) 100%);opacity:0;pointer-events:none}
+.ph-shield{position:absolute;left:50%;bottom:4%;width:58%;transform:translateX(-50%);display:grid;place-items:center}
+.ph-shield img{position:relative;width:62%;height:auto;filter:drop-shadow(0 0 12px rgba(90,200,255,.75)) drop-shadow(0 6px 10px rgba(10,52,127,.35))}
+.ph-ring{position:absolute;left:50%;top:64%;width:175%;aspect-ratio:3.2/1;transform:translate(-50%,-50%);border-radius:50%;border:2.5px solid rgba(70,226,170,.85);box-shadow:0 0 16px rgba(70,226,170,.8),inset 0 0 12px rgba(70,226,170,.55);opacity:.85}
+
+/* animace – jen s třídou .play (JS ji přidá jednou; bez JS a při reduced motion je vidět výsledný stav) */
+.pilot-hero.play .ph-bg{animation:phBg .6s ease-out both}
+.pilot-hero.play .ph-copy{animation:phUp .5s .05s ease-out both}
+.pilot-hero.play .ph-device{animation:phPhone .7s .15s cubic-bezier(.2,.8,.2,1) both}
+.pilot-hero.play .ph-bubble{animation:phPop .35s .7s cubic-bezier(.2,.9,.3,1.3) both}
+.pilot-hero.play .ph-scan{animation:phScan .6s .95s ease-in-out both}
+.pilot-hero.play .ph-shield{animation:phUp .45s .55s ease-out both}
+.pilot-hero.play .ph-shield img{animation:phGlow .55s 1.3s ease-out both}
+.pilot-hero.play .ph-ring{animation:phRing .7s 1.25s ease-out both}
+.pilot-hero.play .ph-flag{animation:phPop .35s 1.5s cubic-bezier(.2,.9,.3,1.4) both}
+@keyframes phBg{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:none}}
+@keyframes phUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes phPhone{from{opacity:0;transform:translateY(34px) rotateY(-30deg) rotateX(10deg) rotateZ(8deg)}to{opacity:1;transform:rotateY(-16deg) rotateX(5deg) rotateZ(4deg)}}
+@keyframes phPop{from{opacity:0;transform:translateY(6px) scale(.9)}to{opacity:1;transform:none}}
+@keyframes phScan{0%{opacity:0;top:-30%}15%{opacity:1}85%{opacity:1}100%{opacity:0;top:105%}}
+@keyframes phGlow{0%{filter:drop-shadow(0 0 12px rgba(90,200,255,.75))}45%{filter:drop-shadow(0 0 26px rgba(90,220,255,1)) brightness(1.15)}100%{filter:drop-shadow(0 0 12px rgba(90,200,255,.75))}}
+@keyframes phRing{0%{opacity:0;transform:translate(-50%,-50%) scale(.6)}60%{opacity:1}100%{opacity:.85;transform:translate(-50%,-50%) scale(1)}}
+@media (prefers-reduced-motion:reduce){.pilot-hero *{animation:none!important}}
+
+/* záložky – 4 jako v referenci */
+.tabs.tabs4{grid-template-columns:repeat(4,1fr);gap:8px;margin:6px 0 14px;position:relative;z-index:2}
+.tabs4 .tab{min-height:56px;border-radius:18px;font-size:15px;transition:background .2s,color .2s,box-shadow .2s,transform .15s;border-color:#e2eaf5;box-shadow:0 6px 16px rgba(16,58,112,.08)}
+.tabs4 .tab .ico{width:22px;height:22px}
+.tabs4 .tab:active{transform:scale(.97)}
+@media (max-width:440px){.tabs4 .tab{flex-direction:column;gap:3px;min-height:64px;padding:6px 2px;font-size:14px}}
+textarea.input{border-radius:22px;border-color:#cfe0f5;box-shadow:0 10px 26px rgba(16,58,112,.08);transition:border-color .2s,box-shadow .2s;min-height:130px;font-size:17px}
+textarea.input:focus{box-shadow:0 0 0 4px rgba(90,169,255,.22),0 10px 26px rgba(16,58,112,.1)}
+/* rychlé scénáře */
+.quick{margin:16px 0 6px}
+.quick-h{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.quick-h h2{display:flex;align-items:center;gap:6px;font-size:16.5px;font-weight:800;color:#0a2350;letter-spacing:-.01em}
+.quick-h h2 .ico{width:22px;height:22px;color:#f5a00a}
+.quick-more{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:15px;white-space:nowrap;padding:8px 0}
+.quick-more .ico{width:18px;height:18px}
+.quick-list{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.qcard{display:flex;flex-direction:column;align-items:flex-start;gap:6px;min-height:84px;padding:11px 10px;border-radius:16px;border:1.5px solid #dbe7f6;background:#eef5ff;color:#13325e;text-align:left;font-weight:650;font-size:14px;line-height:1.3;transition:transform .15s,border-color .2s,background .2s,box-shadow .2s}
+.qcard .ico{width:24px;height:24px;color:var(--blue)}
+.qcard.red{background:#fdeeee;border-color:#f6d3d3;color:#7c1d27}.qcard.red .ico{color:#c22d3b}
+.qcard:hover{border-color:#9cc0ee}
+.qcard[aria-pressed="true"]{border-color:var(--blue);box-shadow:0 0 0 3px rgba(21,101,216,.18),0 8px 18px rgba(16,58,112,.12)}
+.qcard.red[aria-pressed="true"]{border-color:#d0404c;box-shadow:0 0 0 3px rgba(212,47,66,.16),0 8px 18px rgba(212,47,66,.12)}
+.qcard.picked{animation:qPick .32s ease-out}
+@keyframes qPick{0%{transform:scale(1)}40%{transform:scale(.95)}100%{transform:scale(1)}}
+.pilot-hero~.tabs .tab,.quick-list .qcard{animation:qIn .4s ease-out both}
+.quick-list .qcard:nth-child(2){animation-delay:.06s}.quick-list .qcard:nth-child(3){animation-delay:.12s}
+@keyframes qIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.qcard,.tabs4 .tab,.btn-xl{animation:none!important;transition:none!important}}
+@media (min-width:441px){.qcard{flex-direction:row;align-items:center;min-height:68px;font-size:15.5px}}
+/* hlavní tlačítko */
+.btn-xl{min-height:64px;font-size:20px;border-radius:18px;margin-top:6px;box-shadow:0 14px 28px rgba(21,101,216,.32),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn-xl .ico{width:24px;height:24px}
+.btn-xl::after{content:"";width:24px;height:24px;flex:none;background:currentColor;--a:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 12h15M13 6l6 6-6 6'/%3E%3C/svg%3E");-webkit-mask:var(--a) center/contain no-repeat;mask:var(--a) center/contain no-repeat}
+.btn-xl.is-busy::after{display:none}
+.btn-xl.is-busy{opacity:.85;cursor:progress}
+.btn-xl.is-busy .ico{animation:spinPulse 1s ease-in-out infinite}
+@keyframes spinPulse{50%{transform:scale(.85);opacity:.6}}
+.btn-xl.is-error{animation:shake .35s ease-in-out}
+@keyframes shake{20%,60%{transform:translateX(-4px)}40%,80%{transform:translateX(4px)}}
+/* pruh důvěry */
+.trust-strip{display:grid;gap:10px;margin:20px 0 6px;padding:14px;border-radius:20px;background:linear-gradient(180deg,#f1fbf6,#e7f6ee);border:1px solid #cdebdc}
+.trust-strip div{display:flex;align-items:center;gap:12px}
+.trust-strip .ico{width:30px;height:30px;color:#169a5e;flex:none}
+.trust-strip b{display:block;color:#0a2350;font-size:15.5px}
+.trust-strip small{display:block;color:#3c5878;font-size:14px}
+@media (min-width:700px){.trust-strip{grid-template-columns:repeat(3,1fr)}.trust-strip div+div{border-left:1px solid #cfe6da;padding-left:12px}}
+@media (min-width:600px){
+ .pilot-hero{min-height:500px;padding-top:40px}
+ .ph-stage{width:200px;top:44px;right:max(40px,calc(50vw - 380px))}
+}
+@media (min-width:960px){
+ .pilot-hero{min-height:540px}
+ .ph-stage{width:215px;top:40px;right:calc(50vw - 420px)}
+ .ph-copy{max-width:500px}
+ .pilot-hero h1{font-size:50px}
+}
+
+#panel-text .tools{margin-top:12px}

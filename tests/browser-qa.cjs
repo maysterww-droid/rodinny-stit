@@ -87,7 +87,7 @@ for(const w of [360,390,430,1440]){
  await pg.click('#result .text-btn');
  // masking
  await pg.fill('#msg','Volej +420 777 123 456 nebo piš na jan.novak@example.cz, účet 1234567890');
- await pg.click('text=Telefony');await pg.click('text=E-maily');await pg.click('text=Dlouhá čísla');
+ await pg.click('.tools button:has-text("Telefony")');await pg.click('.tools button:has-text("E-maily")');await pg.click('.tools button:has-text("Dlouhá čísla")');
  const masked=await pg.inputValue('#msg');ok(!/777|example|1234567890/.test(masked),`${w} masking removes phone/email/number: ${masked}`);
  // tabs + keyboard
  await pg.click('#tab-image');ok(await pg.isVisible('#panel-image')&&!(await pg.isVisible('#panel-text')),`${w} image tab`);

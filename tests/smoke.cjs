@@ -21,7 +21,7 @@ for(const [label,text,expectation] of examples){
  const output=evaluate(text);assert.equal(output.level,expectation,label);
  console.log('OK',label,output.level);
 }
-for (const name of ['relative','bank','parcel','invest']) {
+for (const name of ['relative','bank','parcel','invest','newnumber','bankmail']) {
  const lvl=vm.runInContext('classify(demoExamples['+JSON.stringify(name)+']).level',ctx);
  assert.equal(lvl,'high','demo '+name);console.log('OK demo',name,lvl);
 }

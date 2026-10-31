@@ -35,14 +35,19 @@ function startCall() { go('call'); }
 function startAd() { go('ad'); }
 
 /* ---------- záložky Text / Obrázek / Hovor ---------- */
+const PLACEHOLDERS = { text: 'Sem vložte podezřelou SMS nebo zprávu…', email: 'Sem vložte text podezřelého e-mailu (bez příloh)…' };
 function selectTab(name, focusTab) {
-  for (const t of document.querySelectorAll('[data-tab]')) {
-    const on = t.dataset.tab === name;
+  const tabs = [...document.querySelectorAll('[data-tab]')];
+  const active = tabs.find(t => t.dataset.tab === name) || tabs[0];
+  for (const t of tabs) {
+    const on = t === active;
     t.setAttribute('aria-selected', String(on));
     t.tabIndex = on ? 0 : -1;
-    $(t.getAttribute('aria-controls')).hidden = !on;
     if (on && focusTab) t.focus();
   }
+  // SMS i E-mail sdílejí textový panel
+  for (const id of new Set(tabs.map(t => t.getAttribute('aria-controls')))) $(id).hidden = id !== active.getAttribute('aria-controls');
+  if (PLACEHOLDERS[active.dataset.tab]) $('msg').placeholder = PLACEHOLDERS[active.dataset.tab];
 }
 
 /* ---------- ukázkové (smyšlené) zprávy ---------- */
@@ -50,12 +55,20 @@ const demoExamples = {
   relative: 'Ahoj mami, mám nové číslo, starý telefon se rozbil. Potřebuji urgentně poslat 12 500 Kč na tento účet. Teď mi prosím nevolej, jsem na schůzce. Napiš, až peníze pošleš.',
   bank: 'Dobrý den, tady bezpečnostní oddělení banky. Váš účet bude za 10 minut zablokován. Okamžitě nám sdělte ověřovací kód z SMS a nainstalujte aplikaci pro vzdálený přístup.',
   parcel: 'Česká pošta: Vaše zásilka je zadržena. Dnes zaplaťte 49 Kč za doručení na https://priklad-zasilky.invalid, jinak balík vrátíme odesílateli.',
+  newnumber: 'Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes, potřebuji to hned. Zatím mi nevolej, napíšu ti.',
+  bankmail: 'Vážený kliente, zaznamenali jsme neobvyklé přihlášení k Vašemu účtu. Do 24 hodin ověřte své přihlašovací údaje na https://overeni-uctu.invalid, jinak bude účet zablokován. Zákaznická podpora banky',
   invest: 'Gratulujeme! Byli jste vybráni do investičního programu s garantovaným výnosem 30 % měsíčně. Zbývají poslední 2 místa – vložte 5 000 Kč ještě dnes přes www.rychly-vynos.invalid.'
 };
+function markQuick(name) {
+  for (const q of document.querySelectorAll('[data-demo]')) {
+    const on = q.dataset.demo === name; q.setAttribute('aria-pressed', String(on));
+    q.classList.remove('picked'); if (on) { void q.offsetWidth; q.classList.add('picked'); }
+  }
+}
 function demo(name = 'relative') {
   $('msg').value = demoExamples[name] || demoExamples.relative;
-  updateCount();
-  go('home'); selectTab('text');
+  updateCount(); markQuick(name);
+  go('home'); selectTab(name === 'bankmail' ? 'email' : 'text');
   setMode('', 'Vložena <b>smyšlená ukázka</b>. Stiskněte „Zkontrolovat zprávu“. Kontrola proběhne lokálně podle pravidel, bez AI serveru.');
   $('msg').focus();
   $('msg').scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -227,12 +240,13 @@ function syncAiUi() {
 }
 function aiError(code) {
   const msg = AI_ERRORS[code] || 'AI analýza se nezdařila.';
+  const b = $('analyzeBtn'); b.classList.remove('is-error'); void b.offsetWidth; b.classList.add('is-error');
   const el = $('aiMode'); el.className = 'mode warn';
   el.innerHTML = icon('i-alert') + `<span>${esc(msg)} <button type="button" class="chip" id="fallbackLocal" style="margin-top:8px">Zkontrolovat lokálními pravidly</button></span>`;
   $('fallbackLocal').addEventListener('click', () => analyzeLocal());
 }
 function setBusy(b) {
-  const btn = $('analyzeBtn'); btn.disabled = b; btn.lastChild.textContent = b ? 'Analyzuji pomocí AI…' : (aiSelected() ? 'Zkontrolovat pomocí AI' : 'Zkontrolovat zprávu');
+  const btn = $('analyzeBtn'); btn.disabled = b; btn.classList.toggle('is-busy', b); btn.setAttribute('aria-busy', String(b)); btn.lastChild.textContent = b ? 'Analyzuji pomocí AI…' : (aiSelected() ? 'Zkontrolovat pomocí AI' : 'Zkontrolovat zprávu');
   $('cancelAiBtn').classList.toggle('hidden', !b);
 }
 function cancelAi() { if (AI.ctl) AI.ctl.abort('user'); }
@@ -391,10 +405,23 @@ function trainAnswer(answer) {
 }
 function nextTraining() { if (trainStep < trainings.length - 1) { trainStep++; renderTraining(); $('trainTitle').focus?.(); } else go('home'); }
 
+/* ---------- úvodní animace scény (jednou, cca 1,8 s; respektuje prefers-reduced-motion) ---------- */
+function playHeroIntro() {
+  const hero = $('pilotHero'); if (!hero) return;
+  const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce) { hero.classList.add('done'); return; }
+  hero.classList.add('play');
+  setTimeout(() => { hero.classList.remove('play'); hero.classList.add('done'); }, 2400);
+}
+
 /* ---------- inicializace (jen v prohlížeči) ---------- */
 if (HAS_DOM) {
   const init = () => {
-    $('msg').addEventListener('input', updateCount); updateCount();
+    $('msg').addEventListener('input', () => { updateCount(); markQuick(''); }); updateCount();
+    for (const q of document.querySelectorAll('[data-demo]')) q.addEventListener('click', () => demo(q.dataset.demo));
+    const more = $('quickMore');
+    if (more) more.addEventListener('click', e => { e.preventDefault(); const t = $('moreScenarios'); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); t.focus({ preventScroll: true }); });
+    playHeroIntro();
     initAI();
     const tabs = [...document.querySelectorAll('[data-tab]')];
     tabs.forEach((t, i) => {
@@ -408,7 +435,7 @@ if (HAS_DOM) {
       const a = e.target.closest('[data-go]'); if (!a) return;
       e.preventDefault(); const id = a.dataset.go; if (id === 'training') startTraining(); else go(id);
     });
-    window.addEventListener('popstate', e => { navDepth = (e.state && e.state.depth) || 0; const id = (e.state && e.state.screen) || location.hash.slice(1) || 'home'; if (id === 'training') renderTraining(); show($(id) ? id : 'home'); });
+    window.addEventListener('popstate', e => { navDepth = (e.state && e.state.depth) || 0; const id = (e.state && e.state.screen) || location.hash.slice(1) || 'home'; if (id === 'training') renderTraining(); show(screens.includes($(id)) ? id : 'home'); });
     const initial = location.hash.slice(1);
     const allowed = ['call', 'ad', 'after', 'afterMoney', 'afterAccess', 'afterSoftware', 'training'];
     if (allowed.includes(initial)) { if (initial === 'training') renderTraining(); show(initial, false); history.replaceState({ screen: initial }, '', '#' + initial); }
