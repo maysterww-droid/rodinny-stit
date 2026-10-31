@@ -38,6 +38,13 @@ for(const w of [360,390,430,1440]){
   await pg.evaluate(()=>document.querySelector('#ukazka').scrollIntoView());await pg.waitForTimeout(300);
   await pg.screenshot({path:`${out}/index-${w}-4-ukazka.png`});
  } else ok(await pg.isVisible('.nav'),`${w} desktop nav visible`);
+ { // spodní CTA blok s nočním domem
+  const cl=pg.locator('.closing');await cl.scrollIntoViewIfNeeded();await pg.waitForFunction(()=>{const i=document.querySelector('.closing-pic img');return i.complete&&i.naturalWidth>0;},null,{timeout:10000});await pg.waitForTimeout(200);
+  const info=await pg.evaluate(()=>{const i=document.querySelector('.closing-pic img');const box=document.querySelector('.closing').getBoundingClientRect();const vw=document.documentElement.clientWidth;const bad=[];for(const el of document.querySelectorAll('.closing-in > *')){const r=el.getBoundingClientRect();if(r.left<box.left-0.5||r.right>box.right+0.5||r.bottom>box.bottom+0.5||r.right>vw)bad.push(el.className||el.tagName);}return {src:i.currentSrc.split('/').pop(),bad,inVw:box.left>=0&&box.right<=vw};});
+  ok(/^night-home(-(800|1600)\.webp|\.svg)$/.test(info.src),`${w} night house photo loaded (${info.src})`);
+  ok(!info.bad.length&&info.inVw,`${w} closing block content not cut ${info.bad}`);
+  await cl.screenshot({path:`${out}/index-${w}-5-closing.png`});
+ }
  // hero CTA
  await pg.goto(B+'index.html');await pg.click('.hero-actions .btn-primary');await pg.waitForURL(/pilot\.html/);ok(true,`${w} hero CTA opens pilot`);
  await pg.waitForLoadState('networkidle');await pg.evaluate(()=>document.fonts.ready);
