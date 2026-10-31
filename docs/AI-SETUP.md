@@ -1,7 +1,7 @@
 # RODINNÝ ŠTÍT 1.0 — serverová AI analýza (pilot)
 
-Stav: **implementováno, bezpečnostní revize zapracována, otestováno jen se simulovaným modelem.**
-Server není nasazen, AI není zapnutá, nebyl proveden žádný placený požadavek. `main` ani veřejná GitHub Pages se nemění —
+Stav k 31. 10. 2026: **implementováno, otestováno jen se simulovaným modelem; AI stále vypnuta.**
+Existuje samostatný projekt Vercel `rodinny-stit-ai-preview` (ověřování Vercel Authentication), ale dřívější deployment `399a932` je omylem označen jako Production a neobsahuje Preview tajemství. Redis Upstash a klíč OpenAI jsou připojeny **jen k Preview**; v obou prostředích je `AI_ENABLED=false`. Nový Preview deployment je zatím neověřený. Nebyl proveden žádný placený požadavek. `main` ani veřejná GitHub Pages se nemění —
 na `*.github.io` zůstává AI volba skrytá a pilot používá jen lokální pravidla.
 
 ## 1. Výsledek pre-deploy security review
@@ -16,7 +16,7 @@ max_výstupních_tokenů = MAX_OUTPUT_TOKENS (1200; kód nepovolí víc než 200
 rezervace = max_vstup × cena_vstup + max_výstup × cena_výstup
 ```
 - Proč je to horní mez: tokenizéry OpenAI jsou byte-level BPE, každý token pokrývá ≥ 1 bajt UTF-8 → tokenů nemůže být víc než bajtů. Zpráva je navíc omezena na 3 000 znaků **a** 6 000 bajtů (emoji ani diakritika mez neobejdou). `max_output_tokens` je u Responses API tvrdý strop výstupu **včetně reasoning tokenů**.
-- Rezervace se zapisuje atomicky (`INCRBY` v Redis) **před** voláním. Pokud by přesáhla denní (1 USD) nebo měsíční (5 USD) strop, vrátí se a požadavek se odmítne → součet skutečných útrat nemůže strop překročit ani při souběžných požadavcích (ověřeno testem: 12 souběžných maximálních požadavků, poskytovatel účtuje plnou horní mez → obslouženy přesně 3 = ⌊rozpočet / horní mez⌋).
+- Rezervace se provádí jedním atomickým Redis Lua `EVAL` pro všechny kvóty a rozpočty **před** voláním. První skutečné ověření v Upstash se ještě musí provést. Pokud by přesáhla denní (1 USD) nebo měsíční (5 USD) strop, vrátí se a požadavek se odmítne → součet skutečných útrat nemůže strop překročit ani při souběžných požadavcích (ověřeno testem: 12 souběžných maximálních požadavků, poskytovatel účtuje plnou horní mez → obslouženy přesně 3 = ⌊rozpočet / horní mez⌋).
 - Nevyužitá část rezervace se vrací **jen po úspěšné odpovědi**; při timeoutu/chybě zůstává celá (poskytovatel mohl účtovat).
 - Ceny jsou vestavěné pro známé modely; proměnné `PRICE_*` je mohou jen **zvýšit**. Neznámý model bez cen = AI se nezapne (fail-closed).
 - Zbývající předpoklady (mimo kontrolu kódu): správnost ceníku a že OpenAI nezmění tokenizér/účtování. Proto druhá vrstva: **limit útraty v OpenAI projektu**.
