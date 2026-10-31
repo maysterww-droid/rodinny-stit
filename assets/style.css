@@ -390,3 +390,26 @@ mark{background:#ffe2a6;color:inherit;border-radius:4px;padding:0 2px;box-shadow
 .app-footer a{font-weight:600}
 @media (min-width:760px){.card{padding:24px}.risk{padding:22px}.sos{grid-template-columns:repeat(4,1fr)}}
 @media (max-width:380px){.badge{font-size:10.5px;letter-spacing:.03em}.hero h1{margin-top:12px}}
+
+/* ---------- 1.0 · volitelná AI analýza ---------- */
+.ai-box{margin:4px 0 14px}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.seg-opt{position:relative;display:flex;cursor:pointer}
+.seg-opt input{position:absolute;opacity:0;width:1px;height:1px}
+.seg-opt span{flex:1;display:flex;flex-direction:column;gap:2px;padding:10px 12px;border-radius:14px;border:1.5px solid #d9e4f2;background:#fff;box-shadow:var(--sh-s);line-height:1.25}
+.seg-opt b{font-size:14.5px;color:var(--navy)}.seg-opt em{font-style:normal;font-weight:600;color:var(--muted)}
+.seg-opt small{font-size:12.5px;color:var(--muted)}
+.seg-opt input:checked+span{border-color:var(--blue);background:var(--sky);box-shadow:0 0 0 3px rgba(21,101,216,.12)}
+.seg-opt input:focus-visible+span{outline:3px solid #5aa9ff;outline-offset:2px}
+.ai-consent{margin-top:10px;padding:14px;border-radius:16px;background:#fff;border:1px solid #dfe8f4;display:grid;gap:10px}
+.ai-notice{display:flex;gap:10px;font-size:13.5px;color:#3a5376;line-height:1.45}
+.ai-notice .ico{color:var(--blue);margin-top:1px}
+.ai-preview{font-size:13px;color:var(--muted)}
+.ai-preview div{margin-top:6px;padding:10px 12px;border-radius:12px;background:#f5f8fc;border:1px dashed #c9d8ec;color:#24405f;font-size:14px;white-space:pre-wrap;word-break:break-word;max-height:150px;overflow:auto}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:15px;font-weight:600;color:var(--navy);cursor:pointer}
+.consent input{width:22px;height:22px;flex:none;margin:0;accent-color:var(--blue)}
+.src-badge{display:inline-flex;align-items:center;gap:8px;margin:0 0 10px;padding:6px 12px 6px 8px;border-radius:999px;background:#eef3f9;border:1px solid #dbe5f1;color:#3a5376;font-size:13px;font-weight:700}
+.src-badge .ico{width:18px;height:18px;color:var(--mint)}
+.src-badge.ai{background:#eef0ff;border-color:#d5d9fb;color:#3b3f9a}.src-badge.ai .ico{color:#5b5fe0}
+.ai-explain{margin-top:12px;padding:14px;border-radius:16px;background:#fff;border:1px solid var(--line);font-size:15px;color:#24405f;line-height:1.5}
+.ai-box[hidden],.ai-consent[hidden]{display:none}

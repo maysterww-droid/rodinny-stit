@@ -58,7 +58,19 @@
    <button type="button" class="chip" onclick="maskEmails()">E-maily</button>
    <button type="button" class="chip" onclick="maskNumbers()">Dlouhá čísla</button>
   </div>
-  <button class="btn btn-primary btn-wide" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg>Zkontrolovat zprávu</button>
+  <div id="aiBox" class="ai-box" hidden>
+   <div class="seg" role="radiogroup" aria-label="Způsob kontroly">
+    <label class="seg-opt"><input type="radio" name="checkMode" value="local" checked><span><b>Lokální pravidla</b><small>Text zůstává v prohlížeči</small></span></label>
+    <label class="seg-opt"><input type="radio" name="checkMode" value="ai"><span><b>AI analýza <em>(pilotní)</em></b><small>Text se odešle k vyhodnocení</small></span></label>
+   </div>
+   <div id="aiConsentBox" class="ai-consent" hidden>
+    <p class="ai-notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lock"/></svg><span>Upravený text zprávy se odešle přes náš server poskytovateli jazykového modelu (OpenAI) k jednorázovému vyhodnocení. Neukládáme ho a nezapisujeme do logů. Telefony, e-maily a dlouhá čísla se před odesláním automaticky skryjí. <b>Nikdy nevkládejte hesla, PIN ani kódy z SMS.</b> Soulad s GDPR zatím nebyl odborně posouzen.</span></p>
+    <div class="ai-preview"><b>Takto se text odešle:</b><div id="aiPreview" aria-live="polite"></div></div>
+    <label class="consent"><input type="checkbox" id="aiAgree"><span>Souhlasím s odesláním tohoto upraveného textu k AI analýze.</span></label>
+   </div>
+  </div>
+  <button class="btn btn-primary btn-wide" id="analyzeBtn" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg><span>Zkontrolovat zprávu</span></button>
+  <button class="btn btn-ghost btn-wide hidden" id="cancelAiBtn" type="button" onclick="cancelAi()" style="margin-top:8px">Zrušit AI analýzu</button>
   <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Není připojen živý AI model. Nevkládejte hesla, PIN ani kódy.</span></div>
  </div>
 
@@ -114,11 +126,13 @@
   <button class="text-btn" type="button" onclick="go('home')"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-back"/></svg>Zpět</button>
   <div class="bar-actions"><button class="icon-btn" type="button" onclick="shareResult()" aria-label="Sdílet doporučení s blízkými"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-share"/></svg></button></div>
  </div>
+ <p class="src-badge" id="resultSource"><svg class="ico" aria-hidden="true"><use id="resultSourceIcon" href="assets/icons.svg#i-shield"/></svg><span id="resultSourceText">Kontrola podle lokálních pravidel</span></p>
  <div class="risk high" id="resultRisk">
   <span class="risk-ico"><svg class="ico" aria-hidden="true"><use id="riskIcon" href="assets/icons.svg#i-alert"/></svg></span>
   <div><h1 id="resultTitle" class="sr-only">Výsledek kontroly</h1><h2 id="resultHeading">Vysoké riziko podvodu</h2><p id="resultState">Tato zpráva obsahuje několik varovných signálů typických pro podvodné praktiky.</p>
    <div class="meter" aria-hidden="true"><i></i><i></i><i></i></div><span class="sr-only" id="riskLevelText"></span></div>
  </div>
+ <p id="aiExplain" class="ai-explain hidden"></p>
  <p id="shareState" class="status hidden" role="status" aria-live="polite"></p>
 
  <h2 class="subhead" id="signalsHead">Co v této zprávě vzbuzuje podezření?</h2>
@@ -256,6 +270,7 @@
 </main>
 
 <footer class="app-footer">RODINNÝ ŠTÍT · veřejný soutěžní pilot 0.9 · <a href="index.html">O projektu</a><br>Orientační kontrola podle pravidel v prohlížeči. Neověřuje identitu odesílatele ani pravost obrazu či hlasu a nezaručuje bezpečnost.</footer>
+<script src="assets/ai-config.js"></script>
 <script src="assets/site.js" defer></script>
 <script src="assets/app.js" defer></script>
 </body>

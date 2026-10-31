@@ -1,4 +1,6 @@
-# RODINNÝ ŠTÍT — soutěžní demonstrátor 0.9
+# RODINNÝ ŠTÍT — soutěžní demonstrátor 0.9 + příprava AI 1.0
+
+> **Větev `feature/ai-analysis-1`:** volitelná serverová AI analýza podezřelých SMS (OpenAI, strukturovaný výstup) s limity, denním rozpočtem, souhlasem a lokálním záložním režimem. **Zatím nenasazeno a nezapnuto** – viz [`docs/AI-SETUP.md`](docs/AI-SETUP.md).
 
 **AI výzva pro Česko 2026 · prevence digitálních podvodů**
 

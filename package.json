@@ -1,0 +1,12 @@
+{
+  "name": "rodinny-stit",
+  "version": "1.0.0-ai-preview",
+  "private": true,
+  "description": "RODINNÝ ŠTÍT – statický pilot + volitelné serverové API pro AI analýzu podezřelých zpráv",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "test": "node tests/smoke.cjs && node --test tests/api.test.cjs",
+    "test:browser": "node tests/browser-qa.cjs && node tests/browser-qa-ai.cjs",
+    "dev": "node server/dev-server.cjs 8790"
+  }
+}

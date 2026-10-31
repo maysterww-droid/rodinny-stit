@@ -1,0 +1,102 @@
+PASS 360 AI option shown when backend available
+PASS 360 local rules are the default
+PASS 360 consent box hidden in local mode
+PASS 360 no horizontal overflow
+PASS 360 local mode: labelled local, no POST
+PASS 360 AI mode shows consent, unchecked by default
+PASS 360 preview masks PII before sending: Volejte [SKRYTÉ TELEFONNÍ ČÍSLO] nebo pište na [SKRYTÝ E-MAIL], účet [SKRYTÝ ÚČET]
+PASS 360 no consent → no request, clear message
+PASS 360 AI result screen
+PASS 360 result labelled "AI analýza (pilotní)"
+PASS 360 simulated model clearly marked
+PASS 360 owner SMS → high risk
+PASS 360 safe advice: call old number, contact bank
+PASS 360 never claims safety
+PASS consent state after result
+PASS 360 benign → uncertain with caveat
+PASS 360 ambiguous → moderate
+PASS 360 prompt injection treated as warning
+PASS 360 model HTML rendered as plain text
+PASS 360 too long → no request
+PASS 360 provider 429 → Czech error
+PASS 360 provider 500 → Czech error
+PASS 360 provider TIMEOUT → Czech error
+PASS 360 provider GARBAGE → Czech error
+PASS 360 user-driven fallback is labelled local, not AI
+PASS 360 offline → clear message
+PASS 360 cancel button during request
+PASS 360 cancel works
+PASS 360 switching to local revokes consent
+PASS 360 revoked consent → nothing sent
+PASS 360 quota → Czech message + fallback
+PASS 360 server disabled → AI option hidden, local only
+PASS 360 browser never contacts the AI provider directly
+PASS 390 AI option shown when backend available
+PASS 390 local rules are the default
+PASS 390 consent box hidden in local mode
+PASS 390 no horizontal overflow
+PASS 390 local mode: labelled local, no POST
+PASS 390 AI mode shows consent, unchecked by default
+PASS 390 preview masks PII before sending: Volejte [SKRYTÉ TELEFONNÍ ČÍSLO] nebo pište na [SKRYTÝ E-MAIL], účet [SKRYTÝ ÚČET]
+PASS 390 no consent → no request, clear message
+PASS 390 AI result screen
+PASS 390 result labelled "AI analýza (pilotní)"
+PASS 390 simulated model clearly marked
+PASS 390 owner SMS → high risk
+PASS 390 safe advice: call old number, contact bank
+PASS 390 never claims safety
+PASS consent state after result
+PASS 390 benign → uncertain with caveat
+PASS 390 ambiguous → moderate
+PASS 390 prompt injection treated as warning
+PASS 390 model HTML rendered as plain text
+PASS 390 too long → no request
+PASS 390 provider 429 → Czech error
+PASS 390 provider 500 → Czech error
+PASS 390 provider TIMEOUT → Czech error
+PASS 390 provider GARBAGE → Czech error
+PASS 390 user-driven fallback is labelled local, not AI
+PASS 390 offline → clear message
+PASS 390 cancel button during request
+PASS 390 cancel works
+PASS 390 switching to local revokes consent
+PASS 390 revoked consent → nothing sent
+PASS 390 quota → Czech message + fallback
+PASS 390 server disabled → AI option hidden, local only
+PASS 390 browser never contacts the AI provider directly
+PASS 430 AI option shown when backend available
+PASS 430 local rules are the default
+PASS 430 consent box hidden in local mode
+PASS 430 no horizontal overflow
+PASS 430 local mode: labelled local, no POST
+PASS 430 AI mode shows consent, unchecked by default
+PASS 430 preview masks PII before sending: Volejte [SKRYTÉ TELEFONNÍ ČÍSLO] nebo pište na [SKRYTÝ E-MAIL], účet [SKRYTÝ ÚČET]
+PASS 430 no consent → no request, clear message
+PASS 430 AI result screen
+PASS 430 result labelled "AI analýza (pilotní)"
+PASS 430 simulated model clearly marked
+PASS 430 owner SMS → high risk
+PASS 430 safe advice: call old number, contact bank
+PASS 430 never claims safety
+PASS consent state after result
+PASS 430 benign → uncertain with caveat
+PASS 430 ambiguous → moderate
+PASS 430 prompt injection treated as warning
+PASS 430 model HTML rendered as plain text
+PASS 430 too long → no request
+PASS 430 provider 429 → Czech error
+PASS 430 provider 500 → Czech error
+PASS 430 provider TIMEOUT → Czech error
+PASS 430 provider GARBAGE → Czech error
+PASS 430 user-driven fallback is labelled local, not AI
+PASS 430 offline → clear message
+PASS 430 cancel button during request
+PASS 430 cancel works
+PASS 430 switching to local revokes consent
+PASS 430 revoked consent → nothing sent
+PASS 430 quota → Czech message + fallback
+PASS 430 server disabled → AI option hidden, local only
+PASS 430 browser never contacts the AI provider directly
+
+Errors:
+none
