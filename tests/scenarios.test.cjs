@@ -72,7 +72,7 @@ for (const [id, expected] of guidanceChecks) {
 // Additional development-only cases for the 1.3 hardening layer.
 // The sealed independent holdouts are deliberately NOT loaded by npm test.
 const devCases = JSON.parse(readFileSync(path.join(__dirname, 'hardening-dev-cs.json'), 'utf8')).cases;
-assert.equal(devCases.length, 19);
+assert.equal(devCases.length, 20);
 for (const entry of devCases) {
   test('1.3 contextual development QA: ' + entry.id, () => {
     const actual = analyze(entry.message);
