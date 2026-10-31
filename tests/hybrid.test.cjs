@@ -68,7 +68,7 @@ function harness(provider) {
   }
   const ctx = {
     document: doc, window: { scrollTo() {} },
-    fetch: fakeFetch, AbortController: FakeAbortController,
+    fetch: fakeFetch, AbortController: FakeAbortController, TextEncoder,
     setTimeout: () => 1, clearTimeout: () => {}, console
   };
   vm.createContext(ctx);
@@ -123,6 +123,17 @@ test('consent is bound to the exact masked content and revoked after an edit', (
   assert.equal(h.element('aiAgree').checked, false);
   assert.equal(h.run('AI.consentSnapshot'), null);
   assert.equal(h.network.length, 0);
+});
+
+test('overlong or over-byte-limit AI input is rejected before consent, with zero requests', async () => {
+  const h = harness();
+  h.run('AI.available = true');
+  for (const input of ['x'.repeat(3100), '🛡️'.repeat(900)]) {
+    h.element('msg').value = input;
+    await h.run('analyzeWithAI(document.getElementById("msg").value)');
+    assert.equal(h.network.length, 0, 'cannot send invalid input');
+    assert.match(h.element('aiMode').innerHTML, /příliš dlouhý/);
+  }
 });
 
 test('without fresh consent AI call is refused before fetch', async () => {
