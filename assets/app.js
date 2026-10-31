@@ -130,7 +130,7 @@ const SIGNS = [
  {id:'pressure',icon:'i-clock',name:'Časový nátlak',detail:'Zpráva vás nutí jednat rychle a bez přemýšlení.',pattern:/(?:ihned|okamžitě|urgentn|spěchá|spěchejte|rychle|do \d+ minut|za \d+ minut|dnes|hned|pospěš|neodkladně|nejpozději|teď hned|time limit)/i},
  {id:'money',icon:'i-cash',name:'Požadavek na peníze',detail:'Zpráva žádá platbu, převod, finanční dar nebo peníze.',pattern:/(?:pošli|poslat|pošlete|převeď|převod|platbu|zaplať|zaplatit|uhrad|peníze|částku|bankovní účet|půjč|příspěv|finanční dar|dar pro|poplatek|zálohu|poukazy|\d[\d ]{0,10}\s*(?:kč|czk|eur|€))/i},
  {id:'newContact',icon:'i-phone',name:'Nové kontaktní číslo',detail:'Odesílatel tvrdí, že změnil telefon nebo způsob kontaktu.',pattern:/(?:nové číslo|nový telefon|starý telefon|rozbil|ztratil.*telefon|jiného čísla|new number)/i},
- {id:'access',icon:'i-key',name:'Žádost o kód nebo heslo',detail:'Neprozrazujte hesla, přihlašovací kódy, údaje z karty ani obnovovací fráze.',pattern:/(?:pin|heslo|ověřovací kód|jednorázov[ýé]|přihlašovac[íi]|sdělte.*kód|pošlete.*kód|přístupový kód|sms kód|cvv|číslo platební karty|obnovovací frázi|seed phrase)/i},
+ {id:'access',icon:'i-key',name:'Žádost o kód nebo heslo',detail:'Neprozrazujte hesla, přihlašovací kódy, údaje z karty ani obnovovací fráze.',pattern:/(?:\bpin\b|heslo|ověřovací kód|jednorázov[ýé]|přihlašovac[íi]|sdělte.*kód|pošlete.*kód|přístupový kód|sms kód|cvv|číslo platební karty|obnovovací frázi|seed phrase)/i},
  {id:'install',icon:'i-monitor',name:'Vzdálený přístup',detail:'Před instalací nebo sdílením obrazovky nezávisle ověřte, kdo to po vás chce.',pattern:/(?:nainstaluj|nainstalova|nainstalujte|instaluj|aplikaci pro|vzdálený přístup|anydesk|teamviewer|remote access|sdílení obrazovky)/i},
  {id:'secrecy',icon:'i-eyeoff',name:'Brání ověření',detail:'Zpráva odrazuje od zavolání nebo nezávislé kontroly.',pattern:/(?:nevolej|nevolat|nikomu neříkej|nikomu to neříkej|tajné|teď nemohu mluvit|neptej se|jenom mi věř)/i},
  {id:'authority',icon:'i-bank',name:'Vydávání se za autoritu',detail:'Odesílatel se odvolává na banku, policii, úřad nebo dopravce.',pattern:/(?:bezpečnostní oddělení|policie|kriminální|banka|banky|finanční úřad|česká pošta|zásilka|kurýr|podpora účtu|zablokován|zablokujeme)/i},
@@ -204,7 +204,7 @@ function classify(text) {
   const bankChange = is(/(?:novy.{0,18}ucet|nove.{0,20}udaje|zmenen.{0,25}uctu|jiny ucet|zachrann.{0,12}ucet|bezpecn.{0,12}ucet|bankovni spojeni)/);
   const familyPhone = is(/(?:nove cislo|jineho cisla|nemohu mluvit|telefonovat nemuzu|mobil.{0,18}(?:nefunguje|rozbit|klekn)|nevolej)/);
   const family = is(/(?:mami|maminko|babi|tati|syn|dcera|dite)/);
-  const credentials = is(/(?:sd[eě]lte|nadiktuj|preposl|poslete|posli|vypln|zadej|uvedte|fotograf|snimek|send|share).{0,100}(?:kod|pin|hesl|cvv|platebni kart|obnovovac|fr[aá]z|udaj)/);
+  const credentials = is(/(?:sd[eě]lte|nadiktuj|preposl|poslete|posli|vypln|zadej|uvedte|fotograf|snimek|send|share).{0,100}(?:\b(?:kod|pin|cvv)\b|hesl|platebni kart|obnovovac|fr[aá]z|udaj)/);
   const remote = is(/(?:anydesk|teamviewer|vzdalen.{0,14}(?:pristup|sprav)|sdileni obrazovky)/) && is(/(?:stahn|nainstal|spust|povol|dejte|otevr)/);
   const cash = is(/(?:vyberte.{0,40}hotovost|predat.{0,30}kuryr|predejte.{0,30}kuryr|kuryr.{0,30}hotovost)/);
   const threat = is(/(?:zverejnime|rozesleme|vydira|soukrom.{0,12}video|z kamery)/) && (money || paying);
