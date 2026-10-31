@@ -108,3 +108,10 @@ node tests/browser-qa.cjs      # regrese vizuálu a funkcí 0.9
 npm run dev                    # http://localhost:8790/pilot.html se simulovaným modelem
 ```
 AI výsledky v testech pocházejí ze simulovaného modelu (`server/mock-provider.cjs`) a jsou v UI označeny „TESTOVACÍ REŽIM“. Skutečné spojení s OpenAI dosud ověřeno nebylo.
+
+## Uzavřený live smoke test (31. 10. 2026)
+- Schválen majitelem: pouze chráněný Vercel Preview projektu `rodinny-stit-ai-preview`.
+- Preview: `AI_ENABLED=true`, `LIMIT_GLOBAL_DAY=1`, `LIMIT_PER_IP_HOUR=1`, `LIMIT_PER_IP_DAY=1`.
+- Serverové rezervace: `DAILY_BUDGET_USD=0.02` a `MONTHLY_BUDGET_USD=0.02`; `OPENAI_MODEL=gpt-5.4-mini`, reasoning `none`.
+- Production: AI nadále vypnuta; veřejné GitHub Pages zůstává beze změny.
+- Žádná skutečná AI analýza zatím není potvrzena. Výsledek ověřit pomocí odpovědi a runtime logu, potom AI opět vypnout.
