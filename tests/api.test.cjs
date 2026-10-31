@@ -268,3 +268,31 @@ test('temporary owner-only Preview test expires without invoking provider', asyn
   assert.equal((await call(future.h, { body: ok() })).status, 200);
   assert.equal(future.calls.length, 1);
 });
+
+test('AI evidence excerpts must match the submitted message; invented quotes cannot establish risk', () => {
+  const message = 'Ahoj mami, mám nové číslo. Pošli mi 5000 Kč dnes.';
+  const signal = (name_cs, excerpt) => ({ name_cs, excerpt, explanation_cs: 'Podezřelý signál.' });
+  const report = {
+    risk: 'high', scope: 'message_analysis', explanation_cs: 'Text žádá o peníze.',
+    warning_signals: [signal('Nový kontakt', 'mám nové číslo'), signal('Vymyšlená citace', 'tajný bankovní účet')],
+    recommended_steps: ['Zavolejte blízkému na původní číslo.', 'Uchovejte si zprávu.'],
+    uncertainty_cs: 'Totožnost odesílatele není ověřena.'
+  };
+  const checked = validateResult(report, message);
+  assert.equal(checked.warning_signals.length, 1);
+  assert.equal(checked.warning_signals[0].excerpt, 'mám nové číslo');
+  assert.equal(validateResult({ ...report, warning_signals: [signal('Nepravdivý důkaz', 'tajný bankovní účet')] }, message), null);
+  assert.equal(validateResult({ ...report, scope: 'not_a_message' }, message), null);
+});
+
+test('AI recommendations never tell users to erase potential evidence', () => {
+  const report = {
+    risk: 'high', scope: 'message_analysis', explanation_cs: 'Podezřelý nátlak.',
+    warning_signals: [{ name_cs: 'Nátlak', explanation_cs: 'Časový tlak.', excerpt: 'dnes' }],
+    recommended_steps: ['Smažte podezřelou zprávu.', 'Neodpovídejte a vše ověřte u blízkého.', 'Nesmažte původní zprávu.'],
+    uncertainty_cs: 'Není ověřena identita.'
+  };
+  const result = validateResult(report, 'Pošli peníze dnes');
+  assert.deepEqual(result.recommended_steps, ['Neodpovídejte a vše ověřte u blízkého.', 'Nesmažte původní zprávu.']);
+  assert.equal(validateResult({ ...report, recommended_steps: ['Vymažte zprávu.'] }, 'Pošli peníze dnes'), null);
+});
