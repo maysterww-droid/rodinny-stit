@@ -112,6 +112,7 @@ AI výsledky v testech pocházejí ze simulovaného modelu (`server/mock-provide
 ## Uzavřený live smoke test (31. 10. 2026)
 - Schválen majitelem: pouze chráněný Vercel Preview projektu `rodinny-stit-ai-preview`.
 - Preview: `AI_ENABLED=true`, `LIMIT_GLOBAL_DAY=1`, `LIMIT_PER_IP_HOUR=1`, `LIMIT_PER_IP_DAY=1`.
+- Testovací okno končí automaticky 31. 10. 2026 ve 22:00 UTC (`AI_TEST_EXPIRES_AT`); poté API odmítá placené AI požadavky bez ohledu na reset kvót.
 - Serverové rezervace: `DAILY_BUDGET_USD=0.02` a `MONTHLY_BUDGET_USD=0.02`; `OPENAI_MODEL=gpt-5.4-mini`, reasoning `none`.
 - Production: AI nadále vypnuta; veřejné GitHub Pages zůstává beze změny.
 - Žádná skutečná AI analýza zatím není potvrzena. Výsledek ověřit pomocí odpovědi a runtime logu, potom AI opět vypnout.
