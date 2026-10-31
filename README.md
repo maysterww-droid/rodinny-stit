@@ -26,7 +26,7 @@ Jde o **pilotní demonstrátor, nikoli dokončený bezpečnostní produkt**. Ve 
 
 ### Architektura
 
-Statický web HTML + CSS + JavaScript, bez backendu a bez build procesu. `index.html` je česká prezentace projektu; `pilot.html` samostatná interaktivní aplikace; `assets/app.js` vyhodnocovací logika, `assets/site.js` mobilní menu, `assets/style.css` vizuální systém (mobile-first). Vlastní grafika: `logo.svg` / `favicon.svg` (štít s rodinou a domem), fotorealistický AI obrázek rodiny `hero-family-*.webp/jpg` (zdroj v `assets/CREDITS.md`, příprava `tools/prepare-hero.py`), `night-home.svg`, sada ikon `icons.svg`. Písma Inter a Caveat jsou hostována lokálně (SIL OFL 1.1, `assets/fonts`). GitHub Pages publikuje větev `main` ze složky `/`.
+Statický web HTML + CSS + JavaScript, bez backendu a bez build procesu. `index.html` je česká prezentace projektu; `pilot.html` samostatná interaktivní aplikace; `assets/app.js` vyhodnocovací logika, `assets/site.js` mobilní menu, `assets/style.css` vizuální systém (mobile-first). Vlastní grafika: `logo.svg` / `favicon.svg` (štít s rodinou a domem), fotorealistický AI obrázek rodiny `hero-family-*.webp/jpg` (zdroj v `assets/CREDITS.md`, příprava `tools/prepare-hero.py`), noční scéna domu `night-home-*.webp/jpg` (AI, `tools/prepare-night.py`), sada ikon `icons.svg`. Písma Inter a Caveat jsou hostována lokálně (SIL OFL 1.1, `assets/fonts`). GitHub Pages publikuje větev `main` ze složky `/`.
 
 ### Kontrola
 

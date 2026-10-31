@@ -7,6 +7,8 @@ PASS 360 hamburger opens menu
 PASS 360 aria-expanded true
 PASS 360 Escape closes menu
 PASS 360 menu link closes menu
+PASS 360 night house photo loaded (night-home-800.webp)
+PASS 360 closing block content not cut 
 PASS 360 hero CTA opens pilot
 PASS 360 pilot no horizontal overflow
 PASS 360 empty input warning
@@ -55,6 +57,8 @@ PASS 390 hamburger opens menu
 PASS 390 aria-expanded true
 PASS 390 Escape closes menu
 PASS 390 menu link closes menu
+PASS 390 night house photo loaded (night-home-800.webp)
+PASS 390 closing block content not cut 
 PASS 390 hero CTA opens pilot
 PASS 390 pilot no horizontal overflow
 PASS 390 empty input warning
@@ -103,6 +107,8 @@ PASS 430 hamburger opens menu
 PASS 430 aria-expanded true
 PASS 430 Escape closes menu
 PASS 430 menu link closes menu
+PASS 430 night house photo loaded (night-home-1600.webp)
+PASS 430 closing block content not cut 
 PASS 430 hero CTA opens pilot
 PASS 430 pilot no horizontal overflow
 PASS 430 empty input warning
@@ -148,6 +154,8 @@ PASS 1440 hero photo crop 10.2% <= 12%
 PASS 1440 no cut-off hero overlays/images/buttons 
 PASS 1440 index images ok 
 PASS 1440 desktop nav visible
+PASS 1440 night house photo loaded (night-home-1600.webp)
+PASS 1440 closing block content not cut 
 PASS 1440 hero CTA opens pilot
 PASS 1440 pilot no horizontal overflow
 PASS 1440 empty input warning
@@ -250,7 +258,7 @@ PASS asset assets/fonts/inter-latin-wght-normal.woff2
 PASS asset assets/style.css
 PASS asset assets/logo.svg
 PASS asset assets/hero-family-1400.jpg
-PASS asset assets/night-home.svg
+PASS asset assets/night-home-1600.jpg
 PASS asset assets/site.js
 PASS asset assets/app.js
 

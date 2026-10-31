@@ -41,7 +41,7 @@ for(const w of [360,390,430,1440]){
  { // spodní CTA blok s nočním domem
   const cl=pg.locator('.closing');await cl.scrollIntoViewIfNeeded();await pg.waitForFunction(()=>{const i=document.querySelector('.closing-pic img');return i.complete&&i.naturalWidth>0;},null,{timeout:10000});await pg.waitForTimeout(200);
   const info=await pg.evaluate(()=>{const i=document.querySelector('.closing-pic img');const box=document.querySelector('.closing').getBoundingClientRect();const vw=document.documentElement.clientWidth;const bad=[];for(const el of document.querySelectorAll('.closing-in > *')){const r=el.getBoundingClientRect();if(r.left<box.left-0.5||r.right>box.right+0.5||r.bottom>box.bottom+0.5||r.right>vw)bad.push(el.className||el.tagName);}return {src:i.currentSrc.split('/').pop(),bad,inVw:box.left>=0&&box.right<=vw};});
-  ok(/^night-home(-(800|1600)\.webp|\.svg)$/.test(info.src),`${w} night house photo loaded (${info.src})`);
+  ok(/^night-home-(800|1600)\.webp$/.test(info.src),`${w} night house photo loaded (${info.src})`);
   ok(!info.bad.length&&info.inVw,`${w} closing block content not cut ${info.bad}`);
   await cl.screenshot({path:`${out}/index-${w}-5-closing.png`});
  }

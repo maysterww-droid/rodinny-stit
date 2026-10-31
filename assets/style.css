@@ -223,13 +223,13 @@ p{margin:0}
 /* closing – noční dům pod ochranou */
 .closing{position:relative;border-radius:30px;overflow:hidden;color:#fff;display:flex;flex-direction:column;box-shadow:var(--sh-l);background:#061633;isolation:isolate}
 .closing-pic{display:block;position:relative;aspect-ratio:4/3;overflow:hidden}
-.closing-pic img{width:100%;height:100%;object-fit:cover;object-position:74% 55%}
+.closing-pic img{width:100%;height:100%;object-fit:cover;object-position:74% 55%;filter:brightness(1.12) saturate(1.08)}
 .closing-pic::before{content:"";position:absolute;z-index:1;left:52%;top:18%;width:70%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(110,180,255,.22) 0%,rgba(110,180,255,0) 62%);pointer-events:none;mix-blend-mode:screen}
-.closing-pic::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(6,22,51,.15) 0%,rgba(6,22,51,0) 35%,rgba(6,22,51,.55) 75%,#061633 100%)}
-.closing-in{position:relative;z-index:2;margin-top:-64px;padding:0 22px 26px;display:grid;gap:10px 14px;grid-template-columns:auto 1fr;align-items:center}
+.closing-pic::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(6,22,51,0) 0%,rgba(6,22,51,0) 50%,rgba(6,22,51,.6) 80%,#061633 100%)}
+.closing-in{position:relative;z-index:2;margin-top:-52px;padding:0 22px 24px;display:grid;gap:10px 14px;grid-template-columns:auto 1fr;align-items:center}
 .closing-logo{width:62px;filter:drop-shadow(0 0 16px rgba(95,180,255,.85)) drop-shadow(0 8px 14px rgba(0,0,0,.4))}
 .closing-in h2{color:#fff;font-size:26px;font-weight:900;letter-spacing:-.02em;text-shadow:0 2px 12px rgba(0,0,0,.45)}
-.closing-in p{grid-column:1/-1;font-size:20px;line-height:1.3;color:#e3eeff;font-weight:600;margin-top:4px}
+.closing-in p{grid-column:1/-1;font-size:20px;line-height:1.3;color:#e3eeff;font-weight:600;margin-top:-2px}
 .closing-in .btn{grid-column:1/-1;justify-self:stretch;margin-top:8px}
 @media (min-width:960px){
  .closing{display:block;min-height:440px}
