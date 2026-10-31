@@ -7,9 +7,10 @@
     "node": ">=20"
   },
   "scripts": {
-    "test": "node tests/smoke.cjs && node --test tests/api.test.cjs tests/scenarios.test.cjs",
+    "test": "node tests/smoke.cjs && node --test tests/api.test.cjs tests/scenarios.test.cjs tests/hybrid.test.cjs",
     "test:browser": "node tests/browser-qa.cjs && node tests/browser-qa-ai.cjs",
     "dev": "node server/dev-server.cjs 8790",
-    "test:quality": "node --test tests/scenarios.test.cjs"
+    "test:quality": "node --test tests/scenarios.test.cjs",
+    "test:hybrid": "node --test tests/hybrid.test.cjs"
   }
 }
