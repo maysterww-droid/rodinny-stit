@@ -17,14 +17,14 @@ const LUA_RESERVE = [
   "redis.call('INCRBY',KEYS[4],cost); redis.call('EXPIRE',KEYS[4],tonumber(ARGV[10]),'NX')",
   "redis.call('INCRBY',KEYS[5],cost); redis.call('EXPIRE',KEYS[5],tonumber(ARGV[11]),'NX')",
   "return 'ok'"
-].join('\\n');
+].join('\n');
 const LUA_REFUND = [
   "local amount=tonumber(ARGV[1])",
   "if amount<=0 then return 0 end",
   "redis.call('INCRBY',KEYS[1],-amount)",
   "redis.call('INCRBY',KEYS[2],-amount)",
   "return 1"
-].join('\\n');
+].join('\n');
 
 function upstashStore({ url, token, fetchImpl = fetch, timeoutMs = 3000 }) {
   if (!url || !token) return null;
