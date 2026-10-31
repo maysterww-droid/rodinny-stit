@@ -39,3 +39,18 @@ The independent challenge set shows an improvement in *synthetic* high-risk dete
 5. Run `npm test` plus browser/Android QA before merge or any public release.
 
 **Cost / deployment:** No live AI calls or spending. No Production, competition site or `main` changes. Visual baseline Pilot 1.1 remains owner-approved and frozen.
+
+## Post-holdout engineering change (NOT a new independent score)
+
+After the single acceptance evaluation above was recorded, the developer discovered an
+implementation bug: the substring `pin` in an ordinary Czech word (e.g. *skupiny*)
+was misinterpreted as a secret PIN. Generic word boundaries were added in
+`assets/app.js` (commit `f214907`) and a separate, differently worded
+developer regression case was introduced. This was **after** looking at Holdout B.
+Therefore **32/60 remains the only unbiased B result**. Re-running B after this
+fix cannot be presented as a second independent benchmark.
+
+Direct, local JavaScript checks now cover **120/120 development cases**
+(100 original + 20 new, including grounded warning quotes and 2–5 next steps).
+The complete Node `npm test` suite and physical Android have **not** yet been run
+for this post-holdout branch. Public deployment remains blocked.
