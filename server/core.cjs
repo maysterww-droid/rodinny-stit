@@ -83,9 +83,11 @@ function validateResult(p, sourceText = null) {
   if (p.scope === 'not_a_message' && p.risk !== 'uncertain') return null;
   // A confident risk label requires an identified signal, not an unsupported guess.
   if (p.risk !== 'uncertain' && !signals.length) return null;
+  // High-risk results must include at least one grounded quotation when source is available.
+  if (source !== null && p.risk === 'high' && !signals.some(s => s.excerpt && source.includes(s.excerpt.toLocaleLowerCase('cs')))) return null;
   const explanation = clip(p.explanation_cs, 600), uncertainty = clip(p.uncertainty_cs, 300);
   // Do not forward absolute guarantees or false claims that the sender was verified.
-  const fakeAssurance = /(?:\b(?:zpráva|sms|e-mail|odkaz)\s+(?:je|jsou)\s+(?:(?:zcela|naprosto|určitě|bezpochyby|100\s*%)\s+)?bezpečn|ověřili jsme (?:totožnost|odesílatele)|zaručujeme bezpečn)/iu;
+  const fakeAssurance = /(?:\b(?:zpráva|sms|e-mail|odkaz|účet)\s+(?:je|jsou)\s+(?:(?:zcela|naprosto|určitě|bezpochyby|100\s*%)\s+)?bezpečn|ověřili jsme (?:totožnost|odesílatele)|zaručujeme bezpečn)/iu;
   if (fakeAssurance.test(explanation) || fakeAssurance.test(uncertainty)) return null;
   // The model generates advice, but can itself hallucinate a dangerous next step.
   // Filter such steps server-side, while permitting negated instructions like "Nesmažte".
@@ -94,7 +96,7 @@ function validateResult(p, sourceText = null) {
   if (!steps.length) return null;
   // If an unsafe deletion instruction was removed, replace it with a concrete
   // evidence-preservation step rather than leaving a gap in the advice.
-  if (p.risk !== 'uncertain' && steps.length < 5 && !steps.some(s => /uchov|uschov|ulož|nesmaž|důkaz/iu.test(s))) {
+  if (p.risk !== 'uncertain' && steps.length < 5 && !steps.some(s => /uchov|uschov|ulož|nesmaž|nemaž|důkaz/iu.test(s))) {
     steps.push('Původní zprávu nemažte; uchovejte ji nebo snímek obrazovky jako případný důkaz.');
   }
   return {
