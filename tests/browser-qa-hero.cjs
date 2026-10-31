@@ -88,9 +88,24 @@ const phoneQuad = pg => pg.evaluate(() => { const r = document.querySelector('.p
   {
     const ctx = await b.newContext({ viewport: { width: 390, height: 520 }, deviceScaleFactor: 2, isMobile: true });
     const pg = await ctx.newPage(); await pg.goto(B, { waitUntil: 'domcontentloaded' });
-    const t0 = Date.now(); const frames = [];
-    for (const t of [80, 500, 900, 1200, 1500, 1750, 2400]) { const wait = t - (Date.now() - t0); if (wait > 0) await pg.waitForTimeout(wait); const f = `${out}/anim-390-${String(t).padStart(4, '0')}ms.png`; await pg.screenshot({ path: f }); frames.push(f); }
-    await pg.waitForTimeout(200); const running = await pg.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length);
+    const t0 = Date.now(); const frames = [], shieldOffsets = [];
+    const shieldOffset = () => pg.evaluate(() => {
+      const stage = document.querySelector('.ph-stage').getBoundingClientRect();
+      const shield = document.querySelector('.ph-shield').getBoundingClientRect();
+      return shield.left + shield.width / 2 - (stage.left + stage.width / 2);
+    });
+    for (const t of [80, 500, 900, 1200, 1500, 1750, 2400]) {
+      const wait = t - (Date.now() - t0);
+      if (wait > 0) await pg.waitForTimeout(wait);
+      const f = `${out}/anim-390-${String(t).padStart(4, '0')}ms.png`;
+      await pg.screenshot({ path: f });
+      if (t >= 500) shieldOffsets.push({ time: t, offset: await shieldOffset() });
+      frames.push(f);
+    }
+    await pg.waitForTimeout(200);
+    shieldOffsets.push({ time: 2600, offset: await shieldOffset() });
+    ok(shieldOffsets.every(s => Math.abs(s.offset) < 2), `shield stays horizontally centered throughout intro and after .play removal (${shieldOffsets.map(s => s.time + 'ms:' + s.offset.toFixed(1)).join(', ')})`);
+    const running = await pg.evaluate(() => document.getAnimations().filter(a => a.playState === 'running').length);
     ok(running === 0, `animation finished, no endless animations (${running} running after 2.6 s)`);
     ok(frames.length === 7, 'animation filmstrip captured');
     await ctx.close();
