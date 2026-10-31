@@ -7,7 +7,7 @@ class ProviderError extends Error {
   constructor(code, status) { super(code); this.code = code; this.status = status; }
 }
 
-async function callOpenAI({ text, apiKey, model, maxOutputTokens, timeoutMs, fetchImpl = fetch, baseUrl = 'https://api.openai.com/v1' }) {
+async function callOpenAI({ text, apiKey, model, reasoningEffort = '', maxOutputTokens, timeoutMs, fetchImpl = fetch, baseUrl = 'https://api.openai.com/v1' }) {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), timeoutMs);
   let r;
@@ -19,7 +19,8 @@ async function callOpenAI({ text, apiKey, model, maxOutputTokens, timeoutMs, fet
         model,
         instructions: INSTRUCTIONS,
         input: buildInput(text),
-        max_output_tokens: maxOutputTokens,
+        max_output_tokens: maxOutputTokens,  // tvrdý strop včetně reasoning tokenů
+        ...(reasoningEffort ? { reasoning: { effort: reasoningEffort } } : {}),
         store: false,                       // neukládat odpověď u poskytovatele
         text: { format: { type: 'json_schema', name: 'scam_analysis', strict: true, schema: RESPONSE_SCHEMA } }
       })
@@ -34,7 +35,7 @@ async function callOpenAI({ text, apiKey, model, maxOutputTokens, timeoutMs, fet
 
   let data;
   try { data = await r.json(); } catch { throw new ProviderError('provider_bad_json'); }
-  if (data.status && data.status !== 'completed') throw new ProviderError('provider_incomplete');
+  if (data.status && data.status !== 'completed') throw new ProviderError('provider_incomplete'); // např. vyčerpán max_output_tokens
   const parts = (data.output || []).filter(o => o.type === 'message').flatMap(o => o.content || []);
   if (parts.some(p => p.type === 'refusal')) throw new ProviderError('provider_refusal');
   const raw = parts.filter(p => p.type === 'output_text').map(p => p.text).join('');

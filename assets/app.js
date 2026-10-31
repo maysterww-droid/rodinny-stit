@@ -183,7 +183,7 @@ function analyzeLocal(text = $('msg').value.trim()) {
 /* ================= AI analýza (volitelná, pilotní) =================
  * Zobrazí se jen tehdy, když server hlásí dostupnost. Výchozí je vždy režim lokálních pravidel.
  * Odesílá se jen text (nikdy obrázek), po automatickém skrytí osobních údajů a po výslovném souhlasu. */
-const AI = { endpoint: '', available: false, previewToken: '', maxChars: 3000, ctl: null };
+const AI = { endpoint: '', available: false, maxChars: 3000, ctl: null };
 const AI_ERRORS = {
   consent_required: 'Pro AI analýzu je potřeba zaškrtnout souhlas s odesláním textu.',
   too_long: 'Text je pro AI analýzu příliš dlouhý (max. 3 000 znaků). Zkraťte ho, nebo použijte lokální pravidla.',
@@ -194,7 +194,8 @@ const AI_ERRORS = {
   ai_busy: 'Služba AI je právě přetížená. Zkuste to za chvíli, nebo použijte lokální pravidla.',
   ai_timeout: 'AI analýza trvala příliš dlouho a byla přerušena.',
   ai_unavailable: 'AI analýza je momentálně vypnutá nebo nedostupná.',
-  preview_only: 'AI analýza je zatím jen v uzavřeném testování.',
+  origin_required: 'Požadavek byl odmítnut z bezpečnostních důvodů.',
+  origin_not_allowed: 'Požadavek byl odmítnut z bezpečnostních důvodů.',
   offline: 'Nepodařilo se spojit se serverem (jste offline, nebo je služba nedostupná).',
   cancelled: 'AI analýzu jste zrušili. Nic dalšího se neodeslalo.'
 };
@@ -243,9 +244,8 @@ async function analyzeWithAI(rawText) {
   const timer = setTimeout(() => { timedOut = true; AI.ctl.abort('timeout'); }, 25000);
   setBusy(true); setMode('', 'Odesílám upravený text k AI analýze…');
   try {
-    const headers = { 'Content-Type': 'application/json' };
-    if (AI.previewToken) headers['X-Preview-Token'] = AI.previewToken;
-    const r = await fetch(AI.endpoint, { method: 'POST', headers, body: JSON.stringify({ text, language: 'cs', consent: true }), signal: AI.ctl.signal, credentials: 'omit' });
+    // same-origin: na chráněném Vercel Preview se posílá i přihlašovací cookie Deployment Protection
+    const r = await fetch(AI.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ text, language: 'cs', consent: true }), signal: AI.ctl.signal, credentials: 'same-origin' });
     let data = null; try { data = await r.json(); } catch { /* ignorovat */ }
     if (!r.ok || !data || !data.ok || data.mode !== 'ai' || !data.result) return aiError((data && data.error) || 'ai_failed');
     lastResult = { kind: 'ai', ...data.result, model: String(data.model || '') };
@@ -294,12 +294,10 @@ function setSource(kind, model = '') {
 async function initAI() {
   const cfg = window.RODINNY_STIT_AI || {};
   AI.endpoint = typeof cfg.endpoint === 'string' ? cfg.endpoint : '';
-  const q = new URLSearchParams(location.search);
-  if (q.get('preview')) { AI.previewToken = q.get('preview').slice(0, 200); q.delete('preview'); history.replaceState(history.state, '', location.pathname + (q.toString() ? '?' + q : '') + location.hash); }
   if (!AI.endpoint) return;
   const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 4000);
   try {
-    const r = await fetch(AI.endpoint, { method: 'GET', signal: ctl.signal, credentials: 'omit' });
+    const r = await fetch(AI.endpoint, { method: 'GET', signal: ctl.signal, credentials: 'same-origin' });
     const d = await r.json();
     if (r.ok && d && d.ok && d.ai === true) {
       AI.available = true; AI.maxChars = Number(d.maxChars) || 3000;

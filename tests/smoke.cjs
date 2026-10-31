@@ -39,5 +39,10 @@ assert.equal((source.match(/fetch\(/g)||[]).length,2,'only health check + consen
 assert.ok(/if \(!\$\('aiAgree'\)\.checked\)/.test(source),'AI request requires explicit consent');
 const masked=vm.runInContext("maskForAI('Volej +420 777 123 456, účet 19-123456789/0100, kód 482913, jan@seznam.cz')",ctx);
 assert.ok(!/777|123456789|482913|seznam/.test(masked),'PII masked before AI: '+masked);
-assert.equal(require('fs').readFileSync(path.join(__dirname,'..','assets','ai-config.js'),'utf8').match(/endpoint:\s*'([^']*)'/)[1],'','AI endpoint empty by default (local only)');
+const cfgSrc=require('fs').readFileSync(path.join(__dirname,'..','assets','ai-config.js'),'utf8');
+for (const [host,exp] of [['maysterww-droid.github.io',''],['localhost',''],['rodinny-stit-git-feature-ai-analysis-1-x.vercel.app','/api/analyze']]) {
+ const c={window:{},location:{hostname:host}};vm.createContext(c);vm.runInContext(cfgSrc,c);
+ assert.equal(c.window.RODINNY_STIT_AI.endpoint,exp,'ai-config endpoint for '+host);
+}
+assert.ok(!/preview|token/i.test(source.replace(/Preview/g,'')),'no preview token handling in client');
 console.log('OK escaped excerpts and no external server analysis');

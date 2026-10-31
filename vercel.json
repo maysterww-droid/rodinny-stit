@@ -1,7 +1,10 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["fra1"],
+  "git": { "deploymentEnabled": { "main": false } },
+  "ignoreCommand": "[ \"$VERCEL_GIT_COMMIT_REF\" != \"feature/ai-analysis-1\" ]",
   "functions": {
-    "api/analyze.js": { "maxDuration": 20, "memory": 256 }
+    "api/analyze.js": { "maxDuration": 30, "memory": 256 }
   },
   "headers": [
     {
@@ -10,6 +13,13 @@
         { "key": "Cache-Control", "value": "no-store" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
         { "key": "Referrer-Policy", "value": "no-referrer" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Robots-Tag", "value": "noindex, nofollow" },
+        { "key": "X-Frame-Options", "value": "DENY" }
       ]
     }
   ]
