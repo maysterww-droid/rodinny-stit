@@ -1,7 +1,7 @@
 # RODINNÝ ŠTÍT 1.0 — serverová AI analýza (pilot)
 
-Stav k 31. 10. 2026: **implementováno, otestováno jen se simulovaným modelem; AI stále vypnuta.**
-Existuje samostatný projekt Vercel `rodinny-stit-ai-preview` (ověřování Vercel Authentication), ale dřívější deployment `399a932` je omylem označen jako Production a neobsahuje Preview tajemství. Redis Upstash a klíč OpenAI jsou připojeny **jen k Preview**; v obou prostředích je `AI_ENABLED=false`. Nový Preview deployment je zatím neověřený. Nebyl proveden žádný placený požadavek. `main` ani veřejná GitHub Pages se nemění —
+Stav k 31. 10. 2026: **chráněný Vercel Preview zprovozněn; první výsledek reálné AI analýzy ověřen majitelem na telefonu, AI poté znovu vypnuta.**
+Projekt `rodinny-stit-ai-preview` má Vercel Authentication, oddělený Upstash Redis a klíč OpenAI jen v prostředí Preview. Vlastník potvrdil na telefonu výsledek vysokého rizika u smyšlené SMS o novém čísle a částce 5000 Kč. Logy Vercel (403) nebylo možné přečíst, a proto nebyly nezávisle ověřeny přesné tokeny ani cena. `AI_ENABLED=false` platí pro Preview i Production. Starší Production nasazení `399a932` se neměnilo a veřejné GitHub Pages běží odděleně. `main` ani veřejná GitHub Pages se nemění —
 na `*.github.io` zůstává AI volba skrytá a pilot používá jen lokální pravidla.
 
 ## 1. Výsledek pre-deploy security review
@@ -46,7 +46,7 @@ Rozpočet 1 USD/den s gpt-5.4-mini = **min. 81 analýz/den garantovaně** (typic
 ## 2. Architektura
 ```
 Chráněné Vercel Preview (přihlášení do Vercelu), region fra1
-  /pilot.html … stejný web jako 0.9 (AI volba se objeví, jen když /api/analyze hlásí dostupnost)
+  /pilot.html … pilot 1.0 se stejným vizuálním základem jako 0.9 (AI volba se objeví, jen když /api/analyze hlásí dostupnost)
   /api/analyze … POST {text, language:'cs', consent:true}
       ├─ same-origin + Sec-Fetch-Site, JSON ≤16 kB, ≤3000 znaků a ≤6000 bajtů
       ├─ Upstash Redis (fail-closed): 5/h a 15/den na IP (HMAC), 200/den celkem,
@@ -104,7 +104,7 @@ Veřejné spuštění, Production nasazení, napojení GitHub Pages na API nebo 
 ```
 npm test                       # smoke + 21 testů API (rozpočet, souběh, origin, prostředí, ceny, validace, soukromí)
 node tests/browser-qa-ai.cjs   # AI režim se simulovaným modelem, 360/390/430 (99 kontrol)
-node tests/browser-qa.cjs      # regrese vizuálu a funkcí 0.9
+node tests/browser-qa.cjs      # regrese schváleného vizuálu a lokálních funkcí
 npm run dev                    # http://localhost:8790/pilot.html se simulovaným modelem
 ```
 AI výsledky v testech pocházejí ze simulovaného modelu (`server/mock-provider.cjs`) a jsou v UI označeny „TESTOVACÍ REŽIM“. Skutečné spojení s OpenAI dosud ověřeno nebylo.
@@ -121,3 +121,11 @@ AI výsledky v testech pocházejí ze simulovaného modelu (`server/mock-provide
 - Uživatel na chráněném Preview viděl výsledek označený **AI analýza (pilotní)** pro simulovanou zprávu o novém čísle a žádosti o 5000 Kč. Výstup: vysoké riziko, tři varovné signály a bezpečné kroky (ověřit starým telefonním číslem, kontaktovat banku, Policie ČR 158). Není potvrzen přesný počet tokenů ani účtovaná cena ze serverových logů.
 - Všechny snímky ukazují **ruštinu**, včetně nápisu v navigaci a přeložených citací; před opravou aplikace vyloučit automatický překlad prohlížeče, ověřit skutečnou odpověď modelu v češtině.
 - Po jednorázovém testu proměnná `AI_ENABLED` pro **Preview nastavena na `false`**. Tento commit slouží k vyvolání nové Preview sestavy, která tuto změnu načte. Production ani veřejný soutěžní web nejsou měněny.
+
+## Kontroly po první AI analýze (Preview, bez dalších placených požadavků)
+
+- Verze na stránce pilotu: **1.0**, ve veřejném `main` stále původní verze.
+- Neověřené modelové citace se nesmějí zobrazit jako důkaz – server je porovnává s textem předaným modelu. Bez opory ve zprávě nelze takovou citací zdůvodnit riziko.
+- Odmítají se navržené kroky, které uživateli výslovně radí smazat zprávu. Doporučení mají zachovat důkazy a vyžádat nezávislé ověření.
+- Browser Chrome může přeložit češtinu do ruštiny na přání uživatele: to není chyba české lokalizace.
+- **Stále zbývá:** nezávislé vyčtení skutečných tokenů/ceny z OpenAI Usage, reálná kontrola OCR na Androidu, sada skutečných i simulovaných scénářů, kontrola GDPR a odborný bezpečnostní audit před veřejným připojením AI.
