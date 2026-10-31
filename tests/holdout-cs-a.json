@@ -1,0 +1,721 @@
+{
+  "title": "RODINNÝ ŠTÍT 1.3 — HOLDOUT A (sealed before first execution)",
+  "language": "cs",
+  "source": "Original synthetic paraphrases reflecting public Czech fraud advisories (Policie ČR, ČNB, NÚKIB); no copied real victim messages, real domains, credentials or personal data",
+  "baselineRef": "7b4109e4989ca6d646d14f7245cc875562529725",
+  "baselineBranch": "feature/scam-quality-1.2",
+  "created": "2026-11-01",
+  "protocol": "Labels are challenge-set hypotheses (scam intent→high, benign→low, unclear→moderate), not validated criminal ground truth. Evaluate against the frozen baseline once. Never tune rules on these same messages and then report resulting score as independent.",
+  "counts": {
+    "scam": 40,
+    "benign": 35,
+    "ambiguous": 25
+  },
+  "sources": [
+    "https://policie.gov.cz/kyberkriminalita/podvodne-sms-zpravy",
+    "https://www.cnb.cz/cs/dohled-financni-trh/ochrana-spotrebitele/online-podvody-chrante-sve-penize",
+    "https://portal.nukib.gov.cz/informacni-servis/aktualne/6acf2c21c712795fe005527f"
+  ],
+  "cases": [
+    {
+      "id": "h13-fake-police-fine",
+      "message": "Městská policie upozorňuje na nezaplacený dopravní přestupek. Vyřiďte pokutu teď přes https://portal-pokuty.invalid, jinak bude věc předána exekutorovi.",
+      "topic": "police",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-bankid-login",
+      "message": "Bankovní identita: někdo se přihlašuje vaším jménem. Ověřte totožnost na https://moje-identita.invalid a vyplňte přístupové heslo.",
+      "topic": "bankid",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-courier-sms",
+      "message": "Balík se nepodařilo uložit do boxu. Do 30 minut uhraďte servisní poplatek 37 Kč přes https://box-servis.invalid.",
+      "topic": "delivery",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-signal-linked-device",
+      "message": "Podpora Signal: kvůli zabezpečení účtu naskenujte QR kód pro připojení nového zařízení.",
+      "topic": "signal-qr",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-bank-helpdesk-cvv",
+      "message": "Ověření platby se nezdařilo. Nadiktujte číslo karty a CVV operátorovi, jinak převod zůstane zablokován.",
+      "topic": "card-data",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-boss-voice-imitation",
+      "message": "Jsem jednatel, teď nejsem na telefonu. Pošli zálohu 16 tisíc na soukromý účet, řešíme diskrétní zakázku.",
+      "topic": "boss",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-family-travel-trap",
+      "message": "Tati, zůstal jsem bez peněženky na letišti. Potřebuju na letenku 8 tisíc, odpověz jen zprávou, volat nemůžu.",
+      "topic": "family",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-family-colloquial-noaccents",
+      "message": "Ahoj babi, jsem to ja, mobil mi kleknul. Posli prosim 6000 korun, vratim ti je zitra, ted nevolej.",
+      "topic": "family-no-diacritics",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-cnb-certificate",
+      "message": "Investiční poradce má prý povolení ČNB. Přidejte dalších 50 tisíc do bezpečného portfolia, výnos zaručen.",
+      "topic": "investment",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-recovery-deposit",
+      "message": "Pro vyplacení zisku z kryptoměn je nutné nejprve složit vratnou kauci 340 EUR na uvedenou adresu.",
+      "topic": "crypto-recovery",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-utility-disconnection",
+      "message": "Nedoplatek za elektřinu. Pokud nepošlete 1900 Kč do večera, měřič bude odpojen.",
+      "topic": "utility",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-romance-cry-for-help",
+      "message": "Mám tě opravdu rád, ale nemocnice chce ještě dnes 400 EUR. Prosím neposílej mi otázky, jen pomoc.",
+      "topic": "romance",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-screenshot-account-prompt",
+      "message": "K ověření účtu potřebuji snímek obou stran platební karty. Pošlete fotografie v odpovědi.",
+      "topic": "card-data",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-remote-admin",
+      "message": "Na obnovu přístupu k účtu spusťte TeamViewer a sdělte pracovníkovi své údaje.",
+      "topic": "remote-access",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-bazar-offplatform",
+      "message": "Zájemce už zaplatil, peníze vám uvolníme jen pokud zadáte údaje karty na https://bazar-platba.invalid.",
+      "topic": "marketplace",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-rental-advance",
+      "message": "Nabízím byt v Praze, ale pro rezervaci pošlete 18 000 Kč, adresu a prohlídku sdělím pak.",
+      "topic": "rental",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-bank-move-savings",
+      "message": "Máte napadený účet. Přesuňte všechny úspory na nový záchranný účet, než banka transakce zablokuje.",
+      "topic": "safe-account",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-copy-of-otp",
+      "message": "Vaše přihlášení je čekající; odpovězte nám šestimístným kódem ze zprávy, ať je ověření dokončeno.",
+      "topic": "otp",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-courier-qr",
+      "message": "Balíček bude dnes vrácen. Zaplaťte 59 Kč naskenováním přiloženého QR kódu.",
+      "topic": "qr",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-spoofed-government",
+      "message": "Portál občana: dlužíte na správním poplatku. Klikněte na https://e-urad-platba.invalid a potvrďte platební kartu.",
+      "topic": "authority",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-sextortion",
+      "message": "Máme soukromé nahrávky z kamery. Pokud do zítřka nezaplatíš 900 EUR, rozešleme je známým.",
+      "topic": "blackmail",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-lottery-release-charge",
+      "message": "Vyhráli jste poukaz na auto. Před jeho zasláním zaplaťte administrativní poplatek 299 Kč.",
+      "topic": "prize",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-job-equipment-fee",
+      "message": "Vaše přijetí do práce je schváleno, ale nejdříve potřebujeme 2500 Kč za povinné vybavení.",
+      "topic": "job",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-daughter-whatsapp",
+      "message": "Mami, účet na WhatsApp mám dočasně jinde. Převod za opravu auta pošli na jiné číslo účtu a nevolej.",
+      "topic": "family",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-school-trip-impostor",
+      "message": "Třídní učitel: školní výlet se platí jen dnes na soukromý účet, okamžitě pošlete 1600 Kč.",
+      "topic": "school",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-medicine-fraud",
+      "message": "Lékárna: vydání důležitých léků je podmíněno doplatkem 650 Kč přes neznámý odkaz https://doplatek-leky.invalid.",
+      "topic": "health",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-operator-sim",
+      "message": "Operátor: zneužití SIM. Obnovu provedeme, pokud nám nadiktujete ověřovací kód z SMS.",
+      "topic": "sim",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-scam-billing-email",
+      "message": "Faktura se vrátila jako neuhrazená. Platební údaje byly změněny; převod nyní proveďte na nový účet.",
+      "topic": "invoice",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-police-courier-cash",
+      "message": "Vyšetřovatel: kvůli ochraně peněz vyberte hotovost a předejte obálku našemu kurýrovi.",
+      "topic": "cash-courier",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-account-threat",
+      "message": "Pokud okamžitě neobnovíte heslo přes https://obnova-pristupu.invalid, vaše schránka bude dnes deaktivována.",
+      "topic": "phishing",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-charity-pressure",
+      "message": "Nemocné dítě čeká na záchranu. Ještě dnes odešlete 3000 Kč našemu koordinátorovi, neověřujte to.",
+      "topic": "charity",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-mobile-remote-debugging",
+      "message": "Kvůli bezpečnostní kontrole si nainstalujte vzdálenou správu telefonu, pak vám pomůžeme s účtem.",
+      "topic": "remote-app",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-insurance-refund",
+      "message": "Máte nárok na vrácení přeplatku. Pro jeho vyřízení pošlete údaje o kartě včetně CVV.",
+      "topic": "insurance",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-panic-customer-support",
+      "message": "Někdo zkouší vaše platby! Okamžitě nám sdělte PIN a autorizační kód z aplikace.",
+      "topic": "credentials",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-bank-update-bilingual",
+      "message": "Security alert: váš bankovní účet je napaden. Send OTP kód do odpovědi, jinak o peníze přijdete.",
+      "topic": "bilingual",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-login-trick-now",
+      "message": "Váš účet u dopravce má omezení. Přihlaste se hned přes www.doruceni-podpora.invalid a doplňte heslo.",
+      "topic": "smishing",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-partner-request-qr",
+      "message": "Prosíme o zaplacení faktury pomocí QR kódu v příloze, původní bankovní spojení už nepoužívejte.",
+      "topic": "invoice-qr",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-fake-toll-highway",
+      "message": "Nezaplacená dálniční známka: uhraďte 1200 Kč během hodiny na https://dalnice-kontrola.invalid.",
+      "topic": "transport",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-bank-app-trick",
+      "message": "Bezpečnost účtu: povolte vzdálené sdílení obrazovky pro asistenta a do aplikace zadejte SMS kód.",
+      "topic": "remote",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-signal-restore-seed",
+      "message": "Obnovení Signal účtu: pošlete podporě svůj PIN a kód pro spárování zařízení, jinak účet ztratíte.",
+      "topic": "signal",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "h13-family-weather",
+      "message": "Dneska má být větrno, vezměte si s sebou bundu.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-school-event",
+      "message": "Zítra se ve škole koná besídka od 16:30 v jídelně.",
+      "topic": "school",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-office-greeting",
+      "message": "Zápis ze schůzky je připravený v naší společné složce.",
+      "topic": "work",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-library-return",
+      "message": "Knihu můžete vrátit v pátek u výpůjčního pultu.",
+      "topic": "library",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-family-cooking",
+      "message": "V kolik hodin máme přijet na nedělní oběd?",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-photo-request",
+      "message": "Můžeš mi poslat snímky ze sobotního výletu?",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-hospital-appointment",
+      "message": "Termín kontroly u lékaře byl potvrzen na 12. prosince v 10:00.",
+      "topic": "health",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-bank-open-hours",
+      "message": "Pobočka banky bude o státním svátku zavřená.",
+      "topic": "bank",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-police-public",
+      "message": "V kulturním domě proběhne beseda Policie ČR o internetových podvodech.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-tax-seminar",
+      "message": "Finanční úřad zve na informační seminář k ročnímu vyúčtování.",
+      "topic": "authority",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-safe-warning-dont-send",
+      "message": "Pozor, nikomu neposílejte PIN ani přihlašovací kódy.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-safe-warning-dont-click",
+      "message": "Na podezřelé odkazy neklikejte, sdělil lektor na kurzu.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-safe-warning-money",
+      "message": "V novinách psali, že podvodníci žádají převody na bezpečný účet.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-history-lesson",
+      "message": "V učebnici se probíral bankovní účet z období první republiky.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-family-amount",
+      "message": "Za nové boty jsem utratil 1299 korun, sedí perfektně.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-invoices-closed",
+      "message": "Faktury za poslední čtvrtletí máme v účetnictví uzavřené.",
+      "topic": "work",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-group-movie",
+      "message": "Ve čtvrtek budeme promítat film o Karlu IV.",
+      "topic": "group",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-theatre",
+      "message": "Vstupenky na večerní představení jsou připravené u pokladny.",
+      "topic": "culture",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-package-safe",
+      "message": "Vaše zásilka byla předána do výdejního místa, kód přijde později.",
+      "topic": "delivery",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-package-delivered",
+      "message": "Váš balík dnes převzal příjemce podle předchozí domluvy.",
+      "topic": "delivery",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-bank-confirmation",
+      "message": "Dokument o uzavření spořicího účtu je v archivu, můžete si jej vyzvednout na pobočce.",
+      "topic": "bank",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-benign-work-presentation",
+      "message": "Po obědě projdeme prezentaci pro klienta a návrhy grafik.",
+      "topic": "work",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-recipe-web",
+      "message": "Recept na koláč jsem našla na https://example.com a je skvělý.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-music-rehearsal",
+      "message": "Zkouška sboru začíná v sobotu v devět ráno.",
+      "topic": "community",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-doctor-prescription",
+      "message": "Recept na léky je připraven, podrobnosti jsou v lékárně.",
+      "topic": "health",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-charity-no-request",
+      "message": "O víkendu proběhl dobrovolnický den na podporu seniorů.",
+      "topic": "charity",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-newphone-story",
+      "message": "Včera jsem si koupil mobil, ten starý už skoro nefotil.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-invest-talk",
+      "message": "Investiční gramotnost bude hlavním tématem přednášky.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-qr-explainer",
+      "message": "Na školení jsme si ukázali, jak funguje QR kód.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-signal-tutorial",
+      "message": "V článku vysvětlují bezpečnostní nastavení aplikace Signal.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-social-message",
+      "message": "Děkuji za milé pozvání, těším se na setkání.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-privacy-lesson",
+      "message": "Dětem připomínáme, aby heslo nikomu neříkaly.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-weather-link",
+      "message": "Předpověď počasí je na https://example.com, mrkněte před cestou.",
+      "topic": "utility",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-cash-safekeeping",
+      "message": "Hotovost nechám raději doma a na nákup si vezmu drobné.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-parcel-count",
+      "message": "Doručeno celkem 5 knih, seznam je v balíku.",
+      "topic": "delivery",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "h13-unknown-new-contact",
+      "message": "Zdravím, ozývám se z nového telefonu, staré číslo už neplatí.",
+      "topic": "new-number",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-payment",
+      "message": "Máte u nás otevřenou položku 800 Kč, prosím o úhradu.",
+      "topic": "payment",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-link",
+      "message": "Pro podrobnosti navštivte stránku https://informace-portal.invalid.",
+      "topic": "link",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-qr",
+      "message": "Připojení na schůzku najdete přes QR kód na pozvánce.",
+      "topic": "qr",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-bank-id",
+      "message": "Bankovní identita hlásí nové oznámení, podrobnosti najdete ve vašem účtu.",
+      "topic": "bankid",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-otp",
+      "message": "Dorazí vám potvrzovací SMS kód, mějte jej prosím připravený.",
+      "topic": "otp",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-invest",
+      "message": "Můžeme vám poslat nabídku investic s vyšším výnosem?",
+      "topic": "invest",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-market",
+      "message": "Záloha na rezervovaný předmět je ve výši 600 Kč.",
+      "topic": "marketplace",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-charity",
+      "message": "Budeme rádi za dar na provoz komunitního centra.",
+      "topic": "charity",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-fee",
+      "message": "Potvrďte prosím správní poplatek za žádost.",
+      "topic": "authority",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-bank-call",
+      "message": "Volali jsme kvůli vašemu účtu, ozvěte se na naši infolinku.",
+      "topic": "bank",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-support",
+      "message": "S nastavením telefonu vám pomůže pracovník vzdáleně.",
+      "topic": "support",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-signal-group",
+      "message": "Pozvánka do Signal skupiny je připravena, zde je QR kód.",
+      "topic": "signal",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-relationship",
+      "message": "Myslím na tebe. Potřeboval bych něco vyřešit, můžeme si napsat?",
+      "topic": "romance",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-parcel",
+      "message": "Pro vydání zásilky je potřeba doplnit chybějící údaje.",
+      "topic": "delivery",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-vat",
+      "message": "Váš nedoplatek daně je nutné dořešit.",
+      "topic": "tax",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-benefit",
+      "message": "Úřad pro vás eviduje nové dávky, vyčkejte na další informace.",
+      "topic": "benefits",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-subscription",
+      "message": "Změnily se podmínky vašeho předplatného, prosím potvrďte pokračování.",
+      "topic": "subscription",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-wallet",
+      "message": "Kryptopeněženka vyžaduje obnovu přístupu.",
+      "topic": "crypto",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-account-update",
+      "message": "Pro pokračování je třeba aktualizace přihlašovacích údajů.",
+      "topic": "account",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-lottery",
+      "message": "Byli jste vybráni mezi účastníky soutěže, více informací brzy.",
+      "topic": "prize",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-travel",
+      "message": "Váš let byl upraven, podrobnosti budou zaslány později.",
+      "topic": "travel",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-invoice",
+      "message": "Pro potvrzení faktury potřebujeme zpětnou zprávu.",
+      "topic": "invoice",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-bank-charge",
+      "message": "U transakce může vzniknout dodatečný poplatek.",
+      "topic": "bank",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "h13-unknown-identity",
+      "message": "Zdravím, jsem z technické podpory, řešíme bezpečnost vašeho profilu.",
+      "topic": "support",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    }
+  ]
+}
