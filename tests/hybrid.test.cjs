@@ -181,3 +181,13 @@ test('AI eligibility is only local LOW or MODERATE with current server availabil
   assert.equal(h.run('canOfferAiReview({kind:"ai",level:"low"}, true)'), false);
   assert.equal(h.run('canOfferAiReview({level:"low"}, false)'), false);
 });
+
+
+test('contextual HIGH verdict renders cards and highlighted evidence without a crash', () => {
+  const h = harness();
+  h.element('msg').value = 'Tady policie, peníze předejte kurýrovi.';
+  assert.doesNotThrow(() => h.run('analyzeLocal()'));
+  assert.match(h.element('resultHeading').textContent, /Vysoké riziko/);
+  assert.match(h.element('signals').innerHTML, /Ve zprávě:/);
+  assert.match(h.element('msgMarked').innerHTML, /<mark>/);
+});
