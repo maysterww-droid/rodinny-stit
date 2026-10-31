@@ -48,17 +48,26 @@
    <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
    <p class="ph-lead">Vložte SMS, e-mail, snímek obrazovky nebo popis hovoru. Ukážeme varovné signály a poradíme, co dělat dál.</p>
   </div>
-  <div class="ph-stage" role="img" aria-label="Ukázka: telefon s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“, kterou štít RODINNÝ ŠTÍT kontroluje a označuje jako podezřelou.">
+  <div class="ph-stage" role="img" aria-label="Ukázka: telefon s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“, kterou ochranný štít zkontroloval a označil jako podezřelou.">
    <div class="ph-device">
     <div class="ph-screen">
      <div class="ph-status"><span>14:27</span><i class="ph-island"></i><span class="ph-sig"><i></i><i></i><i></i></span></div>
      <div class="ph-sender"><span class="ph-avatar"><svg class="ico"><use href="assets/icons.svg#i-user"/></svg></span><b>Neznámé číslo</b><small>SMS · dnes</small></div>
-     <div class="ph-bubble">Ahoj mami, mám nové číslo. Pošli mi prosím 5000&nbsp;Kč ještě dnes.</div>
-     <div class="ph-flag"><svg class="ico"><use href="assets/icons.svg#i-alert"/></svg>Podezřelé</div>
+     <div class="ph-bubble">Ahoj mami, mám nové číslo. Pošli mi prosím 5000&nbsp;Kč ještě dnes.<span class="ph-flag"><svg class="ico"><use href="assets/icons.svg#i-alert"/></svg>Podezřelé</span></div>
      <i class="ph-scan"></i>
     </div>
    </div>
-   <div class="ph-shield"><i class="ph-ring"></i><img src="assets/logo.svg" alt="" width="64" height="73"></div>
+   <div class="ph-shield"><i class="ph-ring"></i><svg class="ph-guard" viewBox="0 0 120 136" aria-hidden="true">
+     <defs>
+      <linearGradient id="gShield" x1=".2" x2=".8" y1="0" y2="1"><stop offset="0" stop-color="#7cf5a8"/><stop offset=".45" stop-color="#22c46a"/><stop offset="1" stop-color="#078a45"/></linearGradient>
+      <linearGradient id="gRim" x1="0" x2="1" y1="0" y2="1"><stop offset="0" stop-color="#eafff2"/><stop offset="1" stop-color="#8fe7b5"/></linearGradient>
+      <linearGradient id="gGloss" x1="0" x2=".6" y1="0" y2=".7"><stop offset="0" stop-color="#fff" stop-opacity=".6"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+     </defs>
+     <path class="g-rim" d="M60 3c18 12.5 36 16.5 54 18.5V64c0 35-22 58-54 70C28 122 6 99 6 64V21.5C24 19.5 42 15.5 60 3Z" fill="url(#gRim)"/>
+     <path class="g-body" d="M60 10c17 11.5 33 15.5 47 17.5V64c0 31-19 52-47 63C32 116 13 95 13 64V27.5C27 25.5 43 21.5 60 10Z" fill="url(#gShield)"/>
+     <path d="M60 10c17 11.5 33 15.5 47 17.5V52C84 45 50 40 13 54V27.5C27 25.5 43 21.5 60 10Z" fill="url(#gGloss)"/>
+     <path class="g-check" d="M36 68l16 16 32-34" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg></div>
   </div>
  </div>
 
