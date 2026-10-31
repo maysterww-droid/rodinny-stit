@@ -1,6 +1,6 @@
 {
-  "description": "RODINNÝ ŠTÍT 1.2 Czech synthetic scam QA corpus. All examples are invented. Labels are expected LOCAL RULE results, not ground-truth criminal classifications.",
-  "version": "1.2",
+  "description": "100 original Czech synthetic local-rule regression cases; labels are design expectations for messages, not verified fraud ground truth. No personal information or live URLs.",
+  "version": "1.2.1",
   "cases": [
     {
       "id": "child-new-number",
@@ -145,6 +145,538 @@
       "kind": "benign",
       "expected": "low",
       "message": "Minule jsem zaplatila za oběd 150 Kč."
+    },
+    {
+      "id": "boss-urgent-transfer",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Tady ředitel společnosti, ihned pošli 45 000 Kč na nový účet. Teď mi nevolej.",
+      "topic": "boss-invoice"
+    },
+    {
+      "id": "boss-changed-account",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Dobrý den, fakturu zaplaťte na náš nový bankovní účet. Původní platební údaje už neplatí.",
+      "topic": "boss-invoice"
+    },
+    {
+      "id": "fake-it-verification",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "IT podpora: pošlete nám jednorázový kód z SMS, jinak nebude možné dokončit přihlášení.",
+      "topic": "credentials"
+    },
+    {
+      "id": "remote-control-install",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Technická podpora banky žádá, abyste si nainstalovali AnyDesk a povolili vzdálený přístup.",
+      "topic": "remote-access"
+    },
+    {
+      "id": "qr-delivery-payment",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Vaše zásilka čeká na doručení. Naskenujte QR kód a zaplaťte doplatek 39 Kč.",
+      "topic": "delivery"
+    },
+    {
+      "id": "electricity-disconnect",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Dodavatel energie: ihned uhraďte nedoplatek 1 450 Kč, jinak odpojíme elektřinu.",
+      "topic": "utility"
+    },
+    {
+      "id": "gift-card-impersonation",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Tady váš nadřízený. Kupte ještě dnes dárkové poukazy za 8000 Kč a nikomu to neříkejte.",
+      "topic": "boss-invoice"
+    },
+    {
+      "id": "crypto-guaranteed",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Garantovaný zisk 25 % týdně bez rizika. Vložte 10 000 Kč do kryptoměny ještě dnes.",
+      "topic": "investment"
+    },
+    {
+      "id": "prize-fee",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Vyhráli jste automobil! Pro vyzvednutí výhry ihned zaplaťte registrační poplatek 2 999 Kč.",
+      "topic": "prize"
+    },
+    {
+      "id": "romance-travel-money",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Miluji tě, ale potřebuji rychle 7 000 Kč na letenku. Nikomu o tom neříkej.",
+      "topic": "romance"
+    },
+    {
+      "id": "intimate-video-extortion",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Máme vaše soukromé video. Do hodiny zaplaťte 12 000 Kč, jinak ho zveřejníme.",
+      "topic": "blackmail"
+    },
+    {
+      "id": "coercion-payment",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Zaplaťte nám 20 000 Kč, jinak zveřejníme vaše osobní fotografie.",
+      "topic": "blackmail"
+    },
+    {
+      "id": "tax-refund-login",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Finanční úřad: vrátíme vám přeplatek. Ověřte přihlašovací údaje na https://vratka-dane.invalid.",
+      "topic": "phishing"
+    },
+    {
+      "id": "fake-tax-penalty",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Finanční úřad: neprodleně zaplaťte pokutu 5 000 Kč na nový účet.",
+      "topic": "authority"
+    },
+    {
+      "id": "pension-benefit-charge",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Správa důchodů: pro aktivaci příspěvku musíte dnes zaplatit 399 Kč.",
+      "topic": "authority"
+    },
+    {
+      "id": "hospital-bill-pressure",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Nemocnice: vaše léčba bude zrušena, pokud do 15 minut neuhradíte 2 500 Kč.",
+      "topic": "health"
+    },
+    {
+      "id": "police-safe-account",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Policie ČR: okamžitě převeďte úspory na bezpečný účet, nikomu nevolejte.",
+      "topic": "authority"
+    },
+    {
+      "id": "card-cvv-request",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Zákaznická podpora: pro vrácení platby nám sdělte číslo platební karty, CVV a ověřovací kód.",
+      "topic": "credentials"
+    },
+    {
+      "id": "email-reset-code",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Správce e-mailu: přepošlete nám SMS kód pro obnovení schránky ještě dnes.",
+      "topic": "credentials"
+    },
+    {
+      "id": "account-login-link",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Bezpečnostní centrum: Váš účet je ohrožen. Na https://kontrola-uctu.invalid vyplňte heslo.",
+      "topic": "phishing"
+    },
+    {
+      "id": "delivery-otp",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Kurýr: k vydání zásilky nám ihned nadiktujte ověřovací kód, který přišel v SMS.",
+      "topic": "delivery"
+    },
+    {
+      "id": "parcel-refund-pressure",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Balík dnes vracíme odesílateli. Pro jeho uvolnění ihned uhraďte 69 Kč.",
+      "topic": "delivery"
+    },
+    {
+      "id": "fraudulent-bank-transfer",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Banka: podezřelá transakce, okamžitě převeďte 60 000 Kč na dočasný bezpečný účet.",
+      "topic": "authority"
+    },
+    {
+      "id": "remote-support-bank",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Tady banka, otevřete vzdálený přístup na telefonu, technik vám hned opraví účet.",
+      "topic": "remote-access"
+    },
+    {
+      "id": "seed-phrase-scam",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Krypto podpora: pošlete nám obnovovací frázi své peněženky, abyste získali prostředky zpět.",
+      "topic": "crypto"
+    },
+    {
+      "id": "marketplace-offsite-deposit",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Prodám telefon, ale pošlete ještě dnes zálohu 1 000 Kč předem mimo platformu.",
+      "topic": "marketplace"
+    },
+    {
+      "id": "fake-rental-deposit",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Byt je váš, ale ihned pošlete rezervační zálohu 15 000 Kč, prohlídka není možná.",
+      "topic": "rental"
+    },
+    {
+      "id": "relative-whatsapp-money",
+      "kind": "fraud",
+      "expected": "high",
+      "message": "Ahoj babi, píšu z jiného čísla, starý mobil nejde. Potřebuju 4 000 Kč dnes, prosím nevolej.",
+      "topic": "family"
+    },
+    {
+      "id": "benign-tram-time",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Tramvaj přijede dnes v 18:15, budu na zastávce.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-family-photo",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Pošli prosím babičce fotky z víkendu.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-office-agenda",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Pošlete mi prosím zápis a prezentaci z porady.",
+      "topic": "work"
+    },
+    {
+      "id": "benign-library-book",
+      "kind": "benign",
+      "expected": "low",
+      "message": "V knihovně je dnes k vyzvednutí rezervovaná kniha.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-parcel-received",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Vaše zásilka byla úspěšně doručena a převzata včera.",
+      "topic": "delivery"
+    },
+    {
+      "id": "benign-bank-workshop",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Banka pořádá ve středu veřejnou přednášku pro seniory.",
+      "topic": "bank"
+    },
+    {
+      "id": "benign-lunch-price",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Na obědě jsme utratili 320 Kč a moc nám chutnalo.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-payment-confirmed",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Platba ve výši 490 Kč byla včera přijata. Děkujeme.",
+      "topic": "finance"
+    },
+    {
+      "id": "benign-birthday",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Všechno nejlepší k narozeninám, moc na tebe myslíme.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-dentist",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Vaše objednání k zubaři je potvrzeno na středu v 9 hodin.",
+      "topic": "health"
+    },
+    {
+      "id": "benign-tax-seminar",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Finanční úřad pořádá informační setkání k daňovému přiznání.",
+      "topic": "authority"
+    },
+    {
+      "id": "benign-police-event",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Policie zve veřejnost na besedu o bezpečnosti seniorů.",
+      "topic": "authority"
+    },
+    {
+      "id": "benign-send-pdf",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Převeď mi dokument do PDF a pošli ho kolegovi.",
+      "topic": "work"
+    },
+    {
+      "id": "benign-call-old-number",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Zavolám ti večer na tvoje obvyklé číslo.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-groceries",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dnes kup chleba, mléko a máslo, díky.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-sport-session",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dětský trénink začíná v 17:30, přineste sálovou obuv.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-job-meeting",
+      "kind": "benign",
+      "expected": "low",
+      "message": "V pátek spolu probereme návrh smlouvy a plán práce.",
+      "topic": "work"
+    },
+    {
+      "id": "benign-weather",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Dnes bude pršet, vezmi si prosím deštník.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-account-not-blocked",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Můj účet je v pořádku, není zablokovaný.",
+      "topic": "personal"
+    },
+    {
+      "id": "benign-school-trip",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Na školní výlet vybíráme 250 Kč, více informací přinesou děti domů.",
+      "topic": "school"
+    },
+    {
+      "id": "benign-office-invoice-settled",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Faktura je vyřízena a archivována pro účetnictví.",
+      "topic": "work"
+    },
+    {
+      "id": "benign-dinner-paid",
+      "kind": "benign",
+      "expected": "low",
+      "message": "Za večeři jsem včera zaplatila 380 Kč, díky za pozvání.",
+      "topic": "personal"
+    },
+    {
+      "id": "ambiguous-new-number-friend",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Ahoj, jsem Martina, mám nové číslo, starý telefon už nefunguje.",
+      "topic": "family"
+    },
+    {
+      "id": "ambiguous-whatsapp-replacement",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Píšu z jiného čísla, ulož si mě prosím do kontaktů.",
+      "topic": "family"
+    },
+    {
+      "id": "ambiguous-simple-invoice",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Dobrý den, prosím pošlete platbu 650 Kč za objednávku.",
+      "topic": "finance"
+    },
+    {
+      "id": "ambiguous-course-fee",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Pro potvrzení účasti prosím zaplaťte 200 Kč za kurz.",
+      "topic": "education"
+    },
+    {
+      "id": "ambiguous-borrow-money",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Můžeš mi půjčit 500 Kč do příštího týdne?",
+      "topic": "finance"
+    },
+    {
+      "id": "ambiguous-ordinary-link",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Podrobnosti najdete na https://informace-priklad.invalid.",
+      "topic": "link"
+    },
+    {
+      "id": "ambiguous-bank-portal-link",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Klientský portál banky je dostupný přes https://portal-example.invalid.",
+      "topic": "link"
+    },
+    {
+      "id": "ambiguous-investment-intro",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Rádi vám nabídneme nové investiční příležitosti.",
+      "topic": "investment"
+    },
+    {
+      "id": "ambiguous-profit-claim",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Náš investiční fond nabízí garantovaný výnos.",
+      "topic": "investment"
+    },
+    {
+      "id": "ambiguous-prize",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Gratulujeme, byli jste zařazeni do slosování o výhru.",
+      "topic": "prize"
+    },
+    {
+      "id": "ambiguous-police-followup",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Tady policie, potřebujeme s vámi mluvit ohledně vašeho účtu.",
+      "topic": "authority"
+    },
+    {
+      "id": "ambiguous-bank-verify",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Banka: prosím ověřte svůj účet před dalším přihlášením.",
+      "topic": "account"
+    },
+    {
+      "id": "ambiguous-change-password",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Bezpečnostní upozornění: změňte prosím heslo.",
+      "topic": "credentials"
+    },
+    {
+      "id": "ambiguous-install-app",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Pro lepší podporu si můžete nainstalovat aplikaci.",
+      "topic": "software"
+    },
+    {
+      "id": "ambiguous-qr-only",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Pro více informací naskenujte QR kód z přiloženého oznámení.",
+      "topic": "qr"
+    },
+    {
+      "id": "ambiguous-helpdesk",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Z technické podpory vám píšeme kvůli nastavení účtu.",
+      "topic": "support"
+    },
+    {
+      "id": "ambiguous-hotel-booking",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Prosíme o rezervační poplatek 300 Kč za váš pobyt.",
+      "topic": "booking"
+    },
+    {
+      "id": "ambiguous-fundraiser",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Pomozte sbírce a pošlete malý finanční příspěvek.",
+      "topic": "charity"
+    },
+    {
+      "id": "ambiguous-charity",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Prosíme o dobrovolný finanční dar pro rodiny v nouzi.",
+      "topic": "charity"
+    },
+    {
+      "id": "ambiguous-subscription-link",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Informace o předplatném jsou na https://uctovani-example.invalid.",
+      "topic": "subscription"
+    },
+    {
+      "id": "ambiguous-delivery-fee",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Za příští doručení zaplaťte prosím 45 Kč.",
+      "topic": "delivery"
+    },
+    {
+      "id": "ambiguous-crypto-news",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Zajímá vás bitcoin? Přijďte na přednášku o investování.",
+      "topic": "investment"
+    },
+    {
+      "id": "ambiguous-payment-qr",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "QR kód pro platbu najdete na obdržené faktuře.",
+      "topic": "qr"
+    },
+    {
+      "id": "ambiguous-new-phone-only",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Ztratil jsem starý telefon a ozývám se z nového čísla.",
+      "topic": "family"
+    },
+    {
+      "id": "ambiguous-secret-code",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Prosím uložte si tento přístupový kód na bezpečné místo.",
+      "topic": "credentials"
+    },
+    {
+      "id": "ambiguous-account-status",
+      "kind": "ambiguous",
+      "expected": "moderate",
+      "message": "Váš účet vyžaduje aktualizaci údajů před dalším použitím.",
+      "topic": "account"
     }
   ]
 }
