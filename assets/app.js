@@ -361,10 +361,12 @@ function setBusy(b) {
 function cancelAi() { if (AI.ctl) AI.ctl.abort('user'); }
 async function analyzeWithAI(rawText) {
   const text = maskForAI(rawText);
+  // Validate feasibility BEFORE requesting consent: an overlong message cannot be sent.
+  const utf8Bytes = typeof TextEncoder !== 'undefined' ? new TextEncoder().encode(text).length : text.length;
+  if (text.length > AI.maxChars || utf8Bytes > 6000) { resetAiConsent(); aiError('too_long'); return; }
   if (!$('aiAgree').checked || AI.consentSnapshot === null || AI.consentSnapshot !== text) {
     resetAiConsent(); aiError('consent_required'); $('aiAgree').focus(); return;
   }
-  if (text.length > AI.maxChars) { aiError('too_long'); return; }
   AI.ctl = new AbortController(); let timedOut = false;
   const timer = setTimeout(() => { timedOut = true; AI.ctl.abort('timeout'); }, 25000);
   setBusy(true); setMode('', 'Odesílám upravený text k AI analýze…');
