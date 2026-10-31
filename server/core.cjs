@@ -87,8 +87,8 @@ function validateResult(p, sourceText = null) {
   if (source !== null && p.risk === 'high' && !signals.some(s => s.excerpt && source.includes(s.excerpt.toLocaleLowerCase('cs')))) return null;
   const explanation = clip(p.explanation_cs, 600), uncertainty = clip(p.uncertainty_cs, 300);
   // Do not forward absolute guarantees or false claims that the sender was verified.
-  const fakeAssurance = /(?:\b(?:zpráva|sms|e-mail|odkaz|účet)\s+(?:je|jsou)\s+(?:(?:zcela|naprosto|určitě|bezpochyby|100\s*%)\s+)?bezpečn|ověřili jsme (?:totožnost|odesílatele)|zaručujeme bezpečn)/iu;
-  if (fakeAssurance.test(explanation) || fakeAssurance.test(uncertainty)) return null;
+  const fakeAssurance = /(?<![\p{L}\p{N}])(?:(?:zpráva|sms|e-mail|odkaz|účet)\s+(?:je|jsou)\s+(?:(?:zcela|naprosto|určitě|bezpochyby|100\s*%)\s+)?bezpečn|ověřili jsme (?:totožnost|odesílatele)|zaručujeme bezpečn)/iu;
+  if (fakeAssurance.test(explanation) || fakeAssurance.test(uncertainty) || signals.some(sig => fakeAssurance.test(sig.name_cs) || fakeAssurance.test(sig.explanation_cs))) return null;
   // The model generates advice, but can itself hallucinate a dangerous next step.
   // Filter such steps server-side, while permitting negated instructions like "Nesmažte".
   const unsafeStep = /\b(?:smažte|vymažte|smazat|vymazat|odstraňte|odstranit|zlikvidujte)\b|\b(?:sdělte|pošlete|přepošlete|nadiktujte|zadejte|vyplňte|zašlete)\b.{0,90}\b(?:kód|heslo|pin|cvv|frázi|seed phrase|platební kartu|číslo karty)\b|\b(?:klikněte|otevřete|přejděte)\b.{0,45}\b(?:odkaz|link)\b|\b(?:zaplaťte|převeďte|pošlete)\b.{0,80}(?:\b(?:peníze|částku|platbu|zálohu)\b|\d[\d ]{0,10}\s*(?:kč|czk))|\b(?:zavolejte|volejte)\b.{0,60}\b(?:na číslo ve zprávě|na uvedené číslo)\b/iu;
