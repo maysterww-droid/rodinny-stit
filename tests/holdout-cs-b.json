@@ -1,0 +1,433 @@
+{
+  "name": "Sealed Holdout B — 60 previously unseen synthetic messages",
+  "created": "2026-11-01",
+  "status": "sealed_before_hardening",
+  "protocol": "Do NOT inspect classifier predictions, use for training, change labels, or tune code based on this set before hardening is frozen. Evaluate once after branch hardening. These are original hypothetical scenario labels, NOT real verified fraud.",
+  "counts": {
+    "scam": 30,
+    "benign": 20,
+    "ambiguous": 10
+  },
+  "cases": [
+    {
+      "id": "holdout-b-high-01",
+      "message": "Za propuštění zadržené platby nám prosím pošlete číslo karty a třímístný bezpečnostní kód.",
+      "topic": "bank-card",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-02",
+      "message": "Důvěrná operace oddělení kriminality: vaše úspory musí být přemístěny na ověřovací účet. Neříkejte to rodině.",
+      "topic": "police",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-03",
+      "message": "Milá maminko, nemám přístup ke svému bankovnictví. Pošleš 7500 korun za opravu auta? Telefonovat nemůžu.",
+      "topic": "family",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-04",
+      "message": "Systém BankID vás odhlásil. Na https://identita-obnova.invalid zadejte přihlašovací údaje pro aktivaci.",
+      "topic": "bankid",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-05",
+      "message": "Výdejní box je plný, dokončete úhradu 54 Kč do půlnoci na stránce https://balik-box.invalid.",
+      "topic": "delivery",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-06",
+      "message": "Tady bezpečnostní tým, pro vypnutí zámku účtu musíte nadiktovat šestimístný kód ze SMS.",
+      "topic": "otp",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-07",
+      "message": "Signál ochrany účtu Signal: propojte zařízení QR kódem v příloze, abyste nepřišli o zprávy.",
+      "topic": "signal",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-08",
+      "message": "Nadřízený: prosím dnes kupte dárkové karty za 4000 korun, účtenku mi pošlete soukromě.",
+      "topic": "boss",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-09",
+      "message": "Nárok na výběr kryptozisku skončí, pokud předem neuhradíte servisní poplatek 500 EUR.",
+      "topic": "crypto",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-10",
+      "message": "Uhraďte dopravní pokutu přes https://obcan-pokuta.invalid a doplňte přihlašovací údaje banky.",
+      "topic": "police-fine",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-11",
+      "message": "Blokujeme vám telefon. Pro obnovu spojení sdělte PIN nebo kód operátorovi.",
+      "topic": "sim",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-12",
+      "message": "Nechci tě strašit, ale znám tvoje soukromá videa. Pošli peníze a nikdo se to nedozví.",
+      "topic": "extortion",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-13",
+      "message": "Připravenou vratku daně uvolníme po vyplnění karty na https://dane-refund.invalid.",
+      "topic": "refund",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-14",
+      "message": "Zkusíme společně zabezpečit váš účet, stáhněte si aplikaci AnyDesk a dejte mi kontrolu nad obrazovkou.",
+      "topic": "remote",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-15",
+      "message": "Podklady k nájmu jsou hotové, rezervace platí teprve po zaslání kauce 22000 korun na číslo účtu v této zprávě.",
+      "topic": "rental",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-16",
+      "message": "K vyzvednutí výhry vyžadujeme aktivační platbu 890 Kč, jinak cena propadne.",
+      "topic": "prize",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-17",
+      "message": "Nová faktura má změněné číslo účtu, prosíme o uhrazení ještě před uzávěrkou.",
+      "topic": "invoice",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-18",
+      "message": "Od vašeho dítěte: mobil je rozbitý, jsem v cizině a potřebuji okamžitě peníze. Na původní číslo nevolejte.",
+      "topic": "family",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-19",
+      "message": "Hledáme zájemce o práci z domova, po úvodním poplatku 1900 Kč vám pošleme přístup.",
+      "topic": "job",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-20",
+      "message": "Vážná chyba v profilu: pošlete nám své jednorázové ověřovací heslo, než systém účet deaktivuje.",
+      "topic": "credentials",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-21",
+      "message": "Doručení receptu na léky dnes neproběhne, pokud neprovedete platební QR transakci.",
+      "topic": "health",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-22",
+      "message": "Zahraniční partner chce okamžitou zálohu a nechce, abychom zavolali na jeho původní kontakt.",
+      "topic": "boss",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-23",
+      "message": "Investor garantuje dvojnásobek během měsíce, stačí vložit první vklad dnes.",
+      "topic": "investment",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-24",
+      "message": "Hotovost vám ochrání policejní pracovník. Vyberte úspory a nechte je u dveří pro vyzvednutí.",
+      "topic": "cash-courier",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-25",
+      "message": "Získali jsme přístup k vašim fotografiím. Dejte nám 250 EUR do dvou dnů, jinak je zveřejníme.",
+      "topic": "extortion",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-26",
+      "message": "Bazar.cz: potvrďte převzetí platby na https://bezpecna-platba.invalid zadáním celé platební karty.",
+      "topic": "marketplace",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-27",
+      "message": "Když nepřidáte nový telefon do bankovní aplikace přes zaslaný QR kód, přijdete o účet.",
+      "topic": "qr",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-28",
+      "message": "Účet za plyn nebyl vyřízen; pošlete nám 1300 Kč do 15 minut, jinak přerušíme dodávku.",
+      "topic": "utility",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-29",
+      "message": "Pro výběr prostředků z peněženky sdělte obnovovací slova správci účtu.",
+      "topic": "seed",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-high-30",
+      "message": "Hey mami, it's me. Please send me 3000 CZK to my new account right now, can't call.",
+      "topic": "mixed-language",
+      "intent": "scam",
+      "expected": "high"
+    },
+    {
+      "id": "holdout-b-low-01",
+      "message": "Pošli mi prosím obrázek receptu, babičce se líbil.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-02",
+      "message": "V neděli v deset se sejdeme před kostelem.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-03",
+      "message": "Bankovní pobočka dnes z technických důvodů zavírá o půl hodiny dřív.",
+      "topic": "bank",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-04",
+      "message": "Zítra bude v knihovně beseda o ochraně před podvody.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-05",
+      "message": "Neposílejte nikomu kód z SMS, řekli nám na školení.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-06",
+      "message": "Lékař doporučil přijít na kontrolu za šest týdnů.",
+      "topic": "health",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-07",
+      "message": "Na https://example.com je mapa plánované cyklostezky.",
+      "topic": "link",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-08",
+      "message": "Na výstavě se mluvilo o historii české policie.",
+      "topic": "culture",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-09",
+      "message": "V úterý dostaneme nové učebnice ve škole.",
+      "topic": "school",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-10",
+      "message": "O penězích se dnes v rodině vůbec bavit nechci.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-11",
+      "message": "Pracovní listy pošlete všem členům skupiny e-mailem.",
+      "topic": "work",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-12",
+      "message": "Fakturu za minulý měsíc jsme založili do archivu.",
+      "topic": "work",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-13",
+      "message": "Na přání posílám fotku našeho nového bytu.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-14",
+      "message": "Bezpečnostní seminář vysvětlí rozdíl mezi phishingem a legitimním e-mailem.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-15",
+      "message": "Zásilka vám byla včera doručena a žádné další kroky nejsou potřeba.",
+      "topic": "parcel",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-16",
+      "message": "Nemám chuť investovat do akcií, raději spořím.",
+      "topic": "finance",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-17",
+      "message": "Včera mi přišel nový telefon a zítra budu zkoušet fotoaparát.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-18",
+      "message": "QR kód na plakátu slouží k registraci návštěvníků, vstup je zdarma.",
+      "topic": "event",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-19",
+      "message": "Dnes jsem přinesla domů zeleninu a upekla chléb.",
+      "topic": "family",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-low-20",
+      "message": "Neotvírejte podvodné odkazy a vše ověřujte osobně, doporučuje ČNB.",
+      "topic": "education",
+      "intent": "benign",
+      "expected": "low"
+    },
+    {
+      "id": "holdout-b-medium-01",
+      "message": "Obdrželi jsme vaši žádost, napište nám kvůli úpravě registrace.",
+      "topic": "account",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-02",
+      "message": "Z tohoto čísla vám posílám další informace o novém účtu.",
+      "topic": "account",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-03",
+      "message": "Vážený zákazníku, chcete potvrdit novou platební metodu?",
+      "topic": "billing",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-04",
+      "message": "Na faktuře máme nové údaje, podrobnosti vám sdělíme později.",
+      "topic": "invoice",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-05",
+      "message": "Můžeš mi zítra půjčit menší částku na cestu?",
+      "topic": "personal-loan",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-06",
+      "message": "Aktivujte si členství na uvedené stránce https://clenstvi-portal.invalid.",
+      "topic": "url",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-07",
+      "message": "Podpora: pro dokončení nastavení účtu si připravte telefon.",
+      "topic": "support",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-08",
+      "message": "Připomínáme vám možnost požádat o daňový bonus.",
+      "topic": "benefits",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-09",
+      "message": "Váš balík má doplňující požadavky, brzy vám dáme vědět.",
+      "topic": "delivery",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    },
+    {
+      "id": "holdout-b-medium-10",
+      "message": "Chcete poradit s nákupem kryptoměny na internetu?",
+      "topic": "crypto",
+      "intent": "ambiguous",
+      "expected": "moderate"
+    }
+  ]
+}
