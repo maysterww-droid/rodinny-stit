@@ -84,7 +84,7 @@ function validateResult(p, sourceText = null) {
   // Reject a confident conclusion if all supplied evidence quotes were fabricated.
   if (source !== null && p.risk !== 'uncertain' && p.warning_signals.length && !signals.length) return null;
   // Never advise erasing potential scam evidence, even if the model suggests doing so.
-  const unsafeDeletion = /\\b(?:smažte|vymažte|smazat|vymazat)\\b/iu;
+  const unsafeDeletion = /\b(?:smažte|vymažte|smazat|vymazat)\b/iu;
   const steps = p.recommended_steps.slice(0, 5).map(s => clip(s, 240)).filter(s => s && !unsafeDeletion.test(s));
   if (!steps.length) return null;
   return {
