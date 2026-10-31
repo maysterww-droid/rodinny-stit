@@ -116,3 +116,8 @@ AI výsledky v testech pocházejí ze simulovaného modelu (`server/mock-provide
 - Serverové rezervace: `DAILY_BUDGET_USD=0.02` a `MONTHLY_BUDGET_USD=0.02`; `OPENAI_MODEL=gpt-5.4-mini`, reasoning `none`.
 - Production: AI nadále vypnuta; veřejné GitHub Pages zůstává beze změny.
 - Žádná skutečná AI analýza zatím není potvrzena. Výsledek ověřit pomocí odpovědi a runtime logu, potom AI opět vypnout.
+
+## Výsledek prvního owner live QA (31. 10. 2026)
+- Uživatel na chráněném Preview viděl výsledek označený **AI analýza (pilotní)** pro simulovanou zprávu o novém čísle a žádosti o 5000 Kč. Výstup: vysoké riziko, tři varovné signály a bezpečné kroky (ověřit starým telefonním číslem, kontaktovat banku, Policie ČR 158). Není potvrzen přesný počet tokenů ani účtovaná cena ze serverových logů.
+- Všechny snímky ukazují **ruštinu**, včetně nápisu v navigaci a přeložených citací; před opravou aplikace vyloučit automatický překlad prohlížeče, ověřit skutečnou odpověď modelu v češtině.
+- Po jednorázovém testu proměnná `AI_ENABLED` pro **Preview nastavena na `false`**. Tento commit slouží k vyvolání nové Preview sestavy, která tuto změnu načte. Production ani veřejný soutěžní web nejsou měněny.
