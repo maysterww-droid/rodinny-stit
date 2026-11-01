@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { Readable } = require('node:stream');
-const { createHandler, validateResult, validateFollowup, worstCaseMicroUsd, readConfig, maxInputTokens } = require('../server/core.cjs');
+const { createHandler, validateResult, validateFollowup, safeFollowupFallback, worstCaseMicroUsd, readConfig, maxInputTokens } = require('../server/core.cjs');
 const { memoryStore, upstashStore } = require('../server/store.cjs');
 const { createMockFetch } = require('../server/mock-provider.cjs');
 
@@ -358,7 +358,7 @@ test('AI-first follow-up: one independently consented question uses strict schem
   assert.equal(calls.length, 1);
   assert.equal(calls[0].body.store, false);
   assert.equal(calls[0].body.text.format.name, 'scam_followup');
-  assert.deepEqual(calls[0].body.text.format.schema.required, ['answer_cs', 'next_step_cs', 'uncertainty_cs']);
+  assert.deepEqual(calls[0].body.text.format.schema.required, ['answer_cs', 'next_step_cs', 'uncertainty_cs', 'evidence_quotes_cs']);
   assert.match(calls[0].body.input, /<message>\n[\s\S]+<\/message>/);
   assert.match(calls[0].body.input, /<question>\nProč je tato zpráva podezřelá\?\n<\/question>/);
   assert.ok(!logs.some(entry => entry.includes(SMS) || entry.includes(q.question)), 'no message or question in logs');
@@ -412,6 +412,100 @@ test('AI-first follow-up safety: refuse fake certainty or dangerous recommended 
   assert.equal(validateFollowup({ ...p, answer_cs: 'Pošlete ověřovací kód.' }), null);
   assert.equal(validateFollowup({ ...p, next_step_cs: 'Smažte zprávu.' }), null);
   assert.ok(validateFollowup({ ...p, next_step_cs: 'Nesdělujte kódy a zprávu uschovejte.' }));
+});
+
+test('AI 2.1 source-grounding: invented "hned" and callback bans are rejected, real quotes pass', () => {
+  const base = {
+    answer_cs: 'Ve zprávě je žádost o 5000 Kč ještě dnes, ale neznáme skutečného odesílatele.',
+    evidence_quotes_cs: ['5000 Kč', 'ještě dnes'],
+    next_step_cs: 'Zavolejte na dříve uložené číslo.',
+    uncertainty_cs: 'Z textu nelze ověřit odesílatele.'
+  };
+  assert.ok(validateFollowup(base, SMS));
+  assert.equal(validateFollowup({ ...base, evidence_quotes_cs: ['hned'] }, SMS), null);
+  assert.equal(validateFollowup({ ...base, answer_cs: 'Píše „hned“, proto Vás nutí jednat rychle.' }, SMS), null);
+  assert.equal(validateFollowup({ ...base, answer_cs: 'Pokyn nevolat zpět je jasným varováním.' }, SMS), null);
+  assert.ok(validateFollowup({ ...base, answer_cs: 'Časový tlak může být varovným signálem; v textu je „ještě dnes“.' }, SMS));
+});
+
+test('AI 2.1 bounded conversation: consented one-turn history is forwarded without server storage', async () => {
+  const { h, calls, logs } = setup();
+  const history = [{ question: 'Proč?', answer: 'Zpráva vyvolává naléhavost.' }];
+  const input = { ...ok(), kind: 'followup', question: 'Co mám udělat teď?', history };
+  const r = await call(h, { body: input });
+  assert.equal(r.status, 200);
+  assert.match(calls[0].body.input, /<previous>\nQuestion: Proč\?\nUnverified AI answer: Zpráva vyvolává naléhavost\./);
+  assert.ok(!logs.some(line => line.includes('Zpráva vyvolává naléhavost') || line.includes(SMS)));
+  for (const invalid of [
+    [...history, ...history], [{ ...history[0], answer: 'x'.repeat(601) }],
+    [{ ...history[0], question: 'x'.repeat(281) }], [{ answer: 'no question' }],
+    'arbitrary'
+  ]) {
+    const bad = await call(h, { body: { ...input, history: invalid } });
+    assert.equal(bad.status, 400);
+  }
+  assert.equal(calls.length, 1);
+});
+
+
+test('2.1.1 follow-up with fabricated evidence produces safe fallback, 1 paid-equivalent mock only', async () => {
+  const expected = {
+    answer_cs: 'Podle textu musíte „hned“ poslat peníze a nesmíte volat zpět.',
+    evidence_quotes_cs: ['hned'],
+    next_step_cs: 'Ověřte známý kontakt.',
+    uncertainty_cs: 'Odesílatele nelze potvrdit.'
+  };
+  const calls = [];
+  const fetchImpl = async (url, opts) => {
+    calls.push(JSON.parse(opts.body));
+    return {
+      ok: true, status: 200,
+      json: async () => ({ status: 'completed', output: [
+        { type: 'message', content: [{ type: 'output_text', text: JSON.stringify(expected) }] }
+      ], usage: { input_tokens: 100, output_tokens: 80 } })
+    };
+  };
+  const { h, logs } = setup({}, { fetchImpl });
+  const response = await call(h, { body: { ...ok(), kind: 'followup', question: 'Proč je to podezřelé?' } });
+  assert.equal(response.status, 200);
+  assert.equal(response.json.result.fallback, true);
+  assert.equal(calls.length, 1);
+  assert.ok(response.json.result.answer_cs.includes('neprošla kontrolou'));
+  assert.doesNotMatch(response.json.result.answer_cs, /„hned“|nesmíte volat zpět/);
+  for (const q of response.json.result.evidence_quotes_cs) assert.ok(SMS.includes(q));
+  assert.ok(logs.some(line => line.includes('safe_fallback')));
+  assert.ok(!logs.some(line => line.includes(SMS)));
+});
+
+test('2.1.1 deterministic fallback stays cautious on harmless text and quotes only source material', () => {
+  const harmless = 'Dobrý den, setkání se koná v pondělí v 10 hodin.';
+  const safe = safeFollowupFallback(harmless);
+  assert.equal(safe.fallback, true);
+  assert.deepEqual(safe.evidence_quotes_cs, []);
+  assert.doesNotMatch(safe.answer_cs, /vysoce podezřel|jistě podvod|vysoké riziko/);
+  const fraud = safeFollowupFallback(SMS);
+  assert.ok(fraud.evidence_quotes_cs.some(q => q.includes('nové číslo')));
+  assert.ok(fraud.evidence_quotes_cs.some(q => /5000 Kč|ještě dnes/.test(q)));
+  assert.ok(fraud.evidence_quotes_cs.every(q => SMS.includes(q)));
+  assert.ok(fraud.answer_cs.length <= 600);
+});
+
+
+test('2.1.2 direct-quote candidates are valid, deduplicated, and never invent absent words', () => {
+  const { evidenceCandidates, buildFollowupInput, FOLLOWUP_INSTRUCTIONS } = require('../server/prompt.cjs');
+  const longSMS = 'Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes, potřebuji to hned.';
+  const quotes = evidenceCandidates(longSMS);
+  assert.ok(quotes.length >= 2 && quotes.length <= 5);
+  assert.ok(quotes.every(q => longSMS.includes(q)));
+  assert.ok(quotes.some(q => q.includes('hned')), 'hned is present in the real owner QA SMS');
+  assert.ok(quotes.every((q, i) => !quotes.some((other, j) => i !== j && other.includes(q))), 'no nested quotes');
+  const shortSMS = 'Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.';
+  assert.ok(!evidenceCandidates(shortSMS).some(q => /hned/.test(q)));
+  const input = buildFollowupInput(longSMS, 'Proč je to podezřelé?');
+  assert.match(input, /<candidate_excerpts>/);
+  assert.ok(input.includes('potřebuji to hned'));
+  assert.match(FOLLOWUP_INSTRUCTIONS, /WITHOUT ANY QUOTATION MARKS/);
+  assert.match(FOLLOWUP_INSTRUCTIONS, /ONLY into evidence_quotes_cs/);
 });
 
 test('AI-first follow-up is disabled in expired Preview and makes zero provider calls', async () => {

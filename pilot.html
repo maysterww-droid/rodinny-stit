@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kontrola podezřelé zprávy | RODINNÝ ŠTÍT – interaktivní pilot</title>
-<meta name="description" content="Interaktivní pilot RODINNÝ ŠTÍT: zkontrolujte podezřelou zprávu, zjistěte varovné signály a bezpečný další krok. Česky, bez registrace.">
+<title>Živá AI analýza zpráv | RODINNÝ ŠTÍT 2.1.2</title>
+<meta name="description" content="RODINNÝ ŠTÍT 2.1.2: živá AI pomáhá vysvětlit podezřelé zprávy a bezpečné další kroky. Česky, bez registrace a vždy s výslovným souhlasem.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -44,9 +44,10 @@
    </picture>
   </div>
   <div class="ph-copy">
-   <span class="pill ph-pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 2.0</span>
+   <span class="pill ph-pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>AI FIRST 2.1.2 · kontrola zprávy</span>
    <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
    <p class="ph-lead">Vložte SMS, e-mail, snímek obrazovky nebo popis hovoru. Ukážeme varovné signály a poradíme, co dělat dál.</p>
+   <a class="ph-jump" href="#msg">Vyzkoušet AI kontrolu <span aria-hidden="true">↓</span></a>
   </div>
   <div class="ph-stage" role="img" aria-label="Ukázka: telefon s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“, kterou ochranný štít zkontroloval a označil varováním jako podezřelou.">
    <i class="ph-orbit back" aria-hidden="true"></i>
@@ -111,7 +112,7 @@
   <div id="aiBox" class="ai-box" hidden>
    <div class="seg" role="radiogroup" aria-label="Způsob kontroly">
     <label class="seg-opt"><input type="radio" name="checkMode" value="local" checked><span><b>Lokální pravidla</b><small>Text zůstává v prohlížeči</small></span></label>
-    <label class="seg-opt"><input type="radio" name="checkMode" value="ai"><span><b>AI analýza <em>(pilotní)</em></b><small>Text se odešle k vyhodnocení</small></span></label>
+    <label class="seg-opt"><input type="radio" name="checkMode" value="ai"><span><b>AI analýza</b><small>Text se odešle k vyhodnocení</small></span></label>
    </div>
    <div id="aiConsentBox" class="ai-consent" hidden>
     <p class="ai-notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-lock"/></svg><span>Upravený text zprávy se odešle přes náš server poskytovateli jazykového modelu (OpenAI) k jednorázovému vyhodnocení. Neukládáme ho a nezapisujeme do logů. Telefony, e-maily a některá dlouhá čísla se automaticky skryjí, ale maskování nemusí zachytit všechny osobní údaje. <b>Náhled si před souhlasem pečlivě zkontrolujte. Nevkládejte hesla, PIN ani kódy z SMS.</b> Soulad s GDPR zatím nebyl odborně posouzen.</span></p>
@@ -121,7 +122,7 @@
   </div>
   <button class="btn btn-primary btn-wide btn-xl" id="analyzeBtn" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg><span>Zkontrolovat zprávu</span></button>
   <button class="btn btn-ghost btn-wide hidden" id="cancelAiBtn" type="button" onclick="cancelAi()" style="margin-top:8px">Zrušit AI analýzu</button>
-  <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Není připojen živý AI model. Nevkládejte hesla, PIN ani kódy.</span></div>
+  <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Ověřujeme dostupnost živé AI. Po vašem souhlasu můžete odeslat upravený text k analýze. Pokud AI není dostupná, zůstává místní orientační kontrola. Nevkládejte hesla, PIN ani kódy.</span></div>
   <div class="tools">
    <span class="hint" id="privacyHint"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-eyeoff"/></svg>Skrýt:</span>
    <button type="button" class="chip" onclick="maskPhones()">Telefony</button>
@@ -215,8 +216,8 @@
   </div>
   <label class="ai-question-label" for="aiQuestion">Moje otázka k této zprávě</label>
   <textarea id="aiQuestion" class="input ai-question-input" maxlength="280" placeholder="Např. Proč po mně chce nové číslo účtu?" oninput="updateAiQuestionPreview()"></textarea>
-  <div class="ai-preview ai-question-preview"><b>Otázka před odesláním (osobní údaje mohou zůstat):</b><div id="aiQuestionPreview" aria-live="polite">(zatím prázdné)</div></div>
-  <label class="consent"><input type="checkbox" id="aiQuestionAgree" onchange="recordAiQuestionConsent()"><span>Souhlasím s opětovným odesláním upravené původní zprávy a této otázky k AI.</span></label>
+  <div class="ai-preview ai-question-preview"><b>Co odešlete k AI (včetně případné poslední otázky a odpovědi):</b><div id="aiQuestionPreview" aria-live="polite">(zatím prázdné)</div></div>
+  <label class="consent"><input type="checkbox" id="aiQuestionAgree" onchange="recordAiQuestionConsent()"><span>Souhlasím s odesláním upravené zprávy, této otázky a případné poslední otázky s odpovědí k AI.</span></label>
   <button id="aiQuestionBtn" class="btn btn-primary btn-wide" type="button" onclick="sendAiQuestion()">Zeptat se AI</button>
   <button id="aiQuestionCancel" class="btn btn-ghost btn-wide" type="button" onclick="cancelAiQuestion()" hidden>Zrušit otázku</button>
   <p id="aiQuestionStatus" class="status" role="status" aria-live="polite">Otázka se neodešle bez samostatného souhlasu. Každá odpověď je samostatná a může se mýlit.</p>
@@ -224,9 +225,10 @@
    <p id="aiQuestionSource" class="ai-question-source"></p>
    <h3>Odpověď</h3><p id="aiQuestionAnswer"></p>
    <h3>Bezpečný další krok</h3><p id="aiQuestionStep"></p>
+   <p id="aiQuestionEvidence" class="ai-question-evidence" hidden></p>
    <p id="aiQuestionUncertainty"></p>
   </div>
-  <small>AI nezjistí, kdo zprávu skutečně odeslal. Předchozí otázky ani odpovědi se znovu neposílají.</small>
+  <small>AI nezjistí, kdo zprávu skutečně odeslal. Při další otázce se může s novým souhlasem odeslat poslední otázka a odpověď; nic se neukládá jako trvalá konverzace.</small>
  </section>
 
  <p id="shareState" class="status hidden" role="status" aria-live="polite"></p>
@@ -365,7 +367,7 @@
 </section>
 </main>
 
-<footer class="app-footer">RODINNÝ ŠTÍT · vývojový pilot 2.0 · <a href="index.html">O projektu</a><br>AI je dostupná přes zabezpečený server po vašem výslovném souhlasu. Pokud není připojená, funguje jen orientační místní kontrola. Výsledek neověřuje identitu odesílatele ani pravost obrazu či hlasu a nezaručuje bezpečnost.</footer>
+<footer class="app-footer">RODINNÝ ŠTÍT · AI FIRST 2.1.2 · <a href="index.html">O projektu</a><br>AI je dostupná přes zabezpečený server po vašem výslovném souhlasu. Pokud není připojená, funguje jen orientační místní kontrola. Výsledek neověřuje identitu odesílatele ani pravost obrazu či hlasu a nezaručuje bezpečnost.</footer>
 <script src="assets/ai-config.js"></script>
 <script src="assets/site.js" defer></script>
 <script src="assets/app.js" defer></script>

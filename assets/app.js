@@ -397,14 +397,14 @@ function analyzeLocal(text = $('msg').value.trim()) {
 /* ================= AI analýza (volitelná, pilotní) =================
  * Zobrazí se jen tehdy, když server hlásí dostupnost. Výchozí je vždy režim lokálních pravidel.
  * Odesílá se jen text (nikdy obrázek), po automatickém skrytí osobních údajů a po výslovném souhlasu. */
-const AI = { endpoint: '', available: false, maxChars: 3000, ctl: null, consentSnapshot: null, askCtl: null, questionSnapshot: null };
+const AI = { endpoint: '', available: false, maxChars: 3000, ctl: null, consentSnapshot: null, askCtl: null, questionSnapshot: null, followupHistory: [] };
 const AI_ERRORS = {
   consent_required: 'Pro AI analýzu je potřeba zaškrtnout souhlas s odesláním textu.',
   too_long: 'Text je pro AI analýzu příliš dlouhý (max. 3 000 znaků nebo 6 000 bajtů). Zkraťte ho, nebo použijte lokální pravidla.',
   empty_text: 'Nejdříve vložte text zprávy.',
   quota_user: 'Dosáhli jste limitu AI analýz pro tuto chvíli. Zkuste to později, nebo použijte lokální pravidla.',
   quota_global: 'Denní limit AI analýz pilotu je vyčerpán. Použijte prosím lokální pravidla.',
-  quota_budget: 'Denní rozpočet pilotní AI analýzy je vyčerpán. Použijte prosím lokální pravidla.',
+  quota_budget: 'Denní limit AI analýzy je vyčerpán. Použijte prosím lokální pravidla.',
   ai_busy: 'Služba AI je právě přetížená. Zkuste to za chvíli, nebo použijte lokální pravidla.',
   ai_timeout: 'AI analýza trvala příliš dlouho a byla přerušena.',
   ai_unavailable: 'AI analýza je momentálně vypnutá nebo nedostupná.',
@@ -446,7 +446,7 @@ function syncAiUi() {
   $('aiConsentBox').hidden = !ai;
   if (!ai) resetAiConsent(); // souhlas platí jen pro konkrétní obsah
   $('analyzeBtn').lastChild.textContent = ai ? 'Zkontrolovat pomocí AI' : 'Zkontrolovat zprávu';
-  setMode('', ai ? 'Režim <b>AI analýza (pilotní)</b>: výsledek je pravděpodobnostní a může se mýlit. Kdykoli se můžete vrátit k lokálním pravidlům.'
+  setMode('', ai ? 'Režim <b>AI analýza</b>: výsledek je pravděpodobnostní a může se mýlit. Kdykoli se můžete vrátit k lokálním pravidlům.'
                  : 'Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Text se nikam neodesílá. Nevkládejte hesla, PIN ani kódy.');
   updateAiPreview();
 }
@@ -509,7 +509,7 @@ function renderAiResult(r, sentText) {
   $('nextSteps').innerHTML = r.recommended_steps.map(x => `<li><span>${esc(x)}</span></li>`).join('');
   $('resultAction').textContent = r.recommended_steps.join(' ');
   $('verifyBtn').style.display = r.risk === 'uncertain' ? 'none' : '';
-  $('resultNote').textContent = 'Výsledek vytvořil jazykový model v pilotním režimu. Je pravděpodobnostní, může se mýlit, neověřuje odesílatele, odkazy ani účty a není zárukou bezpečnosti. ' + (r.uncertainty_cs || '');
+  $('resultNote').textContent = 'Výsledek vytvořil jazykový model. Je pravděpodobnostní, může se mýlit, neověřuje odesílatele, odkazy ani účty a není zárukou bezpečnosti. ' + (r.uncertainty_cs || '');
   $('shareState').classList.add('hidden');
   updateAiReviewOffer('ai');
   resetAiQuestion();
@@ -523,7 +523,7 @@ function setSource(kind, model = '') {
   const ai = kind === 'ai';
   $('resultSource').className = 'src-badge' + (ai ? ' ai' : '');
   $('resultSourceIcon').setAttribute('href', ICONS + (ai ? 'i-cpu' : 'i-info'));
-  $('resultSourceText').textContent = ai ? 'AI analýza (pilotní)' + (/mock|simul/i.test(model) ? ' · TESTOVACÍ REŽIM se simulovaným modelem' : '') : 'Kontrola podle lokálních pravidel';
+  $('resultSourceText').textContent = ai ? 'AI analýza' + (/mock|simul/i.test(model) ? ' · TESTOVACÍ REŽIM se simulovaným modelem' : '') : 'Kontrola podle lokálních pravidel';
   if (!ai) { $('aiExplain').classList.add('hidden'); $('resultNote').textContent = 'Výsledek pochází z lokálních orientačních pravidel v prohlížeči, nikoli z AI modelu ani databáze podvodů. Neověřuje odesílatele a není zárukou bezpečnosti.'; }
 }
 async function initAI() {
@@ -609,6 +609,7 @@ function resetAiQuestionConsent() {
   $('aiQuestionAgree').checked = false;
 }
 function resetAiQuestion() {
+  AI.followupHistory = [];
   if (AI.askCtl) AI.askCtl.abort('new_analysis');
   AI.askCtl = null;
   resetAiQuestionConsent();
@@ -616,27 +617,36 @@ function resetAiQuestion() {
   $('aiQuestion').value = '';
   $('aiQuestionPreview').textContent = '(zatím prázdné)';
   $('aiQuestionResult').hidden = true;
+  $('aiQuestionEvidence').hidden = true;
+  $('aiQuestionEvidence').textContent = '';
   $('aiQuestionStatus').textContent = 'Otázka se neodešle bez samostatného souhlasu. Každá odpověď je samostatná a může se mýlit.';
   $('aiQuestionStatus').className = 'status';
   $('aiQuestionCancel').hidden = true;
   $('aiQuestionBtn').disabled = false;
 }
 function maskedAiQuestion() { return maskForAI($('aiQuestion').value.trim()); }
+function questionConsentKey(question) {
+  return lastAiText + '\n' + question + '\n' + JSON.stringify(AI.followupHistory);
+}
 function updateAiQuestionPreview() {
   const question = maskedAiQuestion();
-  if (AI.questionSnapshot !== null && AI.questionSnapshot !== lastAiText + '\n' + question)
+  if (AI.questionSnapshot !== null && AI.questionSnapshot !== questionConsentKey(question))
     resetAiQuestionConsent();
-  $('aiQuestionPreview').textContent = question || '(zatím prázdné)';
+  const previous = AI.followupHistory[0];
+  $('aiQuestionPreview').textContent = (question || '(zatím prázdné)') +
+    (previous ? '\n\nKontext poslední otázky, který se znovu odešle:\n' + previous.question +
+      '\nDřívější odpověď AI (neověřená): ' + previous.answer : '');
 }
 function recordAiQuestionConsent() {
   const value = maskedAiQuestion();
-  AI.questionSnapshot = $('aiQuestionAgree').checked && value ? lastAiText + '\n' + value : null;
+  AI.questionSnapshot = $('aiQuestionAgree').checked && value ? questionConsentKey(value) : null;
 }
 function chooseAiQuestion(key) {
   if (!AI.available || lastResult?.kind !== 'ai' || !lastAiText || !AI_QUESTIONS[key]) return false;
   $('aiQuestion').value = AI_QUESTIONS[key];
   updateAiQuestionPreview();
-  $('aiQuestion').focus();
+  $('aiQuestionAgree').focus({ preventScroll: true });
+  $('aiQuestionAgree').scrollIntoView?.({ block: 'center', behavior: 'smooth' });
   return true;
 }
 function setQuestionStatus(text, isError = false) {
@@ -654,12 +664,14 @@ async function sendAiQuestion() {
     setQuestionStatus(AI_ERRORS.invalid_question, true);
     return;
   }
-  if (!$('aiQuestionAgree').checked || AI.questionSnapshot !== lastAiText + '\n' + question) {
+  if (!$('aiQuestionAgree').checked || AI.questionSnapshot !== questionConsentKey(question)) {
     resetAiQuestionConsent();
     setQuestionStatus('Před každou otázkou zkontrolujte upravený text a zvlášť potvrďte souhlas.', true);
     $('aiQuestionAgree').focus();
+    $('aiQuestionAgree').scrollIntoView?.({ block: 'center', behavior: 'smooth' });
     return;
   }
+  const history = AI.followupHistory.slice(-1);
   const sentText = lastAiText, expectedResult = lastResult;
   AI.askCtl = new AbortController();
   const ctl = AI.askCtl;
@@ -671,7 +683,7 @@ async function sendAiQuestion() {
   try {
     const r = await fetch(AI.endpoint, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ kind: 'followup', text: sentText, question, language: 'cs', consent: true }),
+      body: JSON.stringify({ kind: 'followup', text: sentText, question, history, language: 'cs', consent: true }),
       signal: ctl.signal, credentials: 'same-origin'
     });
     let payload = null; try { payload = await r.json(); } catch { /* no sensitive logging */ }
@@ -690,14 +702,26 @@ async function sendAiQuestion() {
       setQuestionStatus('AI neposkytla platnou odpověď.', true);
       return;
     }
-    $('aiQuestionSource').textContent = /mock|simul/i.test(String(payload.model || ''))
-      ? 'SIMULACE — nejde o odpověď skutečného AI modelu'
-      : 'Doplňující odpověď AI · není ověřením totožnosti ani bezpečnosti';
+    const safeFallback = answer.fallback === true;
+    $('aiQuestionSource').textContent = safeFallback
+      ? 'BEZPEČNÁ NÁHRADNÍ ODPOVĚĎ · text AI neprošel kontrolou'
+      : /mock|simul/i.test(String(payload.model || ''))
+        ? 'SIMULACE — nejde o odpověď skutečného AI modelu'
+        : 'Doplňující odpověď AI · není ověřením totožnosti ani bezpečnosti';
     $('aiQuestionAnswer').textContent = answer.answer_cs;
+    const evidence = Array.isArray(answer.evidence_quotes_cs) ? answer.evidence_quotes_cs : [];
+    $('aiQuestionEvidence').hidden = evidence.length === 0;
+    $('aiQuestionEvidence').textContent = evidence.length
+      ? 'Přímo ve zprávě: ' + evidence.map(q => '„' + q + '“').join(' · ') : '';
     $('aiQuestionStep').textContent = answer.next_step_cs;
     $('aiQuestionUncertainty').textContent = answer.uncertainty_cs || 'Model se může mýlit.';
     $('aiQuestionResult').hidden = false;
-    setQuestionStatus('Odpověď je připravena. Další otázka vyžaduje nový souhlas.');
+    // Memory stays only in this browser tab; no chat history is stored on the server.
+    AI.followupHistory = safeFallback ? [] : [{ question, answer: maskForAI(answer.answer_cs).slice(0, 600) }];
+    updateAiQuestionPreview();
+    setQuestionStatus(safeFallback
+      ? 'Části odpovědi AI nebylo možné ověřit. Zobrazujeme jen doložitelné informace a bezpečný postup, bez dalšího placeného dotazu.'
+      : 'Odpověď je připravena. Pro další otázku si zkontrolujte náhled a dejte nový souhlas.', safeFallback);
   } catch {
     setQuestionStatus(timeout ? AI_ERRORS.ai_timeout :
       ctl.signal.aborted ? AI_ERRORS.cancelled : AI_ERRORS.offline, true);
@@ -739,7 +763,7 @@ async function shareResult() {
   if (lastResult.kind === 'ai') {
     const L = AI_LEVELS[lastResult.risk] || AI_LEVELS.uncertain;
     body = `RODINNÝ ŠTÍT – ${L.title}\n` + (lastResult.warning_signals.length ? 'Varovné signály: ' + lastResult.warning_signals.map(x => x.name_cs).join(', ') + '\n' : '') +
-      'Doporučení: ' + lastResult.recommended_steps.join(' ') + '\n(Pilotní AI analýza – pravděpodobnostní odhad, bez záruky bezpečnosti.)';
+      'Doporučení: ' + lastResult.recommended_steps.join(' ') + '\n(AI analýza – pravděpodobnostní odhad, bez záruky bezpečnosti.)';
   } else {
     const L = LEVELS[lastResult.level];
     body = `RODINNÝ ŠTÍT – ${L.title}\n` + (lastResult.found.length ? 'Varovné signály: ' + lastResult.found.map(x => x.name).join(', ') + '\n' : '') +

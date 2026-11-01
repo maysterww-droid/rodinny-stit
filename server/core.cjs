@@ -59,7 +59,7 @@ function readConfig(env) {
  * ≤ počet bajtů instrukcí + JSON Schema + obalené zprávy + pevná rezerva na rámování zpráv (overheadTokens).
  * Výstup: max_output_tokens je tvrdý strop na generované tokeny VČETNĚ reasoning tokenů.
  * Rezervuje se před voláním (atomicky), takže součet skutečných útrat nepřekročí rozpočet. */
-const { INSTRUCTIONS, RESPONSE_SCHEMA: SCHEMA, buildInput, FOLLOWUP_INSTRUCTIONS, FOLLOWUP_SCHEMA, buildFollowupInput } = require('./prompt.cjs');
+const { INSTRUCTIONS, RESPONSE_SCHEMA: SCHEMA, buildInput, FOLLOWUP_INSTRUCTIONS, FOLLOWUP_SCHEMA, buildFollowupInput, evidenceCandidates } = require('./prompt.cjs');
 const FIXED_INPUT_BYTES = Buffer.byteLength(INSTRUCTIONS) + Buffer.byteLength(JSON.stringify(SCHEMA));
 function maxInputTokens(c, text, task = null) {
   return (task
@@ -112,10 +112,22 @@ function validateResult(p, sourceText = null) {
 
 
 /** AI Q&A is never an identity verification, crime determination or safety guarantee. */
-function validateFollowup(p) {
+function validateFollowup(p, sourceText = null) {
   if (!p || typeof p !== 'object' || typeof p.answer_cs !== 'string' ||
       typeof p.next_step_cs !== 'string' || typeof p.uncertainty_cs !== 'string') return null;
   if (!p.answer_cs.trim() || !p.next_step_cs.trim()) return null;
+  const quotes = p.evidence_quotes_cs === undefined ? [] : p.evidence_quotes_cs;
+  if (!Array.isArray(quotes) || quotes.length > 3 || quotes.some(q => typeof q !== 'string' || !q.trim() || q.length > 80)) return null;
+  const source = typeof sourceText === 'string' ? sourceText.toLocaleLowerCase('cs') : null;
+  if (source !== null && quotes.some(q => !source.includes(q.toLocaleLowerCase('cs')))) return null;
+  // Quoted phrases in the narrative are evidence claims too, not just the structured list.
+  const quoted = [...p.answer_cs.matchAll(/„([^“]{1,80})“|"([^"]{1,80})"/gu)].map(m => m[1] || m[2]);
+  if (source !== null && quoted.some(q => !source.includes(q.toLocaleLowerCase('cs')))) return null;
+  // Frequent scam-pattern hallucination: "do not call back" is an instruction
+  // ONLY when the actual source message explicitly says so.
+  const inventedNoCall = /(?:pokyn|žádost|vyzývá|nabádá|zakazuje|říká|píše|snaha).{0,65}(?:nevolat|nevolejte|nezavolat|nevolej|nevolali|nevolání)/iu;
+  if (source !== null && inventedNoCall.test(p.answer_cs) &&
+      !/nevol|nezavol|nevolej|nekontaktuj|nevolejte/iu.test(sourceText)) return null;
   // Reuse the existing conservative safety filter for explanation and advice.
   const checked = validateResult({
     risk: 'uncertain', scope: 'message_analysis', warning_signals: [],
@@ -128,8 +140,29 @@ function validateFollowup(p) {
   if (dangerousAnswer.test(answer)) return null;
   return {
     answer_cs: answer,
+    evidence_quotes_cs: quotes,
     next_step_cs: checked.recommended_steps[0],
     uncertainty_cs: checked.uncertainty_cs
+  };
+}
+
+/**
+ * Fail safely on ungrounded follow-up prose without paying for a second model call.
+ * This is NOT an AI-generated answer. Only exact source substrings may appear as evidence.
+ */
+function safeFollowupFallback(sourceText) {
+  const source = String(sourceText || '');
+  const quotes = evidenceCandidates(source).slice(0, 3);
+  const answer = quotes.length
+    ? 'Původní odpověď AI neprošla kontrolou přesnosti, proto ji nezobrazujeme. V textu zprávy lze přímo doložit tyto výrazy: ' +
+      quotes.map(q => '„' + q + '“').join(', ') + '. Tyto okolnosti mohou být varovné, ale samy o sobě nedokazují podvod.'
+    : 'Původní odpověď AI neprošla kontrolou přesnosti, proto ji nezobrazujeme. Ze samotné zprávy nelze bez nezávislého ověření spolehlivě určit totožnost odesílatele ani bezpečnost požadavku.';
+  return {
+    answer_cs: answer.slice(0, 600),
+    evidence_quotes_cs: quotes,
+    next_step_cs: 'Před jakoukoli platbou nebo sdílením údajů si věc ověřte jinou cestou, například přes dříve známý kontakt či oficiální aplikaci.',
+    uncertainty_cs: 'Bezpečné náhradní vysvětlení vytvořené z textu bez dalšího AI požadavku. Nejde o ověření totožnosti ani potvrzení podvodu.',
+    fallback: true
   };
 }
 
@@ -228,9 +261,16 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     const question = followup && typeof body.question === 'string' ? body.question.trim() : '';
     if (followup && (question.length < 3 || question.length > 280 || Buffer.byteLength(question) > 600))
       return err(res, 400, 'invalid_question', allowed);
+    const history = followup && body.history !== undefined ? body.history : [];
+    if (followup && (!Array.isArray(history) || history.length > 1 ||
+        history.some(turn => !turn || typeof turn !== 'object' ||
+          typeof turn.question !== 'string' || typeof turn.answer !== 'string' ||
+          turn.question.length < 3 || turn.question.length > 280 || Buffer.byteLength(turn.question) > 600 ||
+          !turn.answer.trim() || turn.answer.length > 600 || Buffer.byteLength(turn.answer) > 1200)))
+      return err(res, 400, 'invalid_question', allowed);
     const task = followup ? {
       name: 'scam_followup', instructions: FOLLOWUP_INSTRUCTIONS,
-      schema: FOLLOWUP_SCHEMA, input: buildFollowupInput(text, question)
+      schema: FOLLOWUP_SCHEMA, input: buildFollowupInput(text, question, history)
     } : null;
 
     // ---- limity (trvalé čítače, fail-closed) ----
@@ -269,7 +309,14 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
       if (actual > reserve) log({ evt: 'budget_bound_violated', reserve, actual }); // nemá nastat; skutečnost se započítá
       const diff = actual - reserve; // vrácení nevyužité části rezervace (jen po úspěšné odpovědi)
       if (diff < 0) { try { await store.refund({ keys: quotaKeys, amount: -diff }); } catch { /* reservation stays, conservative */ } }
-      const result = followup ? validateFollowup(parsed) : validateResult(parsed, text);
+      let result = followup ? validateFollowup(parsed, text) : validateResult(parsed, text);
+      if (!result && followup) {
+        // The provider was already called and charged once. Never retry or display
+        // unverified model assertions; use deterministic, source-grounded advice.
+        result = safeFollowupFallback(text);
+        done(200, 'safe_fallback', { tin: usage.input, tout: usage.output, kind: 'followup' });
+        return send(res, 200, { ok: true, mode: 'followup', model: cfg.model, result }, allowed);
+      }
       if (!result) { done(502, 'invalid_model_output', { tin: usage.input, tout: usage.output }); return err(res, 502, 'ai_bad_output', allowed); }
       done(200, 'ok', { tin: usage.input, tout: usage.output, kind: followup ? 'followup' : 'analysis', ...(followup ? {} : { risk: result.risk }) });
       return send(res, 200, { ok: true, mode: followup ? 'followup' : 'ai', model: cfg.model, result }, allowed);
@@ -282,4 +329,4 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
   };
 }
 
-module.exports = { createHandler, readConfig, validateResult, validateFollowup, worstCaseMicroUsd, maxInputTokens, PRICES, HARD_MAX_OUTPUT_TOKENS };
+module.exports = { createHandler, readConfig, validateResult, validateFollowup, safeFollowupFallback, worstCaseMicroUsd, maxInputTokens, PRICES, HARD_MAX_OUTPUT_TOKENS };

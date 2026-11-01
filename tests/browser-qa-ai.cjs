@@ -69,7 +69,7 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     // souhlas → AI výsledek (simulace)
     await pg.check('#aiAgree'); await runAI(SMS);
     ok(await pg.isVisible('#result'), `${w} AI result screen`);
-    ok((await pg.textContent('#resultSourceText')).startsWith('AI analýza (pilotní)'), `${w} result labelled "AI analýza (pilotní)"`);
+    ok((await pg.textContent('#resultSourceText')).startsWith('AI analýza'), `${w} result labelled "AI analýza"`);
     ok((await pg.textContent('#resultSourceText')).includes('TESTOVACÍ REŽIM'), `${w} simulated model clearly marked`);
     ok((await pg.textContent('#resultHeading')) === 'Vysoké riziko podvodu', `${w} owner SMS → high risk`);
     const steps = await pg.locator('#nextSteps li').allTextContents();
@@ -95,9 +95,16 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     ok((await pg.textContent('#aiQuestionSource')).includes('SIMULACE') &&
        (await pg.textContent('#aiQuestionAnswer')).length > 40,
        `${w} mock follow-up is visibly labelled simulation and has an answer`);
+    ok((await pg.textContent('#aiQuestionPreview')).includes('Kontext poslední otázky'),
+       `${w} explicit consent preview includes last question and response`);
     await pg.click('button[onclick="chooseAiQuestion(\'verify\')"]');
     ok(!(await pg.isChecked('#aiQuestionAgree')) && postCount() === postsBeforeQuestion + 1,
        `${w} another question revokes old consent and never auto-sends`);
+    await pg.check('#aiQuestionAgree');
+    await pg.click('#aiQuestionBtn');
+    await pg.waitForFunction(() => !document.getElementById('aiQuestionBtn').disabled, null, { timeout: 9000 });
+    ok(postCount() === postsBeforeQuestion + 2 && await pg.isVisible('#aiQuestionResult'),
+       `${w} contextual second question submits once, with separate consent`);
     await backHome();
     ok(!(await pg.isChecked('#aiAgree')), `${w} consent revoked after every AI attempt`);
 

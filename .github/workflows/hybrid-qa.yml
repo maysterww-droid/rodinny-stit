@@ -5,6 +5,7 @@ on:
       - feature/hybrid-consent-1.4
       - feature/scam-quality-1.5
       - feature/ai-first-2.0
+      - feature/ai-first-2-1-quality-mobile
   workflow_dispatch:
 
 permissions:
