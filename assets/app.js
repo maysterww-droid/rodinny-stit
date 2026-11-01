@@ -288,8 +288,9 @@ function classify(text) {
   const storyOnly = pastNarrative && !positiveAction && !web && !accountMove;
   const clearFriendly = has(/(?:kontakty.{0,18}(?:stejn|zustal)|cislo.{0,18}stejn)/) && !pay;
   const benignLink = has(/https?:\/\/example\.com\b/) && has(/(?:recept|pocasi|predpoved|rodinn.{0,12}kalendar|narozenin)/);
+  const investmentPitch = has(/(?:zajima vas.{0,22}(?:bitcoin|invest)|nabizime.{0,40}invest|prijdte.{0,40}invest|nabidka.{0,40}invest)/);
   const safeContext = (negated && !explicit && !pay && !web) ||
-    (contextLesson && !positiveAction && !web) || storyOnly ||
+    (contextLesson && !positiveAction && !web && !investmentPitch) || storyOnly ||
     clearFriendly || (benignLink && !positiveAction && !secret);
   if (safeContext) {
     result.level='low';result.found=[];
@@ -338,6 +339,9 @@ function classify(text) {
 /* Konkrétní kroky podle nalezených signálů */
 function nextSteps(data) {
   const ids = new Set(data.found.map(x => x.id)); const has = x => ids.has(x); const out = [];
+  if (has('idDocument')) out.push('<b>Neposílejte fotografie dokladů ani obou stran platební karty.</b> Kontakt ověřte v oficiální službě.');
+  if (has('cashHandoff')) out.push('<b>Nevybírejte a nepředávejte hotovost</b> údajným kurýrům banky nebo policie.');
+  if (has('unclear')) out.push('Přes <b>dříve známý kontakt</b> ověřte, kdo píše a co požaduje.');
   if (has('accountChange')) out.push('Změnu bankovního účtu si <b>ověřte přes dříve známý kontakt</b>, nikoliv z čísla ve zprávě.');
   if (has('qr')) out.push('Neznámý <b>QR kód neskenujte</b> a neposílejte přes něj platbu bez nezávislého ověření.');
   if (has('threat')) out.push('Uschovejte zprávu a další důkazy. Při vyhrožování se <b>obraťte na Policii ČR</b>.');
