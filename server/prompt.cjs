@@ -59,12 +59,12 @@ const FOLLOWUP_SCHEMA = {
 function evidenceCandidates(text) {
   const source = String(text);
   const patterns = [
-    /(?:mám|mame|máte)\\s+nov[éý]\\s+číslo/iu,
-    /\\bnov[éý]\\s+číslo\\b/iu,
-    /\\b(?:pošli|pošlete|zaplaťte|převeďte)\\b[^.!?\\n]{0,70}/iu,
-    /\\b\\d[\\d ]{0,12}\\s*(?:Kč|CZK)\\b/iu,
-    /\\b(?:ještě\\s+dnes|potřebuji\\s+to\\s+hned|ihned|okamžitě)\\b/iu,
-    /\\b(?:nevolej|nevolejte|nikomu\\s+neříkej)\\b/iu
+    /(?:mám|mame|máte)\s+nov[éý]\s+číslo/iu,
+    /\bnov[éý]\s+číslo\b/iu,
+    /\b(?:pošli|pošlete|zaplaťte|převeďte)\b[^.!?\n]{0,70}/iu,
+    /\b\d[\d ]{0,12}\s*(?:Kč|CZK)\b/iu,
+    /\b(?:ještě\s+dnes|potřebuji\s+to\s+hned|ihned|okamžitě)\b/iu,
+    /\b(?:nevolej|nevolejte|nikomu\s+neříkej)\b/iu
   ];
   const parts = [];
   for (const pattern of patterns) {
