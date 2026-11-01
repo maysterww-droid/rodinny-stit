@@ -490,6 +490,24 @@ test('2.1.1 deterministic fallback stays cautious on harmless text and quotes on
   assert.ok(fraud.answer_cs.length <= 600);
 });
 
+
+test('2.1.2 direct-quote candidates are valid, deduplicated, and never invent absent words', () => {
+  const { evidenceCandidates, buildFollowupInput, FOLLOWUP_INSTRUCTIONS } = require('../server/prompt.cjs');
+  const longSMS = 'Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes, potřebuji to hned.';
+  const quotes = evidenceCandidates(longSMS);
+  assert.ok(quotes.length >= 2 && quotes.length <= 5);
+  assert.ok(quotes.every(q => longSMS.includes(q)));
+  assert.ok(quotes.some(q => q.includes('hned')), 'hned is present in the real owner QA SMS');
+  assert.ok(quotes.every((q, i) => !quotes.some((other, j) => i !== j && other.includes(q))), 'no nested quotes');
+  const shortSMS = 'Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.';
+  assert.ok(!evidenceCandidates(shortSMS).some(q => /hned/.test(q)));
+  const input = buildFollowupInput(longSMS, 'Proč je to podezřelé?');
+  assert.match(input, /<candidate_excerpts>/);
+  assert.ok(input.includes('potřebuji to hned'));
+  assert.match(FOLLOWUP_INSTRUCTIONS, /WITHOUT ANY QUOTATION MARKS/);
+  assert.match(FOLLOWUP_INSTRUCTIONS, /ONLY into evidence_quotes_cs/);
+});
+
 test('AI-first follow-up is disabled in expired Preview and makes zero provider calls', async () => {
   const { h, calls } = setup({ AI_TEST_EXPIRES_AT: '2026-10-31T22:00:00Z' });
   const response = await call(h, { body: { ...ok(), kind: 'followup', question: 'Co mám dělat?' } });
