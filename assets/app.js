@@ -404,7 +404,7 @@ const AI_ERRORS = {
   empty_text: 'Nejdříve vložte text zprávy.',
   quota_user: 'Dosáhli jste limitu AI analýz pro tuto chvíli. Zkuste to později, nebo použijte lokální pravidla.',
   quota_global: 'Denní limit AI analýz pilotu je vyčerpán. Použijte prosím lokální pravidla.',
-  quota_budget: 'Denní rozpočet pilotní AI analýzy je vyčerpán. Použijte prosím lokální pravidla.',
+  quota_budget: 'Denní limit AI analýzy je vyčerpán. Použijte prosím lokální pravidla.',
   ai_busy: 'Služba AI je právě přetížená. Zkuste to za chvíli, nebo použijte lokální pravidla.',
   ai_timeout: 'AI analýza trvala příliš dlouho a byla přerušena.',
   ai_unavailable: 'AI analýza je momentálně vypnutá nebo nedostupná.',
@@ -446,7 +446,7 @@ function syncAiUi() {
   $('aiConsentBox').hidden = !ai;
   if (!ai) resetAiConsent(); // souhlas platí jen pro konkrétní obsah
   $('analyzeBtn').lastChild.textContent = ai ? 'Zkontrolovat pomocí AI' : 'Zkontrolovat zprávu';
-  setMode('', ai ? 'Režim <b>AI analýza (pilotní)</b>: výsledek je pravděpodobnostní a může se mýlit. Kdykoli se můžete vrátit k lokálním pravidlům.'
+  setMode('', ai ? 'Režim <b>AI analýza</b>: výsledek je pravděpodobnostní a může se mýlit. Kdykoli se můžete vrátit k lokálním pravidlům.'
                  : 'Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Text se nikam neodesílá. Nevkládejte hesla, PIN ani kódy.');
   updateAiPreview();
 }
@@ -509,7 +509,7 @@ function renderAiResult(r, sentText) {
   $('nextSteps').innerHTML = r.recommended_steps.map(x => `<li><span>${esc(x)}</span></li>`).join('');
   $('resultAction').textContent = r.recommended_steps.join(' ');
   $('verifyBtn').style.display = r.risk === 'uncertain' ? 'none' : '';
-  $('resultNote').textContent = 'Výsledek vytvořil jazykový model v pilotním režimu. Je pravděpodobnostní, může se mýlit, neověřuje odesílatele, odkazy ani účty a není zárukou bezpečnosti. ' + (r.uncertainty_cs || '');
+  $('resultNote').textContent = 'Výsledek vytvořil jazykový model. Je pravděpodobnostní, může se mýlit, neověřuje odesílatele, odkazy ani účty a není zárukou bezpečnosti. ' + (r.uncertainty_cs || '');
   $('shareState').classList.add('hidden');
   updateAiReviewOffer('ai');
   resetAiQuestion();
@@ -523,7 +523,7 @@ function setSource(kind, model = '') {
   const ai = kind === 'ai';
   $('resultSource').className = 'src-badge' + (ai ? ' ai' : '');
   $('resultSourceIcon').setAttribute('href', ICONS + (ai ? 'i-cpu' : 'i-info'));
-  $('resultSourceText').textContent = ai ? 'AI analýza (pilotní)' + (/mock|simul/i.test(model) ? ' · TESTOVACÍ REŽIM se simulovaným modelem' : '') : 'Kontrola podle lokálních pravidel';
+  $('resultSourceText').textContent = ai ? 'AI analýza' + (/mock|simul/i.test(model) ? ' · TESTOVACÍ REŽIM se simulovaným modelem' : '') : 'Kontrola podle lokálních pravidel';
   if (!ai) { $('aiExplain').classList.add('hidden'); $('resultNote').textContent = 'Výsledek pochází z lokálních orientačních pravidel v prohlížeči, nikoli z AI modelu ani databáze podvodů. Neověřuje odesílatele a není zárukou bezpečnosti.'; }
 }
 async function initAI() {
@@ -763,7 +763,7 @@ async function shareResult() {
   if (lastResult.kind === 'ai') {
     const L = AI_LEVELS[lastResult.risk] || AI_LEVELS.uncertain;
     body = `RODINNÝ ŠTÍT – ${L.title}\n` + (lastResult.warning_signals.length ? 'Varovné signály: ' + lastResult.warning_signals.map(x => x.name_cs).join(', ') + '\n' : '') +
-      'Doporučení: ' + lastResult.recommended_steps.join(' ') + '\n(Pilotní AI analýza – pravděpodobnostní odhad, bez záruky bezpečnosti.)';
+      'Doporučení: ' + lastResult.recommended_steps.join(' ') + '\n(AI analýza – pravděpodobnostní odhad, bez záruky bezpečnosti.)';
   } else {
     const L = LEVELS[lastResult.level];
     body = `RODINNÝ ŠTÍT – ${L.title}\n` + (lastResult.found.length ? 'Varovné signály: ' + lastResult.found.map(x => x.name).join(', ') + '\n' : '') +

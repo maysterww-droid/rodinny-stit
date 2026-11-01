@@ -69,7 +69,7 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     // souhlas → AI výsledek (simulace)
     await pg.check('#aiAgree'); await runAI(SMS);
     ok(await pg.isVisible('#result'), `${w} AI result screen`);
-    ok((await pg.textContent('#resultSourceText')).startsWith('AI analýza (pilotní)'), `${w} result labelled "AI analýza (pilotní)"`);
+    ok((await pg.textContent('#resultSourceText')).startsWith('AI analýza'), `${w} result labelled "AI analýza"`);
     ok((await pg.textContent('#resultSourceText')).includes('TESTOVACÍ REŽIM'), `${w} simulated model clearly marked`);
     ok((await pg.textContent('#resultHeading')) === 'Vysoké riziko podvodu', `${w} owner SMS → high risk`);
     const steps = await pg.locator('#nextSteps li').allTextContents();
