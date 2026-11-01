@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { Readable } = require('node:stream');
-const { createHandler, validateResult, worstCaseMicroUsd, readConfig, maxInputTokens } = require('../server/core.cjs');
+const { createHandler, validateResult, validateFollowup, worstCaseMicroUsd, readConfig, maxInputTokens } = require('../server/core.cjs');
 const { memoryStore, upstashStore } = require('../server/store.cjs');
 const { createMockFetch } = require('../server/mock-provider.cjs');
 
@@ -343,4 +343,81 @@ test('safety: malicious model recommendations are filtered, safe negations retai
     ...base, recommended_steps: ['Nesmažte původní zprávu.', 'Nesdělujte své kódy a hesla.']
   }, text);
   assert.deepEqual(safeNegations.recommended_steps, ['Nesmažte původní zprávu.', 'Nesdělujte své kódy a hesla.']);
+});
+
+
+test('AI-first follow-up: one independently consented question uses strict schema and is labeled followup', async () => {
+  const { h, calls, logs } = setup();
+  const q = { ...ok(), kind: 'followup', question: 'Proč je tato zpráva podezřelá?' };
+  const response = await call(h, { body: q });
+  assert.equal(response.status, 200);
+  assert.equal(response.json.mode, 'followup');
+  assert.match(response.json.result.answer_cs, /zprávě|odesílatele/);
+  assert.match(response.json.result.next_step_cs, /známý|kontakt/);
+  assert.match(response.json.result.uncertainty_cs, /SIMULACE/);
+  assert.equal(calls.length, 1);
+  assert.equal(calls[0].body.store, false);
+  assert.equal(calls[0].body.text.format.name, 'scam_followup');
+  assert.deepEqual(calls[0].body.text.format.schema.required, ['answer_cs', 'next_step_cs', 'uncertainty_cs']);
+  assert.match(calls[0].body.input, /<message>\n[\s\S]+<\/message>/);
+  assert.match(calls[0].body.input, /<question>\nProč je tato zpráva podezřelá\?\n<\/question>/);
+  assert.ok(!logs.some(entry => entry.includes(SMS) || entry.includes(q.question)), 'no message or question in logs');
+});
+
+test('AI-first follow-up cannot send invalid question or without fresh consent', async () => {
+  const { h, calls } = setup();
+  const q = { ...ok(), kind: 'followup', question: 'Co mám dělat?' };
+  for (const body of [
+    { ...q, consent: false }, { ...q, question: '' }, { ...q, question: 'ok' },
+    { ...q, question: 'x'.repeat(281) }, { ...q, question: '🛡️'.repeat(180) },
+    { ...q, kind: 'unsafe_custom_task' }
+  ]) {
+    const r = await call(h, { body });
+    assert.ok(r.status >= 400 && r.status < 500, 'invalid followup denied');
+  }
+  assert.equal(calls.length, 0);
+});
+
+test('AI-first follow-up shares the hourly/global budget with the original analysis', async () => {
+  const { h, calls } = setup({ LIMIT_GLOBAL_DAY: '1' });
+  assert.equal((await call(h, { body: ok() })).status, 200);
+  const response = await call(h, { body: { ...ok(), kind: 'followup', question: 'Jak to ověřit?' } });
+  assert.equal(response.status, 429);
+  assert.equal(response.json.error, 'quota_global');
+  assert.equal(calls.length, 1);
+});
+
+test('AI-first: follow-up usage reservation includes instructions, schema and question', () => {
+  const { FOLLOWUP_INSTRUCTIONS, FOLLOWUP_SCHEMA, buildFollowupInput } = require('../server/prompt.cjs');
+  const cfg = readConfig(baseEnv);
+  const task = {
+    instructions: FOLLOWUP_INSTRUCTIONS, schema: FOLLOWUP_SCHEMA,
+    name: 'scam_followup', input: buildFollowupInput(SMS, 'Proč je to podezřelé?')
+  };
+  assert.ok(maxInputTokens(cfg, SMS, task) >= Buffer.byteLength(task.instructions) +
+    Buffer.byteLength(task.input) + Buffer.byteLength(JSON.stringify(task.schema)));
+  assert.ok(worstCaseMicroUsd(cfg, SMS, task) >= cfg.maxOutputTokens * cfg.priceOutPerMTok);
+});
+
+test('AI-first follow-up safety: refuse fake certainty or dangerous recommended action', () => {
+  const p = {
+    answer_cs: 'Zpráva obsahuje nátlak, ale identitu odesílatele neznáme.',
+    next_step_cs: 'Ověřte totožnost na dříve uloženém čísle.',
+    uncertainty_cs: 'Z textu není možné potvrdit pravost.'
+  };
+  assert.ok(validateFollowup(p));
+  assert.equal(validateFollowup({ ...p, answer_cs: 'Účet je naprosto bezpečný.' }), null);
+  assert.equal(validateFollowup({ ...p, next_step_cs: 'Pošlete SMS ověřovací kód.' }), null);
+  assert.equal(validateFollowup({ ...p, next_step_cs: 'Klikněte na odkaz ve zprávě.' }), null);
+  assert.equal(validateFollowup({ ...p, answer_cs: 'Pošlete ověřovací kód.' }), null);
+  assert.equal(validateFollowup({ ...p, next_step_cs: 'Smažte zprávu.' }), null);
+  assert.ok(validateFollowup({ ...p, next_step_cs: 'Nesdělujte kódy a zprávu uschovejte.' }));
+});
+
+test('AI-first follow-up is disabled in expired Preview and makes zero provider calls', async () => {
+  const { h, calls } = setup({ AI_TEST_EXPIRES_AT: '2026-10-31T22:00:00Z' });
+  const response = await call(h, { body: { ...ok(), kind: 'followup', question: 'Co mám dělat?' } });
+  assert.equal(response.status, 503);
+  assert.equal(response.json.error, 'ai_unavailable');
+  assert.equal(calls.length, 0);
 });
