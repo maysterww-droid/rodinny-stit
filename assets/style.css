@@ -617,3 +617,7 @@ textarea.ai-question-input{min-height:92px;font-size:16px;padding:12px}
   .ai-first-intro .ai-first-top p{font-size:13px;line-height:1.45}
   .ph-jump{font-size:13px;padding:10px 11px;max-width:100%}
 }
+
+/* Live AI 2.1.2 — guidance for quick demonstration */
+.hero-demo-hint{margin:2px 0 0;color:#385677;font-size:13px;line-height:1.5;max-width:430px}
+@media(max-width:480px){.hero-demo-hint{font-size:12.5px}}
