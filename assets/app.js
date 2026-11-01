@@ -702,9 +702,12 @@ async function sendAiQuestion() {
       setQuestionStatus('AI neposkytla platnou odpověď.', true);
       return;
     }
-    $('aiQuestionSource').textContent = /mock|simul/i.test(String(payload.model || ''))
-      ? 'SIMULACE — nejde o odpověď skutečného AI modelu'
-      : 'Doplňující odpověď AI · není ověřením totožnosti ani bezpečnosti';
+    const safeFallback = answer.fallback === true;
+    $('aiQuestionSource').textContent = safeFallback
+      ? 'BEZPEČNÁ NÁHRADNÍ ODPOVĚĎ · text AI neprošel kontrolou'
+      : /mock|simul/i.test(String(payload.model || ''))
+        ? 'SIMULACE — nejde o odpověď skutečného AI modelu'
+        : 'Doplňující odpověď AI · není ověřením totožnosti ani bezpečnosti';
     $('aiQuestionAnswer').textContent = answer.answer_cs;
     const evidence = Array.isArray(answer.evidence_quotes_cs) ? answer.evidence_quotes_cs : [];
     $('aiQuestionEvidence').hidden = evidence.length === 0;
@@ -714,9 +717,11 @@ async function sendAiQuestion() {
     $('aiQuestionUncertainty').textContent = answer.uncertainty_cs || 'Model se může mýlit.';
     $('aiQuestionResult').hidden = false;
     // Memory stays only in this browser tab; no chat history is stored on the server.
-    AI.followupHistory = [{ question, answer: maskForAI(answer.answer_cs).slice(0, 600) }];
+    AI.followupHistory = safeFallback ? [] : [{ question, answer: maskForAI(answer.answer_cs).slice(0, 600) }];
     updateAiQuestionPreview();
-    setQuestionStatus('Odpověď je připravena. Pro další otázku si zkontrolujte náhled a dejte nový souhlas.');
+    setQuestionStatus(safeFallback
+      ? 'Části odpovědi AI nebylo možné ověřit. Zobrazujeme jen doložitelné informace a bezpečný postup, bez dalšího placeného dotazu.'
+      : 'Odpověď je připravena. Pro další otázku si zkontrolujte náhled a dejte nový souhlas.', safeFallback);
   } catch {
     setQuestionStatus(timeout ? AI_ERRORS.ai_timeout :
       ctl.signal.aborted ? AI_ERRORS.cancelled : AI_ERRORS.offline, true);
