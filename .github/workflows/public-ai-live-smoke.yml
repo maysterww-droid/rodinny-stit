@@ -1,0 +1,42 @@
+name: Public AI — owner-approved single live smoke
+on:
+  push:
+    branches: [feature/ai-first-2.0]
+    paths: ['.github/workflows/public-ai-live-smoke.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  public-live:
+    name: Public API health and one synthetic AI request
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: Test public production API with one approved synthetic message
+        env:
+          PUBLIC_ORIGIN: https://rodinny-stit-ai-preview-makster.vercel.app
+        run: |
+          node <<'NODE'
+          const origin=process.env.PUBLIC_ORIGIN;
+          async function main(){
+            const health=await fetch(origin+'/api/analyze',{signal:AbortSignal.timeout(15000)});
+            const h=await health.json().catch(()=>({}));
+            console.log('Health:',{status:health.status,ai:h.ai,mode:h.mode,maxChars:h.maxChars});
+            if(health.status!==200||h.ai!==true)throw Error('Public AI is not ready. No paid request made.');
+            const synthetic='Ahoj mami, mám nové číslo. Prosím pošli 5000 Kč ještě dnes, nemohu volat.';
+            const response=await fetch(origin+'/api/analyze',{
+              method:'POST',
+              headers:{'Content-Type':'application/json','Origin':origin},
+              body:JSON.stringify({text:synthetic,language:'cs',consent:true}),
+              signal:AbortSignal.timeout(40000)
+            });
+            const j=await response.json().catch(()=>({}));
+            console.log('Single live response:',{status:response.status,ok:j.ok,mode:j.mode,
+              model:j.model, risk:j.result?.risk,signals:j.result?.warning_signals?.length,
+              steps:j.result?.recommended_steps?.length,error:j.error});
+            if(response.status!==200||j.ok!==true||j.mode!=='ai'||!Array.isArray(j.result?.recommended_steps))
+              throw Error('Live AI did not return a valid result; check public runtime logs, do not retry automatically.');
+          }
+          main().catch(e=>{console.error(e.message);process.exitCode=1;});
+          NODE
