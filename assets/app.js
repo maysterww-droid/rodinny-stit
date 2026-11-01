@@ -596,6 +596,120 @@ function prepareAiReview() {
   return true;
 }
 
+
+// AI-first 2.0 — each follow-up is separately consented and budgeted on the server.
+// Only the SAME redacted original message + THIS redacted question are sent.
+const AI_QUESTIONS = Object.freeze({
+  why: 'Proč je tato zpráva podezřelá?',
+  verify: 'Jak bezpečně ověřit skutečného odesílatele?',
+  now: 'Co mám udělat jako první krok?'
+});
+function resetAiQuestionConsent() {
+  AI.questionSnapshot = null;
+  $('aiQuestionAgree').checked = false;
+}
+function resetAiQuestion() {
+  if (AI.askCtl) AI.askCtl.abort('new_analysis');
+  AI.askCtl = null;
+  resetAiQuestionConsent();
+  $('aiQuestionBox').hidden = true;
+  $('aiQuestion').value = '';
+  $('aiQuestionPreview').textContent = '(zatím prázdné)';
+  $('aiQuestionResult').hidden = true;
+  $('aiQuestionStatus').textContent = 'Otázka se neodešle bez samostatného souhlasu. Každá odpověď je samostatná a může se mýlit.';
+  $('aiQuestionStatus').className = 'status';
+  $('aiQuestionCancel').hidden = true;
+  $('aiQuestionBtn').disabled = false;
+}
+function maskedAiQuestion() { return maskForAI($('aiQuestion').value.trim()); }
+function updateAiQuestionPreview() {
+  const question = maskedAiQuestion();
+  if (AI.questionSnapshot !== null && AI.questionSnapshot !== lastAiText + '\n' + question)
+    resetAiQuestionConsent();
+  $('aiQuestionPreview').textContent = question || '(zatím prázdné)';
+}
+function recordAiQuestionConsent() {
+  const value = maskedAiQuestion();
+  AI.questionSnapshot = $('aiQuestionAgree').checked && value ? lastAiText + '\n' + value : null;
+}
+function chooseAiQuestion(key) {
+  if (!AI.available || lastResult?.kind !== 'ai' || !lastAiText || !AI_QUESTIONS[key]) return false;
+  $('aiQuestion').value = AI_QUESTIONS[key];
+  updateAiQuestionPreview();
+  $('aiQuestion').focus();
+  return true;
+}
+function setQuestionStatus(text, isError = false) {
+  $('aiQuestionStatus').textContent = text;
+  $('aiQuestionStatus').className = 'status' + (isError ? ' warn' : '');
+}
+function cancelAiQuestion() {
+  if (AI.askCtl) AI.askCtl.abort('user');
+}
+async function sendAiQuestion() {
+  if (!AI.available || !AI.endpoint || !lastAiText || lastResult?.kind !== 'ai' || AI.askCtl) return;
+  const question = maskedAiQuestion();
+  const size = typeof TextEncoder !== 'undefined' ? new TextEncoder().encode(question).length : question.length;
+  if (question.length < 3 || question.length > 280 || size > 600) {
+    setQuestionStatus(AI_ERRORS.invalid_question, true);
+    return;
+  }
+  if (!$('aiQuestionAgree').checked || AI.questionSnapshot !== lastAiText + '\n' + question) {
+    resetAiQuestionConsent();
+    setQuestionStatus('Před každou otázkou zkontrolujte upravený text a zvlášť potvrďte souhlas.', true);
+    $('aiQuestionAgree').focus();
+    return;
+  }
+  const sentText = lastAiText, expectedResult = lastResult;
+  AI.askCtl = new AbortController();
+  const ctl = AI.askCtl;
+  let timeout = false;
+  const timer = setTimeout(() => { timeout = true; ctl.abort('timeout'); }, 25000);
+  $('aiQuestionBtn').disabled = true;
+  $('aiQuestionCancel').hidden = false;
+  setQuestionStatus('AI připravuje odpověď…');
+  try {
+    const r = await fetch(AI.endpoint, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: 'followup', text: sentText, question, language: 'cs', consent: true }),
+      signal: ctl.signal, credentials: 'same-origin'
+    });
+    let payload = null; try { payload = await r.json(); } catch { /* no sensitive logging */ }
+    if (!r.ok || !payload?.ok || payload.mode !== 'followup' || !payload.result) {
+      const code = (payload && payload.error) || 'ai_failed';
+      setQuestionStatus(AI_ERRORS[code] || 'AI momentálně nemůže odpovědět. Použijte oficiální známý kontakt.', true);
+      return;
+    }
+    // Reject stale replies (text or question changed, or new analysis started).
+    if (lastResult !== expectedResult || lastAiText !== sentText || maskedAiQuestion() !== question) {
+      setQuestionStatus('Text nebo otázka se změnily. Předchozí odpověď se nezobrazuje; pro další otázku je nutný nový souhlas.', true);
+      return;
+    }
+    const answer = payload.result;
+    if (typeof answer.answer_cs !== 'string' || typeof answer.next_step_cs !== 'string') {
+      setQuestionStatus('AI neposkytla platnou odpověď.', true);
+      return;
+    }
+    $('aiQuestionSource').textContent = /mock|simul/i.test(String(payload.model || ''))
+      ? 'SIMULACE — nejde o odpověď skutečného AI modelu'
+      : 'Doplňující odpověď AI · není ověřením totožnosti ani bezpečnosti';
+    $('aiQuestionAnswer').textContent = answer.answer_cs;
+    $('aiQuestionStep').textContent = answer.next_step_cs;
+    $('aiQuestionUncertainty').textContent = answer.uncertainty_cs || 'Model se může mýlit.';
+    $('aiQuestionResult').hidden = false;
+    setQuestionStatus('Odpověď je připravena. Další otázka vyžaduje nový souhlas.');
+  } catch {
+    setQuestionStatus(timeout ? AI_ERRORS.ai_timeout :
+      ctl.signal.aborted ? AI_ERRORS.cancelled : AI_ERRORS.offline, true);
+  } finally {
+    clearTimeout(timer);
+    if (AI.askCtl === ctl) AI.askCtl = null;
+    resetAiQuestionConsent();
+    $('aiQuestionBtn').disabled = false;
+    $('aiQuestionCancel').hidden = true;
+  }
+}
+
 function setMode(kind, html) { const el = $('aiMode'); el.className = 'mode ' + kind; el.innerHTML = icon(kind === 'warn' ? 'i-alert' : 'i-info') + '<span>' + html + '</span>'; }
 
 const LEVELS = {
