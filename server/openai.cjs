@@ -7,7 +7,7 @@ class ProviderError extends Error {
   constructor(code, status) { super(code); this.code = code; this.status = status; }
 }
 
-async function callOpenAI({ text, apiKey, model, reasoningEffort = '', maxOutputTokens, timeoutMs, fetchImpl = fetch, baseUrl = 'https://api.openai.com/v1' }) {
+async function callOpenAI({ text, apiKey, model, reasoningEffort = '', maxOutputTokens, timeoutMs, fetchImpl = fetch, baseUrl = 'https://api.openai.com/v1', task = null }) {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), timeoutMs);
   let r;
@@ -17,12 +17,12 @@ async function callOpenAI({ text, apiKey, model, reasoningEffort = '', maxOutput
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model,
-        instructions: INSTRUCTIONS,
-        input: buildInput(text),
+        instructions: task ? task.instructions : INSTRUCTIONS,
+        input: task ? task.input : buildInput(text),
         max_output_tokens: maxOutputTokens,  // tvrdý strop včetně reasoning tokenů
         ...(reasoningEffort ? { reasoning: { effort: reasoningEffort } } : {}),
         store: false,                       // neukládat odpověď u poskytovatele
-        text: { format: { type: 'json_schema', name: 'scam_analysis', strict: true, schema: RESPONSE_SCHEMA } }
+        text: { format: { type: 'json_schema', name: task ? task.name : 'scam_analysis', strict: true, schema: task ? task.schema : RESPONSE_SCHEMA } }
       })
     });
   } catch (e) {
