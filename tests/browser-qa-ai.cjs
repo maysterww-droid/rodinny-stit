@@ -29,8 +29,11 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
 
     await pg.goto(B + 'pilot.html'); await pg.waitForSelector('#aiBox:not([hidden])', { timeout: 5000 });
     ok(await pg.isVisible('#aiBox'), `${w} AI option shown when backend available`);
-    ok(await pg.isChecked('input[name="checkMode"][value="local"]'), `${w} local rules are the default`);
-    ok(!(await pg.isVisible('#aiConsentBox')), `${w} consent box hidden in local mode`);
+    ok(await pg.isChecked('input[name="checkMode"][value="ai"]'), `${w} AI is selected by default when server reports availability`);
+    ok(await pg.isVisible('#aiConsentBox') && !(await pg.isChecked('#aiAgree')), `${w} AI default still requires separate consent`);
+    ok((await pg.textContent('#aiAvailability')).includes('AI je dostupná'), `${w} explains AI-first availability`);
+    await pg.click('label.seg-opt:has(input[value="local"])');
+    ok(!(await pg.isVisible('#aiConsentBox')), `${w} explicit local fallback hides consent box`);
     ok(await pg.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `${w} no horizontal overflow`);
     await shot('1-mode-local');
 
@@ -74,6 +77,27 @@ const log = []; const ok = (c, m) => log.push((c ? 'PASS ' : 'FAIL ') + m);
     ok(!/je bezpečná\./.test(await pg.textContent('#result')), `${w} never claims safety`);
     await pg.screenshot({ path: `${out}/ai-${w}-3-result-high.png` });
     await pg.screenshot({ path: `${out}/ai-${w}-3-result-high-full.png`, fullPage: true });
+
+    // AI-first 2.0: optional, separate grounded follow-up questions.
+    ok(await pg.isVisible('#aiQuestionBox'), `${w} real AI result reveals follow-up panel`);
+    const postsBeforeQuestion = postCount();
+    await pg.click('button[onclick="chooseAiQuestion(\'why\')"]');
+    ok((await pg.inputValue('#aiQuestion')).includes('Proč') && postCount() === postsBeforeQuestion,
+       `${w} suggested question fills draft but never sends`);
+    await pg.click('#aiQuestionBtn');
+    ok(postCount() === postsBeforeQuestion && (await pg.textContent('#aiQuestionStatus')).includes('souhlas'),
+       `${w} follow-up without separate consent does not send`);
+    await pg.check('#aiQuestionAgree');
+    await pg.click('#aiQuestionBtn');
+    await pg.waitForFunction(() => !document.getElementById('aiQuestionBtn').disabled, null, { timeout: 9000 });
+    ok(postCount() === postsBeforeQuestion + 1 && await pg.isVisible('#aiQuestionResult'),
+       `${w} separately consented follow-up sends exactly one request`);
+    ok((await pg.textContent('#aiQuestionSource')).includes('SIMULACE') &&
+       (await pg.textContent('#aiQuestionAnswer')).length > 40,
+       `${w} mock follow-up is visibly labelled simulation and has an answer`);
+    await pg.click('button[onclick="chooseAiQuestion(\'verify\')"]');
+    ok(!(await pg.isChecked('#aiQuestionAgree')) && postCount() === postsBeforeQuestion + 1,
+       `${w} another question revokes old consent and never auto-sends`);
     await backHome();
     ok(!(await pg.isChecked('#aiAgree')), `${w} consent revoked after every AI attempt`);
 
