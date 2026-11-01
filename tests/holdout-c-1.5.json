@@ -1,0 +1,435 @@
+{
+  "name": "RODINNÝ ŠTÍT — sealed Holdout C (1.5)",
+  "created": "2026-11-01",
+  "authoring": "Original synthetic Czech/English adversarial and benign messages; no real personal info or working attacker URLs",
+  "protocol": "Created and committed BEFORE the 1.5 classifier changes. Do not use these messages to tune the classifier. One blind acceptance comparison of the frozen 1.4 and final 1.5 versions. Hypothetical risk labels; not adjudicated real scams or real-world precision/recall.",
+  "baselineBranch": "feature/hybrid-consent-1.4",
+  "devBranch": "feature/scam-quality-1.5",
+  "counts": {
+    "scam": 30,
+    "benign": 20,
+    "ambiguous": 10
+  },
+  "cases": [
+    {
+      "id": "C-H-01",
+      "message": "Je to tvůj synovec. V nemocnici mi chybí 7 tisíc korun, můžeš mi je teď poslat? Volat nemůžu.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "family-emergency"
+    },
+    {
+      "id": "C-H-02",
+      "message": "Teto, číslo mám jiné. Na cestě domů jsem uvízla, potřebuju 4200 Kč na odtah. Nevyzváněj mi.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "family-impersonation"
+    },
+    {
+      "id": "C-H-03",
+      "message": "Vaše karta má bezpečnostní problém. Kvůli opravě ji vyfoťte z obou stran a odpovězte snímkem.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "card-photo"
+    },
+    {
+      "id": "C-H-04",
+      "message": "Přístup z jiného zařízení potvrďte tím, že přepošlete šestimístné číslo z právě doručené SMS.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "otp-forward"
+    },
+    {
+      "id": "C-H-05",
+      "message": "Vyřízení zásilky vyžaduje doplatek 31 Kč. Proveďte ho na https://sledovani-zasilek.invalid ještě dnes.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "parcel-fee"
+    },
+    {
+      "id": "C-H-06",
+      "message": "Daňová vratka čeká na schválení. Zadejte číslo platební karty do https://vratka-formular.invalid.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "tax-phishing"
+    },
+    {
+      "id": "C-H-07",
+      "message": "Pracovník banky pošle kurýra pro hotovost, vyberte celou částku z účtu a nikomu o tom neříkejte.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "cash-courier"
+    },
+    {
+      "id": "C-H-08",
+      "message": "Úřad pro vás eviduje nedoplatek. Je nutné vyplnit přihlašovací údaje na https://obcan-overeni.invalid.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "gov-impersonation"
+    },
+    {
+      "id": "C-H-09",
+      "message": "Před potvrzením prodeje jízdního kola vyplňte údaje karty na https://bazar-prevzeti.invalid.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "marketplace"
+    },
+    {
+      "id": "C-H-10",
+      "message": "Potvrďte vrácení peněz zasláním CVV a expirace vaší karty v odpovědi.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "card-data"
+    },
+    {
+      "id": "C-H-11",
+      "message": "Tady kolega z vedení. Nová faktura jde na jiné bankovní spojení, uhraďte ji prosím ještě dnes.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "invoice-switch"
+    },
+    {
+      "id": "C-H-12",
+      "message": "Pro aktivaci výdělku stačí zaplatit jednorázový vstupní poplatek 2500 Kč, nabídka končí dnes.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "job-fee"
+    },
+    {
+      "id": "C-H-13",
+      "message": "Zaručený výnos bez kolísání: vložte 15000 Kč a zdvojnásobte účet během týdne.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "invest-return"
+    },
+    {
+      "id": "C-H-14",
+      "message": "Tajná operace banky: přesuňte úspory na záchranný účet a komunikujte jen touto SMS.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "safe-account"
+    },
+    {
+      "id": "C-H-15",
+      "message": "Správce kryptopeněženky požaduje vaši obnovovací frázi, jinak bude přístup trvale ztracen.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "seed-phrase"
+    },
+    {
+      "id": "C-H-16",
+      "message": "Napadený mobil opravíme dálkově. Stáhněte si TeamViewer a umožněte technikovi ovládat obrazovku.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "remote-control"
+    },
+    {
+      "id": "C-H-17",
+      "message": "Jestli do soboty nepošleš 500 eur, zveřejníme citlivé nahrávky z počítače.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "extortion"
+    },
+    {
+      "id": "C-H-18",
+      "message": "Žádám okamžité vrácení částky 980 Kč na alternativní účet, jinak se řešení posune právníkům.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "coercive-payment"
+    },
+    {
+      "id": "C-H-19",
+      "message": "Ověřte svůj profil BankID přes https://identita-podpora.invalid, vložte tam heslo a SMS kód.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "bankid-phishing"
+    },
+    {
+      "id": "C-H-20",
+      "message": "Vaše objednávka byla pozastavena. Získání balíku umožní platba 58 Kč přes přiložený QR kód.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "delivery-qr"
+    },
+    {
+      "id": "C-H-21",
+      "message": "I am your daughter, I lost my mobile. Send 5000 CZK to my new account, please don't call me.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "mixed-language"
+    },
+    {
+      "id": "C-H-22",
+      "message": "Mam, mam nove cislo, jsem ve spechu, posli 3 tisice na taxik a nezavolej mi.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "diacritic-less"
+    },
+    {
+      "id": "C-H-23",
+      "message": "Díky rezervaci bytu máte přednost. Zálohu 12000 korun zaplaťte před prohlídkou na jiný účet.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "rental"
+    },
+    {
+      "id": "C-H-24",
+      "message": "Vyhráli jste cestu. Pro uvolnění poukazu doplaťte 980 Kč za administraci do večera.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "prize"
+    },
+    {
+      "id": "C-H-25",
+      "message": "Technický pracovník: sdělte prosím jednorázový přístupový kód pro obnovení aplikace.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "credentials"
+    },
+    {
+      "id": "C-H-26",
+      "message": "Ze zákaznické linky: pošlete autorizační PIN z bankovní aplikace, jinak vám zůstane účet nedostupný.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "bank-pin"
+    },
+    {
+      "id": "C-H-27",
+      "message": "Nezaplacená dálniční známka. Přejděte na https://dopravni-pokuta.invalid a potvrďte bankovní identitu.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "toll-phishing"
+    },
+    {
+      "id": "C-H-28",
+      "message": "Máme záznam vašich fotografií. Když nezaplatíte 430 eur do neděle, zveřejníme je přátelům.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "blackmail"
+    },
+    {
+      "id": "C-H-29",
+      "message": "Pro přesunutí investic do garantovaného fondu převeďte dnes celou částku na účet koordinátora.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "invest-impersonation"
+    },
+    {
+      "id": "C-H-30",
+      "message": "Školní účet je prý blokovaný. Tady nový platební účet pro všechny rodiče, pošlete dnes zálohu za výlet.",
+      "expected": "high",
+      "intent": "scam",
+      "topic": "school-invoice"
+    },
+    {
+      "id": "C-L-01",
+      "message": "Soused přinese v úterý košík jablek, můžete přijít ochutnat.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "family"
+    },
+    {
+      "id": "C-L-02",
+      "message": "Včerejší kontrola auta dopadla dobře, vše funguje jak má.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "family"
+    },
+    {
+      "id": "C-L-03",
+      "message": "Na školení nám výslovně řekli: nikdy nikomu neprozrazujte přístupový kód.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "education"
+    },
+    {
+      "id": "C-L-04",
+      "message": "Připomínám, že nikomu neposílejte PIN a nedávejte heslo cizím lidem.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "safety-warning"
+    },
+    {
+      "id": "C-L-05",
+      "message": "V muzeu proběhne výstava o historii finančních institucí.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "culture"
+    },
+    {
+      "id": "C-L-06",
+      "message": "Mám odložený nový telefon v kanceláři, vyzvednu ho ve čtvrtek.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "new-phone"
+    },
+    {
+      "id": "C-L-07",
+      "message": "Jízdní řád je v příloze, příští autobus odjíždí v 17:25.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "transport"
+    },
+    {
+      "id": "C-L-08",
+      "message": "Zájemcům o přednášku pošlete prosím plakát s QR kódem.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "education"
+    },
+    {
+      "id": "C-L-09",
+      "message": "Rodiče se sejdou ve školní knihovně k organizaci výletu.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "school"
+    },
+    {
+      "id": "C-L-10",
+      "message": "Dnes jsem za potraviny utratila 670 Kč, nakoupila jsem i pečivo.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "finance-history"
+    },
+    {
+      "id": "C-L-11",
+      "message": "Banka dnes nabízí veřejnou konzultaci o ochraně účtů.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "bank-event"
+    },
+    {
+      "id": "C-L-12",
+      "message": "Večer zavolám babičce na staré číslo, které mám uložené.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "family"
+    },
+    {
+      "id": "C-L-13",
+      "message": "Ve zprávách mluvili o podvodných investičních fondech a falešných kurýrech.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "fraud-news"
+    },
+    {
+      "id": "C-L-14",
+      "message": "Tato zpráva je ukázkou podvodu v učebním materiálu, nikomu nic neposílejte.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "educational-example"
+    },
+    {
+      "id": "C-L-15",
+      "message": "Na stránce https://example.com je rozpis cvičení pro příští týden.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "known-test-link"
+    },
+    {
+      "id": "C-L-16",
+      "message": "Zápis ze schůze si můžete vyzvednout na recepci.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "work"
+    },
+    {
+      "id": "C-L-17",
+      "message": "ČNB pořádá veřejnou besedu k finanční gramotnosti seniorů.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "public-event"
+    },
+    {
+      "id": "C-L-18",
+      "message": "Fotografie z oslavy jsem nahrál do našeho rodinného alba.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "family-photo"
+    },
+    {
+      "id": "C-L-19",
+      "message": "Účet za elektřinu jsem už před měsícem zaplatil a mám potvrzení.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "past-payment"
+    },
+    {
+      "id": "C-L-20",
+      "message": "Příští týden začne zkouška pěveckého sboru v kulturním domě.",
+      "expected": "low",
+      "intent": "benign",
+      "topic": "culture"
+    },
+    {
+      "id": "C-M-01",
+      "message": "Dobrý den, potřebovali bychom s vámi projít nové údaje vašeho účtu.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "account-review"
+    },
+    {
+      "id": "C-M-02",
+      "message": "Bude možné poslat mi menší zálohu na plánovanou akci?",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "informal-payment"
+    },
+    {
+      "id": "C-M-03",
+      "message": "Podrobnosti o vyzvednutí zásilky najdete na https://informace-o-baliku.invalid.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "parcel-link"
+    },
+    {
+      "id": "C-M-04",
+      "message": "Zdravím, ozývám se teď z pracovního mobilu, původní telefon je v opravě.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "new-contact"
+    },
+    {
+      "id": "C-M-05",
+      "message": "Na váš účet byla připsána nová zpráva v klientské zóně.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "bank-notice"
+    },
+    {
+      "id": "C-M-06",
+      "message": "Nabízíme nezávaznou konzultaci ohledně výnosů z investic.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "investment-offer"
+    },
+    {
+      "id": "C-M-07",
+      "message": "Pro dokončení registrace využijte QR kód z pozvánky.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "qr-registration"
+    },
+    {
+      "id": "C-M-08",
+      "message": "Máte u nás neuvedený poplatek, brzy pošleme další informace.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "unclear-fee"
+    },
+    {
+      "id": "C-M-09",
+      "message": "Naše podpora potřebuje doplňující potvrzení vaší totožnosti.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "identity-check"
+    },
+    {
+      "id": "C-M-10",
+      "message": "Prosím o potvrzení, zda je nynější bankovní spojení stále platné.",
+      "expected": "moderate",
+      "intent": "ambiguous",
+      "topic": "payment-query"
+    }
+  ]
+}
