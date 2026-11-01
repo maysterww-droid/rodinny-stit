@@ -69,8 +69,9 @@ function demo(name = 'relative') {
   $('msg').value = demoExamples[name] || demoExamples.relative;
   updateCount(); markQuick(name);
   go('home'); selectTab(name === 'bankmail' ? 'email' : 'text');
-  if (AI.available) { const local = document.querySelector('input[name="checkMode"][value="local"]'); if (local) { local.checked = true; syncAiUi(); } }
-  setMode('', 'Vložena <b>smyšlená ukázka</b>. Stiskněte „Zkontrolovat zprávu“. Kontrola proběhne lokálně podle pravidel, bez AI serveru.');
+  setMode('', AI.available
+    ? 'Vložena <b>smyšlená ukázka</b>. AI ji vyhodnotí pouze po zobrazení náhledu a Vašem souhlasu.'
+    : 'Vložena <b>smyšlená ukázka</b>. AI není dostupná; prozatím můžete použít orientační místní kontrolu.');
   $('msg').focus();
   $('msg').scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
@@ -376,6 +377,7 @@ function highlight(text, found) {
 
 let lastResult = null;
 let lastLocalText = '';
+let lastAiText = '';
 function analyze() {
   const text = $('msg').value.trim();
   if (!text) { $('msg').focus(); setMode('warn', 'Nejdříve vložte text zprávy, nebo vyberte jeden z ukázkových scénářů níže.'); return; }
@@ -385,7 +387,8 @@ function analyze() {
 function analyzeLocal(text = $('msg').value.trim()) {
   if (!text) return;
   const data = classify(text);
-  lastResult = data; lastLocalText = text;
+  lastResult = data; lastLocalText = text; lastAiText = '';
+  resetAiQuestion();
   renderResult(data, text); setSource('local');
   updateAiReviewOffer('local');
   go('result');
@@ -394,7 +397,7 @@ function analyzeLocal(text = $('msg').value.trim()) {
 /* ================= AI analýza (volitelná, pilotní) =================
  * Zobrazí se jen tehdy, když server hlásí dostupnost. Výchozí je vždy režim lokálních pravidel.
  * Odesílá se jen text (nikdy obrázek), po automatickém skrytí osobních údajů a po výslovném souhlasu. */
-const AI = { endpoint: '', available: false, maxChars: 3000, ctl: null, consentSnapshot: null };
+const AI = { endpoint: '', available: false, maxChars: 3000, ctl: null, consentSnapshot: null, askCtl: null, questionSnapshot: null };
 const AI_ERRORS = {
   consent_required: 'Pro AI analýzu je potřeba zaškrtnout souhlas s odesláním textu.',
   too_long: 'Text je pro AI analýzu příliš dlouhý (max. 3 000 znaků nebo 6 000 bajtů). Zkraťte ho, nebo použijte lokální pravidla.',
@@ -409,7 +412,9 @@ const AI_ERRORS = {
   origin_not_allowed: 'Požadavek byl odmítnut z bezpečnostních důvodů.',
   offline: 'Nepodařilo se spojit se serverem (jste offline, nebo je služba nedostupná).',
   cancelled: 'AI analýzu jste přerušili. Požadavek už ale mohl být odeslán; další analýza se automaticky nespustí.',
-  text_changed: 'Text se během analýzy změnil, proto starý výsledek nezobrazujeme. Předchozí požadavek už mohl být odeslán. Pro novou kontrolu je nutný nový souhlas.'
+  text_changed: 'Text se během analýzy změnil, proto starý výsledek nezobrazujeme. Předchozí požadavek už mohl být odeslán. Pro novou kontrolu je nutný nový souhlas.',
+  invalid_question: 'Napište stručnou otázku (3–280 znaků, maximálně 600 bajtů).',
+  ai_bad_output: 'Model neposkytl bezpečně ověřitelnou odpověď. Zkuste jinou otázku nebo se obraťte přímo na známý kontakt.'
 };
 function aiSelected() { const r = document.querySelector('input[name="checkMode"]:checked'); return !!r && r.value === 'ai'; }
 /** Automatické skrytí osobních údajů před odesláním (uživatel vidí náhled). */
@@ -475,6 +480,7 @@ async function analyzeWithAI(rawText) {
     if (!r.ok || !data || !data.ok || data.mode !== 'ai' || !data.result) return aiError((data && data.error) || 'ai_failed');
     if (maskForAI($('msg').value.trim()) !== text) return aiError('text_changed');
     lastResult = { kind: 'ai', ...data.result, model: String(data.model || '') };
+    lastAiText = text;
     renderAiResult(lastResult, text); setSource('ai', lastResult.model); go('result');
     syncAiUi();
   } catch (e) {
@@ -506,6 +512,8 @@ function renderAiResult(r, sentText) {
   $('resultNote').textContent = 'Výsledek vytvořil jazykový model v pilotním režimu. Je pravděpodobnostní, může se mýlit, neověřuje odesílatele, odkazy ani účty a není zárukou bezpečnosti. ' + (r.uncertainty_cs || '');
   $('shareState').classList.add('hidden');
   updateAiReviewOffer('ai');
+  resetAiQuestion();
+  $('aiQuestionBox').hidden = !AI.available;
 }
 function highlightExcerpts(text, excerpts) {
   const found = excerpts.filter(e => e && e.length >= 3).map(e => ({ pattern: new RegExp(e.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') }));
@@ -521,21 +529,37 @@ function setSource(kind, model = '') {
 async function initAI() {
   const cfg = window.RODINNY_STIT_AI || {};
   AI.endpoint = typeof cfg.endpoint === 'string' ? cfg.endpoint : '';
-  if (!AI.endpoint) return;
+  if (!AI.endpoint) {
+    $('aiAvailability').textContent = 'Živá AI zde není připojena. Zatím lze použít orientační lokální kontrolu.';
+    $('aiAvailability').className = 'ai-availability offline';
+    return;
+  }
   const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 4000);
   try {
     const r = await fetch(AI.endpoint, { method: 'GET', signal: ctl.signal, credentials: 'same-origin' });
     const d = await r.json();
     if (r.ok && d && d.ok && d.ai === true) {
       AI.available = true; AI.maxChars = Number(d.maxChars) || 3000;
+      $('aiAvailability').textContent = 'AI je dostupná. Po kontrole textu a souhlasu můžete požádat o analýzu a položit další otázku.';
+      $('aiAvailability').className = 'ai-availability live';
       $('aiBox').hidden = false;
+      // AI-first: choose AI on availability; user still must actively consent.
+      const aiMode = document.querySelector('input[name="checkMode"][value="ai"]');
+      if (aiMode) aiMode.checked = true;
       updateAiReviewOffer(lastResult?.kind === 'ai' ? 'ai' : 'local');
       for (const radio of document.querySelectorAll('input[name="checkMode"]')) radio.addEventListener('change', syncAiUi);
       $('msg').addEventListener('input', updateAiPreview);
       $('aiAgree').addEventListener('change', recordAiConsent);
       syncAiUi();
     }
-  } catch { /* AI zůstane skrytá – pilot funguje lokálně */ } finally { clearTimeout(t); }
+  } catch { /* No live model; do not pretend that a mock is real AI. */ }
+  finally {
+    if (!AI.available) {
+      $('aiAvailability').textContent = 'Živá AI nyní není dostupná. Můžete zkusit místní kontrolu, která ale nerozumí celé situaci.';
+      $('aiAvailability').className = 'ai-availability offline';
+    }
+    clearTimeout(t);
+  }
 }
 
 // Volitelná druhá kontrola: nikdy se nespouští sama ani po výsledku LOW.
@@ -621,11 +645,11 @@ function verified(real) {
   go('done');
 }
 function resetAll() {
-  lastResult = null; lastLocalText = '';
-  resetAiConsent(); updateAiReviewOffer('local');
+  lastResult = null; lastLocalText = ''; lastAiText = '';
+  resetAiConsent(); resetAiQuestion(); updateAiReviewOffer('local');
   $('msg').value = ''; updateCount(); $('shot').value = ''; $('shotPreview').classList.add('hidden'); $('ocrState').classList.add('hidden'); $('ocrBtn').classList.add('hidden'); $('ocrProgress').classList.add('hidden');
   currentShot = null; if (shotUrl) { URL.revokeObjectURL(shotUrl); shotUrl = null; }
-  if (AI.available) { const loc = document.querySelector('input[name="checkMode"][value="local"]'); loc.checked = true; syncAiUi(); }
+  if (AI.available) { const ai = document.querySelector('input[name="checkMode"][value="ai"]'); ai.checked = true; syncAiUi(); }
   else setMode('', 'Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Text se nikam neodesílá. Nevkládejte hesla, PIN ani kódy.');
   selectTab('text'); go('home');
 }
