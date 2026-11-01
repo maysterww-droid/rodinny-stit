@@ -1,0 +1,282 @@
+{
+  "description": "Additional synthetic Czech development-only cases for classifier 1.5. Distinct from sealed Holdout C. Risk labels are illustrative test expectations, not verified real-world fraud.",
+  "created": "2026-11-01",
+  "count": 45,
+  "byExpected": {
+    "high": 20,
+    "low": 15,
+    "moderate": 10
+  },
+  "cases": [
+    {
+      "id": "dev15-H1",
+      "message": "Poslete fotografii obcanskeho prukazu a selfie pro dokončení aktivace bankovního profilu.",
+      "expected": "high",
+      "topic": "identity-document"
+    },
+    {
+      "id": "dev15-H2",
+      "message": "K obnově účtu nám odešlete číslo z průkazu totožnosti a kopii dokladu.",
+      "expected": "high",
+      "topic": "identity-document"
+    },
+    {
+      "id": "dev15-H3",
+      "message": "Správce firemního účtu: dodavatel má nový IBAN, pošlete zálohu 8200 Kč dnes.",
+      "expected": "high",
+      "topic": "invoice-switch"
+    },
+    {
+      "id": "dev15-H4",
+      "message": "Policista přiveze obálku. Předejte mu vybranou hotovost před domem, zachováme bezpečnost úspor.",
+      "expected": "high",
+      "topic": "cash-handoff"
+    },
+    {
+      "id": "dev15-H5",
+      "message": "Vaše banka vyžaduje, abyste úspory poslali na rezervní chráněný účet.",
+      "expected": "high",
+      "topic": "safe-account"
+    },
+    {
+      "id": "dev15-H6",
+      "message": "Před vydáním zásilky doplaťte 46 Kč přes QR platbu ještě dnes.",
+      "expected": "high",
+      "topic": "parcel-fee"
+    },
+    {
+      "id": "dev15-H7",
+      "message": "Ahoj mamko, na brigádě mi ukradli telefon, piš sem. Teď potřebuji 3 tisíce na ubytování, nevolej.",
+      "expected": "high",
+      "topic": "relative"
+    },
+    {
+      "id": "dev15-H8",
+      "message": "Obnoveni profilu: na https://aktivace-profilu.invalid vlozte sve prihlasovaci heslo.",
+      "expected": "high",
+      "topic": "accentless-phish"
+    },
+    {
+      "id": "dev15-H9",
+      "message": "Nezaplacený správní poplatek. Do dnešního večera vyřiďte platbu 1100 Kč na https://platby-sprava.invalid.",
+      "expected": "high",
+      "topic": "authority-pay"
+    },
+    {
+      "id": "dev15-H10",
+      "message": "Přejděte na www.cesky-pristup.invalid, vyplňte heslo a potvrďte totožnost.",
+      "expected": "high",
+      "topic": "link-credentials"
+    },
+    {
+      "id": "dev15-H11",
+      "message": "Ještě dnes pošlete 1500 Kč, jinak vám publikujeme intimní fotky.",
+      "expected": "high",
+      "topic": "extortion"
+    },
+    {
+      "id": "dev15-H12",
+      "message": "Prosím nespojujte se s kolegy. Potřebuji změnit bankovní účet pro dnešní převod 16 tisíc.",
+      "expected": "high",
+      "topic": "boss"
+    },
+    {
+      "id": "dev15-H13",
+      "message": "Bankovní podpora potřebuje kopii vaší platební karty včetně zadní strany.",
+      "expected": "high",
+      "topic": "card-photo"
+    },
+    {
+      "id": "dev15-H14",
+      "message": "Kvůli záchraně investic musíte složit vratný poplatek 3400 korun předem.",
+      "expected": "high",
+      "topic": "investment-fee"
+    },
+    {
+      "id": "dev15-H15",
+      "message": "Ověření WhatsApp účtu dokončíme, když nám pošlete registrační kód z SMS.",
+      "expected": "high",
+      "topic": "account-code"
+    },
+    {
+      "id": "dev15-H16",
+      "message": "Tady zákaznické centrum, potvrďte bankovní přístup pomocí PIN a ověřovacího čísla.",
+      "expected": "high",
+      "topic": "account-code"
+    },
+    {
+      "id": "dev15-H17",
+      "message": "Nepodařilo se spárovat zařízení. Naskenujte QR kód pro nové přihlášení do Signalu.",
+      "expected": "high",
+      "topic": "qr-link"
+    },
+    {
+      "id": "dev15-H18",
+      "message": "We are from support. Send your one-time code to unlock the account, immediately.",
+      "expected": "high",
+      "topic": "english-code"
+    },
+    {
+      "id": "dev15-H19",
+      "message": "Pro zrušení blokace nainstalujte vzdálenou správu a povolte asistentovi přístup.",
+      "expected": "high",
+      "topic": "remote-install"
+    },
+    {
+      "id": "dev15-H20",
+      "message": "Hned preposli 4000 korun na moje nove cislo uctu, nemuzu zavolat.",
+      "expected": "high",
+      "topic": "accentless-request"
+    },
+    {
+      "id": "dev15-L1",
+      "message": "Na semináři přednášející varoval: nikomu neposílejte kopii dokladu ani přihlašovací údaje.",
+      "expected": "low",
+      "topic": "education"
+    },
+    {
+      "id": "dev15-L2",
+      "message": "Nepošlete nikomu heslo; je to známá podvodná praktika.",
+      "expected": "low",
+      "topic": "safety-warning"
+    },
+    {
+      "id": "dev15-L3",
+      "message": "Včera jsme zaplatili fakturu za nový nábytek 4800 korun.",
+      "expected": "low",
+      "topic": "past-transaction"
+    },
+    {
+      "id": "dev15-L4",
+      "message": "Měl jsem nový telefon, ale kontakty i číslo zůstaly stejné.",
+      "expected": "low",
+      "topic": "ordinary-phone"
+    },
+    {
+      "id": "dev15-L5",
+      "message": "Pohlednici s QR kódem jsem schoval mezi ostatní přání.",
+      "expected": "low",
+      "topic": "qr-story"
+    },
+    {
+      "id": "dev15-L6",
+      "message": "Náš bezpečnostní kurz se věnoval vydírání přes soukromé fotografie.",
+      "expected": "low",
+      "topic": "education"
+    },
+    {
+      "id": "dev15-L7",
+      "message": "Účetní potvrdila, že záloha byla včera uhrazena.",
+      "expected": "low",
+      "topic": "payment-confirmation"
+    },
+    {
+      "id": "dev15-L8",
+      "message": "Zítra na výstavě představíme historii bankovních převodů.",
+      "expected": "low",
+      "topic": "culture"
+    },
+    {
+      "id": "dev15-L9",
+      "message": "Přijďte na kurz, kde se učíme rozpoznat falešnou podporu banky.",
+      "expected": "low",
+      "topic": "education"
+    },
+    {
+      "id": "dev15-L10",
+      "message": "Na https://example.com je rodinný kalendář narozenin.",
+      "expected": "low",
+      "topic": "benign-link"
+    },
+    {
+      "id": "dev15-L11",
+      "message": "Pamatuj, nikomu nikdy nesděluj SMS kódy, ani když volá údajná banka.",
+      "expected": "low",
+      "topic": "safety"
+    },
+    {
+      "id": "dev15-L12",
+      "message": "Včera se v novinách psalo o podvodu s bezpečným účtem.",
+      "expected": "low",
+      "topic": "fraud-news"
+    },
+    {
+      "id": "dev15-L13",
+      "message": "Program setkání je připravený, začínáme v 17 hodin.",
+      "expected": "low",
+      "topic": "event"
+    },
+    {
+      "id": "dev15-L14",
+      "message": "V našem chatu jsme diskutovali o změně bankovních účtů.",
+      "expected": "low",
+      "topic": "work"
+    },
+    {
+      "id": "dev15-L15",
+      "message": "Koupil jsem si lístek na koncert, cena byla 750 Kč.",
+      "expected": "low",
+      "topic": "purchase-history"
+    },
+    {
+      "id": "dev15-M1",
+      "message": "Zdravím, potřebuji potvrdit některé údaje vašeho profilu.",
+      "expected": "moderate",
+      "topic": "account-data"
+    },
+    {
+      "id": "dev15-M2",
+      "message": "Je to Martina, ozývám se z nového kontaktu.",
+      "expected": "moderate",
+      "topic": "contact-switch"
+    },
+    {
+      "id": "dev15-M3",
+      "message": "Potřebujeme u vás ověřit jednu bankovní transakci.",
+      "expected": "moderate",
+      "topic": "bank-verify"
+    },
+    {
+      "id": "dev15-M4",
+      "message": "Pro více informací o balíku klikněte na https://sledovani-test.invalid.",
+      "expected": "moderate",
+      "topic": "delivery-link"
+    },
+    {
+      "id": "dev15-M5",
+      "message": "Na platebních podmínkách došlo k drobné změně, ozvěte se nám.",
+      "expected": "moderate",
+      "topic": "invoice"
+    },
+    {
+      "id": "dev15-M6",
+      "message": "Uvidíte výhody našeho investičního programu po registraci.",
+      "expected": "moderate",
+      "topic": "investment"
+    },
+    {
+      "id": "dev15-M7",
+      "message": "Zbývá doplatek za objednávku, kontaktujte zákaznickou podporu.",
+      "expected": "moderate",
+      "topic": "fee-no-immediate"
+    },
+    {
+      "id": "dev15-M8",
+      "message": "Zavolejte mi prosím ohledně nové zálohy.",
+      "expected": "moderate",
+      "topic": "advance"
+    },
+    {
+      "id": "dev15-M9",
+      "message": "Dobrý den, potřebujeme s vámi upřesnit přístup do klientské zóny.",
+      "expected": "moderate",
+      "topic": "account"
+    },
+    {
+      "id": "dev15-M10",
+      "message": "Váš kurýr potřebuje dodatečné údaje k doručení.",
+      "expected": "moderate",
+      "topic": "parcel"
+    }
+  ]
+}
