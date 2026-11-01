@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - feature/hybrid-consent-1.4
+      - feature/scam-quality-1.5
   workflow_dispatch:
 
 permissions:
