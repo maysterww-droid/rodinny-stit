@@ -3,7 +3,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
 const { Readable } = require('node:stream');
-const { createHandler, validateResult, validateFollowup, worstCaseMicroUsd, readConfig, maxInputTokens } = require('../server/core.cjs');
+const { createHandler, validateResult, validateFollowup, safeFollowupFallback, worstCaseMicroUsd, readConfig, maxInputTokens } = require('../server/core.cjs');
 const { memoryStore, upstashStore } = require('../server/store.cjs');
 const { createMockFetch } = require('../server/mock-provider.cjs');
 
@@ -445,6 +445,49 @@ test('AI 2.1 bounded conversation: consented one-turn history is forwarded witho
     assert.equal(bad.status, 400);
   }
   assert.equal(calls.length, 1);
+});
+
+
+test('2.1.1 follow-up with fabricated evidence produces safe fallback, 1 paid-equivalent mock only', async () => {
+  const expected = {
+    answer_cs: 'Podle textu musíte „hned“ poslat peníze a nesmíte volat zpět.',
+    evidence_quotes_cs: ['hned'],
+    next_step_cs: 'Ověřte známý kontakt.',
+    uncertainty_cs: 'Odesílatele nelze potvrdit.'
+  };
+  const calls = [];
+  const fetchImpl = async (url, opts) => {
+    calls.push(JSON.parse(opts.body));
+    return {
+      ok: true, status: 200,
+      json: async () => ({ status: 'completed', output: [
+        { type: 'message', content: [{ type: 'output_text', text: JSON.stringify(expected) }] }
+      ], usage: { input_tokens: 100, output_tokens: 80 } })
+    };
+  };
+  const { h, logs } = setup({}, { fetchImpl });
+  const response = await call(h, { body: { ...ok(), kind: 'followup', question: 'Proč je to podezřelé?' } });
+  assert.equal(response.status, 200);
+  assert.equal(response.json.result.fallback, true);
+  assert.equal(calls.length, 1);
+  assert.ok(response.json.result.answer_cs.includes('neprošla kontrolou'));
+  assert.doesNotMatch(response.json.result.answer_cs, /„hned“|nesmíte volat zpět/);
+  for (const q of response.json.result.evidence_quotes_cs) assert.ok(SMS.includes(q));
+  assert.ok(logs.some(line => line.includes('safe_fallback')));
+  assert.ok(!logs.some(line => line.includes(SMS)));
+});
+
+test('2.1.1 deterministic fallback stays cautious on harmless text and quotes only source material', () => {
+  const harmless = 'Dobrý den, setkání se koná v pondělí v 10 hodin.';
+  const safe = safeFollowupFallback(harmless);
+  assert.equal(safe.fallback, true);
+  assert.deepEqual(safe.evidence_quotes_cs, []);
+  assert.doesNotMatch(safe.answer_cs, /vysoce podezřel|jistě podvod|vysoké riziko/);
+  const fraud = safeFollowupFallback(SMS);
+  assert.ok(fraud.evidence_quotes_cs.includes('nové číslo'));
+  assert.ok(fraud.evidence_quotes_cs.some(q => /5000 Kč|ještě dnes/.test(q)));
+  assert.ok(fraud.evidence_quotes_cs.every(q => SMS.includes(q)));
+  assert.ok(fraud.answer_cs.length <= 600);
 });
 
 test('AI-first follow-up is disabled in expired Preview and makes zero provider calls', async () => {
