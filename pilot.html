@@ -44,7 +44,7 @@
    </picture>
   </div>
   <div class="ph-copy">
-   <span class="pill ph-pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 1.5</span>
+   <span class="pill ph-pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 2.0</span>
    <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
    <p class="ph-lead">Vložte SMS, e-mail, snímek obrazovky nebo popis hovoru. Ukážeme varovné signály a poradíme, co dělat dál.</p>
   </div>
@@ -76,6 +76,17 @@
   </div>
  </div>
 
+ <div class="ai-first-intro" role="region" aria-labelledby="aiFirstTitle">
+  <div class="ai-first-top">
+   <span class="ai-first-icon"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-cpu"/></svg></span>
+   <div><h2 id="aiFirstTitle">AI průvodce proti podvodům</h2>
+    <p>Nejen hledání podezřelých slov. AI může vysvětlit manipulaci, ukázat důvody a poradit, jak situaci ověřit.</p>
+   </div>
+  </div>
+  <div class="ai-first-features"><span>Rozumí kontextu</span><span>Vysvětlí proč</span><span>Odpoví na otázky</span></div>
+  <p id="aiAvailability" class="ai-availability" role="status" aria-live="polite">Zjišťuji dostupnost AI…</p>
+  <small>AI ani lokální pravidla neověřují totožnost odesílatele. Před odesláním zprávy vždy uvidíte její upravený text a dáte souhlas.</small>
+ </div>
  <div class="tabs tabs4" role="tablist" aria-label="Co chcete zkontrolovat">
   <button class="tab" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true" type="button" data-tab="text"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-msg"/></svg>SMS</button>
   <button class="tab" role="tab" id="tab-email" aria-controls="panel-text" aria-selected="false" tabindex="-1" type="button" data-tab="email"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-mail"/></svg>E-mail</button>
@@ -168,7 +179,7 @@
   </div>
  </div>
 
- <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b>Jde o orientační soutěžní pilot. Výchozí kontrola probíhá lokálními pravidly. Ve zvlášť chráněném testovacím prostředí může být po výslovném souhlasu dostupná také AI analýza. Ani jedna metoda neověřuje skutečnou totožnost odesílatele ani nezaručuje bezpečnost. Používejte smyšlené nebo anonymizované příklady.</div></div>
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b>Jde o orientační soutěžní pilot. Je-li dostupná, hlavní kontrolu provádí AI až po výslovném souhlasu. Když není dostupná, funguje pouze orientační lokální režim. Ani jedna metoda neověřuje skutečnou totožnost odesílatele ani nezaručuje bezpečnost. Používejte smyšlené nebo anonymizované příklady.</div></div>
 </section>
 
 <!-- ============ 2. VÝSLEDEK ============ -->
@@ -193,6 +204,31 @@
   <small>Nic se neodešle automaticky. Nejprve uvidíte upravený text a rozhodnete o souhlasu.</small>
  </div>
  <p id="aiExplain" class="ai-explain hidden"></p>
+ <section id="aiQuestionBox" class="ai-question-box" aria-labelledby="aiQuestionTitle" hidden>
+  <div class="ai-question-heading"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-cpu"/></svg>
+   <div><h2 id="aiQuestionTitle">Zeptejte se AI na další detail</h2><p>Co je na zprávě podezřelé? Jak to ověřit? Na stejnou zprávu se můžete zeptat znovu.</p></div>
+  </div>
+  <div class="ai-question-suggestions" role="group" aria-label="Navržené doplňující otázky">
+   <button type="button" class="chip" onclick="chooseAiQuestion('why')">Proč je to podezřelé?</button>
+   <button type="button" class="chip" onclick="chooseAiQuestion('verify')">Jak ověřit odesílatele?</button>
+   <button type="button" class="chip" onclick="chooseAiQuestion('now')">Co mám udělat teď?</button>
+  </div>
+  <label class="ai-question-label" for="aiQuestion">Moje otázka k této zprávě</label>
+  <textarea id="aiQuestion" class="input ai-question-input" maxlength="280" placeholder="Např. Proč po mně chce nové číslo účtu?" oninput="updateAiQuestionPreview()"></textarea>
+  <div class="ai-preview ai-question-preview"><b>Otázka před odesláním (osobní údaje mohou zůstat):</b><div id="aiQuestionPreview" aria-live="polite">(zatím prázdné)</div></div>
+  <label class="consent"><input type="checkbox" id="aiQuestionAgree" onchange="recordAiQuestionConsent()"><span>Souhlasím s opětovným odesláním upravené původní zprávy a této otázky k AI.</span></label>
+  <button id="aiQuestionBtn" class="btn btn-primary btn-wide" type="button" onclick="sendAiQuestion()">Zeptat se AI</button>
+  <button id="aiQuestionCancel" class="btn btn-ghost btn-wide" type="button" onclick="cancelAiQuestion()" hidden>Zrušit otázku</button>
+  <p id="aiQuestionStatus" class="status" role="status" aria-live="polite">Otázka se neodešle bez samostatného souhlasu. Každá odpověď je samostatná a může se mýlit.</p>
+  <div id="aiQuestionResult" class="ai-question-result" hidden>
+   <p id="aiQuestionSource" class="ai-question-source"></p>
+   <h3>Odpověď</h3><p id="aiQuestionAnswer"></p>
+   <h3>Bezpečný další krok</h3><p id="aiQuestionStep"></p>
+   <p id="aiQuestionUncertainty"></p>
+  </div>
+  <small>AI nezjistí, kdo zprávu skutečně odeslal. Předchozí otázky ani odpovědi se znovu neposílají.</small>
+ </section>
+
  <p id="shareState" class="status hidden" role="status" aria-live="polite"></p>
 
  <h2 class="subhead" id="signalsHead">Co v této zprávě vzbuzuje podezření?</h2>
@@ -329,7 +365,7 @@
 </section>
 </main>
 
-<footer class="app-footer">RODINNÝ ŠTÍT · vývojový pilot 1.5 · <a href="index.html">O projektu</a><br>Výchozí kontrola běží lokálně; volitelná AI analýza je dostupná pouze v chráněném testovacím režimu a po souhlasu. Výsledek neověřuje identitu odesílatele ani pravost obrazu či hlasu a nezaručuje bezpečnost.</footer>
+<footer class="app-footer">RODINNÝ ŠTÍT · vývojový pilot 2.0 · <a href="index.html">O projektu</a><br>AI je hlavní režim, pokud je povolená v chráněném Preview a uživatel schválí odeslání. Jinak běží orientační lokální kontrola. Výsledek neověřuje identitu odesílatele ani pravost obrazu či hlasu a nezaručuje bezpečnost.</footer>
 <script src="assets/ai-config.js"></script>
 <script src="assets/site.js" defer></script>
 <script src="assets/app.js" defer></script>
