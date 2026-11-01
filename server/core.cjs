@@ -146,6 +146,39 @@ function validateFollowup(p, sourceText = null) {
   };
 }
 
+/**
+ * Fail safely on ungrounded follow-up prose without paying for a second model call.
+ * This is NOT an AI-generated answer. Only exact source substrings may appear as evidence.
+ */
+function safeFollowupFallback(sourceText) {
+  const source = String(sourceText || '');
+  const patterns = [
+    /nov[ée]\\s+číslo/iu,
+    /\\b(?:pošli|pošlete|zaplaťte|převeďte)\\b[^.!?\\n]{0,65}/iu,
+    /\\b\\d[\\d ]{0,12}\\s*(?:Kč|CZK)\\b/iu,
+    /\\bještě\\s+dnes\\b/iu,
+    /\\b(?:ihned|okamžitě)\\b/iu,
+    /\\b(?:nevolejte|nevolej|nikomu\\s+neříkej)\\b/iu
+  ];
+  const quotes = [];
+  for (const pattern of patterns) {
+    const match = source.match(pattern);
+    if (match && match[0] && !quotes.includes(match[0]) && quotes.length < 3)
+      quotes.push(match[0].slice(0, 80));
+  }
+  const answer = quotes.length
+    ? 'Původní odpověď AI neprošla kontrolou přesnosti, proto ji nezobrazujeme. V textu zprávy lze přímo doložit tyto výrazy: ' +
+      quotes.map(q => '„' + q + '“').join(', ') + '. Tyto okolnosti mohou být varovné, ale samy o sobě nedokazují podvod.'
+    : 'Původní odpověď AI neprošla kontrolou přesnosti, proto ji nezobrazujeme. Ze samotné zprávy nelze bez nezávislého ověření spolehlivě určit totožnost odesílatele ani bezpečnost požadavku.';
+  return {
+    answer_cs: answer.slice(0, 600),
+    evidence_quotes_cs: quotes,
+    next_step_cs: 'Před jakoukoli platbou nebo sdílením údajů si věc ověřte jinou cestou, například přes dříve známý kontakt či oficiální aplikaci.',
+    uncertainty_cs: 'Bezpečné náhradní vysvětlení vytvořené z textu bez dalšího AI požadavku. Nejde o ověření totožnosti ani potvrzení podvodu.',
+    fallback: true
+  };
+}
+
 function clientIp(req) {
   const xf = String(req.headers['x-forwarded-for'] || '').split(',')[0].trim();
   return xf || String(req.headers['x-real-ip'] || '') || (req.socket && req.socket.remoteAddress) || 'unknown';
@@ -289,7 +322,14 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
       if (actual > reserve) log({ evt: 'budget_bound_violated', reserve, actual }); // nemá nastat; skutečnost se započítá
       const diff = actual - reserve; // vrácení nevyužité části rezervace (jen po úspěšné odpovědi)
       if (diff < 0) { try { await store.refund({ keys: quotaKeys, amount: -diff }); } catch { /* reservation stays, conservative */ } }
-      const result = followup ? validateFollowup(parsed, text) : validateResult(parsed, text);
+      let result = followup ? validateFollowup(parsed, text) : validateResult(parsed, text);
+      if (!result && followup) {
+        // The provider was already called and charged once. Never retry or display
+        // unverified model assertions; use deterministic, source-grounded advice.
+        result = safeFollowupFallback(text);
+        done(200, 'safe_fallback', { tin: usage.input, tout: usage.output, kind: 'followup' });
+        return send(res, 200, { ok: true, mode: 'followup', model: cfg.model, result }, allowed);
+      }
       if (!result) { done(502, 'invalid_model_output', { tin: usage.input, tout: usage.output }); return err(res, 502, 'ai_bad_output', allowed); }
       done(200, 'ok', { tin: usage.input, tout: usage.output, kind: followup ? 'followup' : 'analysis', ...(followup ? {} : { risk: result.risk }) });
       return send(res, 200, { ok: true, mode: followup ? 'followup' : 'ai', model: cfg.model, result }, allowed);
@@ -302,4 +342,4 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
   };
 }
 
-module.exports = { createHandler, readConfig, validateResult, validateFollowup, worstCaseMicroUsd, maxInputTokens, PRICES, HARD_MAX_OUTPUT_TOKENS };
+module.exports = { createHandler, readConfig, validateResult, validateFollowup, safeFollowupFallback, worstCaseMicroUsd, maxInputTokens, PRICES, HARD_MAX_OUTPUT_TOKENS };
