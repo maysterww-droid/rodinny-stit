@@ -58,11 +58,15 @@ function readConfig(env) {
  * ≤ počet bajtů instrukcí + JSON Schema + obalené zprávy + pevná rezerva na rámování zpráv (overheadTokens).
  * Výstup: max_output_tokens je tvrdý strop na generované tokeny VČETNĚ reasoning tokenů.
  * Rezervuje se před voláním (atomicky), takže součet skutečných útrat nepřekročí rozpočet. */
-const { INSTRUCTIONS, RESPONSE_SCHEMA: SCHEMA, buildInput } = require('./prompt.cjs');
+const { INSTRUCTIONS, RESPONSE_SCHEMA: SCHEMA, buildInput, FOLLOWUP_INSTRUCTIONS, FOLLOWUP_SCHEMA, buildFollowupInput } = require('./prompt.cjs');
 const FIXED_INPUT_BYTES = Buffer.byteLength(INSTRUCTIONS) + Buffer.byteLength(JSON.stringify(SCHEMA));
-function maxInputTokens(c, text) { return FIXED_INPUT_BYTES + Buffer.byteLength(buildInput(text)) + c.overheadTokens; }
-function worstCaseMicroUsd(c, text) {
-  return Math.ceil(maxInputTokens(c, text) * c.priceInPerMTok + c.maxOutputTokens * c.priceOutPerMTok);
+function maxInputTokens(c, text, task = null) {
+  return (task
+    ? Buffer.byteLength(task.instructions) + Buffer.byteLength(JSON.stringify(task.schema)) + Buffer.byteLength(task.input)
+    : FIXED_INPUT_BYTES + Buffer.byteLength(buildInput(text))) + c.overheadTokens;
+}
+function worstCaseMicroUsd(c, text, task = null) {
+  return Math.ceil(maxInputTokens(c, text, task) * c.priceInPerMTok + c.maxOutputTokens * c.priceOutPerMTok);
 }
 function actualMicroUsd(c, u) { return Math.ceil(u.input * c.priceInPerMTok + u.output * c.priceOutPerMTok); }
 
@@ -102,6 +106,29 @@ function validateResult(p, sourceText = null) {
   return {
     risk: p.risk, scope: p.scope, warning_signals: signals,
     explanation_cs: explanation, recommended_steps: steps, uncertainty_cs: uncertainty
+  };
+}
+
+
+/** AI Q&A is never an identity verification, crime determination or safety guarantee. */
+function validateFollowup(p) {
+  if (!p || typeof p !== 'object' || typeof p.answer_cs !== 'string' ||
+      typeof p.next_step_cs !== 'string' || typeof p.uncertainty_cs !== 'string') return null;
+  if (!p.answer_cs.trim() || !p.next_step_cs.trim()) return null;
+  // Reuse the existing conservative safety filter for explanation and advice.
+  const checked = validateResult({
+    risk: 'uncertain', scope: 'message_analysis', warning_signals: [],
+    explanation_cs: p.answer_cs, recommended_steps: [p.next_step_cs],
+    uncertainty_cs: p.uncertainty_cs
+  });
+  if (!checked || !checked.recommended_steps.length) return null;
+  const answer = checked.explanation_cs;
+  const dangerousAnswer = /(?:^|[.!?]\s+)(?:pošlete|sdělte|nadiktujte|vyplňte|zadejte|přepošlete)\s+.{0,90}(?:kód|heslo|pin|cvv|údaje z karty|obnovovací frázi)|(?:^|[.!?]\s+)(?:klikněte|otevřete)\s+.{0,70}(?:odkaz|link)|(?:^|[.!?]\s+)(?:zaplaťte|převeďte)\s+.{0,75}(?:kč|peníze|částku|platbu)|(?:^|[.!?]\s+)(?:smažte|vymažte)\s+(?:zprávu|důkazy)/iu;
+  if (dangerousAnswer.test(answer)) return null;
+  return {
+    answer_cs: answer,
+    next_step_cs: checked.recommended_steps[0],
+    uncertainty_cs: checked.uncertainty_cs
   };
 }
 
@@ -191,15 +218,24 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     if (!body || typeof body !== 'object' || Array.isArray(body)) return err(res, 400, 'bad_request', allowed);
     if (body.consent !== true) { done(400, 'no_consent'); return err(res, 400, 'consent_required', allowed); }
     if (body.language !== 'cs') return err(res, 400, 'unsupported_language', allowed);
+    const followup = body.kind === 'followup';
+    if (body.kind !== undefined && body.kind !== 'analyze' && !followup) return err(res, 400, 'bad_request', allowed);
     const text = typeof body.text === 'string' ? body.text.trim() : '';
     if (!text) return err(res, 400, 'empty_text', allowed);
     if (text.length > cfg.maxChars || Buffer.byteLength(text) > cfg.maxTextBytes) { done(413, 'too_long'); return err(res, 413, 'too_long', allowed, { maxChars: cfg.maxChars }); }
+    const question = followup && typeof body.question === 'string' ? body.question.trim() : '';
+    if (followup && (question.length < 3 || question.length > 280 || Buffer.byteLength(question) > 600))
+      return err(res, 400, 'invalid_question', allowed);
+    const task = followup ? {
+      name: 'scam_followup', instructions: FOLLOWUP_INSTRUCTIONS,
+      schema: FOLLOWUP_SCHEMA, input: buildFollowupInput(text, question)
+    } : null;
 
     // ---- limity (trvalé čítače, fail-closed) ----
     const ipKey = crypto.createHmac('sha256', cfg.salt).update(clientIp(req)).digest('hex').slice(0, 24);
     const hour = new Date(now()).toISOString().slice(0, 13);
     const month = day.slice(0, 7);
-    const reserve = worstCaseMicroUsd(cfg, text); // garantovaná horní mez pro TENTO požadavek
+    const reserve = worstCaseMicroUsd(cfg, text, task); // garantovaná horní mez pro TENTO požadavek
     const budgetMicro = Math.floor(cfg.dailyBudgetUsd * 1e6), monthMicro = Math.floor(cfg.monthlyBudgetUsd * 1e6);
 
     const quotaKeys = {
@@ -226,15 +262,15 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
 
     // ---- volání modelu (jediný pokus) ----
     try {
-      const { parsed, usage } = await callOpenAI({ text, apiKey: cfg.apiKey, model: cfg.model, reasoningEffort: cfg.reasoningEffort, maxOutputTokens: cfg.maxOutputTokens, timeoutMs: cfg.timeoutMs, fetchImpl });
+      const { parsed, usage } = await callOpenAI({ text, apiKey: cfg.apiKey, model: cfg.model, reasoningEffort: cfg.reasoningEffort, maxOutputTokens: cfg.maxOutputTokens, timeoutMs: cfg.timeoutMs, fetchImpl, task });
       const actual = actualMicroUsd(cfg, usage);
       if (actual > reserve) log({ evt: 'budget_bound_violated', reserve, actual }); // nemá nastat; skutečnost se započítá
       const diff = actual - reserve; // vrácení nevyužité části rezervace (jen po úspěšné odpovědi)
       if (diff < 0) { try { await store.refund({ keys: quotaKeys, amount: -diff }); } catch { /* reservation stays, conservative */ } }
-      const result = validateResult(parsed, text);
+      const result = followup ? validateFollowup(parsed) : validateResult(parsed, text);
       if (!result) { done(502, 'invalid_model_output', { tin: usage.input, tout: usage.output }); return err(res, 502, 'ai_bad_output', allowed); }
-      done(200, 'ok', { tin: usage.input, tout: usage.output, risk: result.risk });
-      return send(res, 200, { ok: true, mode: 'ai', model: cfg.model, result }, allowed);
+      done(200, 'ok', { tin: usage.input, tout: usage.output, kind: followup ? 'followup' : 'analysis', ...(followup ? {} : { risk: result.risk }) });
+      return send(res, 200, { ok: true, mode: followup ? 'followup' : 'ai', model: cfg.model, result }, allowed);
     } catch (e) {
       const code = e instanceof ProviderError ? e.code : 'provider_error';
       const status = code === 'provider_timeout' ? 504 : code === 'provider_rate_limited' ? 429 : 502;
@@ -244,4 +280,4 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
   };
 }
 
-module.exports = { createHandler, readConfig, validateResult, worstCaseMicroUsd, maxInputTokens, PRICES, HARD_MAX_OUTPUT_TOKENS };
+module.exports = { createHandler, readConfig, validateResult, validateFollowup, worstCaseMicroUsd, maxInputTokens, PRICES, HARD_MAX_OUTPUT_TOKENS };
