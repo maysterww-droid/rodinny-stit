@@ -59,7 +59,7 @@ function readConfig(env) {
  * ≤ počet bajtů instrukcí + JSON Schema + obalené zprávy + pevná rezerva na rámování zpráv (overheadTokens).
  * Výstup: max_output_tokens je tvrdý strop na generované tokeny VČETNĚ reasoning tokenů.
  * Rezervuje se před voláním (atomicky), takže součet skutečných útrat nepřekročí rozpočet. */
-const { INSTRUCTIONS, RESPONSE_SCHEMA: SCHEMA, buildInput, FOLLOWUP_INSTRUCTIONS, FOLLOWUP_SCHEMA, buildFollowupInput } = require('./prompt.cjs');
+const { INSTRUCTIONS, RESPONSE_SCHEMA: SCHEMA, buildInput, FOLLOWUP_INSTRUCTIONS, FOLLOWUP_SCHEMA, buildFollowupInput, evidenceCandidates } = require('./prompt.cjs');
 const FIXED_INPUT_BYTES = Buffer.byteLength(INSTRUCTIONS) + Buffer.byteLength(JSON.stringify(SCHEMA));
 function maxInputTokens(c, text, task = null) {
   return (task
@@ -152,20 +152,7 @@ function validateFollowup(p, sourceText = null) {
  */
 function safeFollowupFallback(sourceText) {
   const source = String(sourceText || '');
-  const patterns = [
-    /nov[ée]\s+číslo/iu,
-    /\b(?:pošli|pošlete|zaplaťte|převeďte)\b[^.!?\n]{0,65}/iu,
-    /\b\d[\d ]{0,12}\s*(?:Kč|CZK)\b/iu,
-    /\bještě\s+dnes\b/iu,
-    /\b(?:ihned|okamžitě)\b/iu,
-    /\b(?:nevolejte|nevolej|nikomu\s+neříkej)\b/iu
-  ];
-  const quotes = [];
-  for (const pattern of patterns) {
-    const match = source.match(pattern);
-    if (match && match[0] && !quotes.includes(match[0]) && quotes.length < 3)
-      quotes.push(match[0].slice(0, 80));
-  }
+  const quotes = evidenceCandidates(source).slice(0, 3);
   const answer = quotes.length
     ? 'Původní odpověď AI neprošla kontrolou přesnosti, proto ji nezobrazujeme. V textu zprávy lze přímo doložit tyto výrazy: ' +
       quotes.map(q => '„' + q + '“').join(', ') + '. Tyto okolnosti mohou být varovné, ale samy o sobě nedokazují podvod.'
