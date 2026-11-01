@@ -21,6 +21,23 @@ function createMockFetch({ scenario = () => 'auto', calls = [] } = {}) {
     if (mode === 'garbage') return jsonRes(200, { status: 'completed', output: [{ type: 'message', content: [{ type: 'output_text', text: '<b>not json</b>' }] }] });
     if (mode === 'html') return jsonRes(200, mockResponse({ risk: 'high', scope: 'message_analysis', warning_signals: [{ name_cs: '<img src=x onerror=alert(1)>Nátlak', explanation_cs: '<script>alert(1)</script>', excerpt: '' }], explanation_cs: 'Test', recommended_steps: ['<b>Neodpovídejte</b>'], uncertainty_cs: '' }));
 
+
+    // Mock follow-up requests are clearly labeled simulations; NO real model or network.
+    const question = (String(body.input).match(/<question>\n([\s\S]*?)\n<\/question>/) || [,''])[1];
+    if (question) {
+      const q = question.toLowerCase();
+      const explanation = /proč|proc|podezřel|rizik/.test(q)
+        ? 'V ukázkové zprávě je důležité rozpoznat naléhání nebo žádost o peníze. Vždy záleží na konkrétních slovech, ne na samotném jménu odesílatele.'
+        : /ověřit|overit|zkontrol/.test(q)
+          ? 'Údajného odesílatele ověřte mimo přijatou zprávu. Například zavolejte na číslo, které máte již dříve uložené.'
+          : 'Ze samotné zprávy nelze spolehlivě určit totožnost odesílatele. Pozorně zvažte, zda od vás někdo žádá platbu, údaje nebo rychlé jednání.';
+      return jsonRes(200, mockResponse({
+        answer_cs: explanation,
+        next_step_cs: 'Neodpovídejte na neověřenou žádost a kontaktujte odesílatele přes dříve známý kanál.',
+        uncertainty_cs: 'SIMULACE — tuto odpověď vytvořil testovací mock, nikoli živá AI.'
+      }));
+    }
+
     const t = text.toLowerCase(); const sig = [];
     if (/nové číslo|nový telefon|rozbil/.test(t)) sig.push({ name_cs: 'Nové číslo blízkého', explanation_cs: 'Podvodníci se často vydávají za člena rodiny, který „změnil číslo“.', excerpt: (text.match(/m[áa]m nov[ée] [čc]íslo/i) || [''])[0] });
     if (/pošli|zaplať|kč|peníze|účet/.test(t)) sig.push({ name_cs: 'Žádost o peníze', explanation_cs: 'Zpráva žádá o převod peněz, což je hlavní cíl podvodu.', excerpt: (text.match(/\d[\d ]*\s?kč/i) || [''])[0] });
