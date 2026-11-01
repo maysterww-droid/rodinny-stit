@@ -358,7 +358,7 @@ test('AI-first follow-up: one independently consented question uses strict schem
   assert.equal(calls.length, 1);
   assert.equal(calls[0].body.store, false);
   assert.equal(calls[0].body.text.format.name, 'scam_followup');
-  assert.deepEqual(calls[0].body.text.format.schema.required, ['answer_cs', 'next_step_cs', 'uncertainty_cs']);
+  assert.deepEqual(calls[0].body.text.format.schema.required, ['answer_cs', 'next_step_cs', 'uncertainty_cs', 'evidence_quotes_cs']);
   assert.match(calls[0].body.input, /<message>\n[\s\S]+<\/message>/);
   assert.match(calls[0].body.input, /<question>\nProč je tato zpráva podezřelá\?\n<\/question>/);
   assert.ok(!logs.some(entry => entry.includes(SMS) || entry.includes(q.question)), 'no message or question in logs');
@@ -412,6 +412,39 @@ test('AI-first follow-up safety: refuse fake certainty or dangerous recommended 
   assert.equal(validateFollowup({ ...p, answer_cs: 'Pošlete ověřovací kód.' }), null);
   assert.equal(validateFollowup({ ...p, next_step_cs: 'Smažte zprávu.' }), null);
   assert.ok(validateFollowup({ ...p, next_step_cs: 'Nesdělujte kódy a zprávu uschovejte.' }));
+});
+
+test('AI 2.1 source-grounding: invented "hned" and callback bans are rejected, real quotes pass', () => {
+  const base = {
+    answer_cs: 'Ve zprávě je žádost o 5000 Kč ještě dnes, ale neznáme skutečného odesílatele.',
+    evidence_quotes_cs: ['5000 Kč', 'ještě dnes'],
+    next_step_cs: 'Zavolejte na dříve uložené číslo.',
+    uncertainty_cs: 'Z textu nelze ověřit odesílatele.'
+  };
+  assert.ok(validateFollowup(base, SMS));
+  assert.equal(validateFollowup({ ...base, evidence_quotes_cs: ['hned'] }, SMS), null);
+  assert.equal(validateFollowup({ ...base, answer_cs: 'Píše „hned“, proto Vás nutí jednat rychle.' }, SMS), null);
+  assert.equal(validateFollowup({ ...base, answer_cs: 'Pokyn nevolat zpět je jasným varováním.' }, SMS), null);
+  assert.ok(validateFollowup({ ...base, answer_cs: 'Časový tlak může být varovným signálem; v textu je „ještě dnes“.' }, SMS));
+});
+
+test('AI 2.1 bounded conversation: consented one-turn history is forwarded without server storage', async () => {
+  const { h, calls, logs } = setup();
+  const history = [{ question: 'Proč?', answer: 'Zpráva vyvolává naléhavost.' }];
+  const input = { ...ok(), kind: 'followup', question: 'Co mám udělat teď?', history };
+  const r = await call(h, { body: input });
+  assert.equal(r.status, 200);
+  assert.match(calls[0].body.input, /<previous>\nQuestion: Proč\?\nUnverified AI answer: Zpráva vyvolává naléhavost\./);
+  assert.ok(!logs.some(line => line.includes('Zpráva vyvolává naléhavost') || line.includes(SMS)));
+  for (const invalid of [
+    [...history, ...history], [{ ...history[0], answer: 'x'.repeat(601) }],
+    [{ ...history[0], question: 'x'.repeat(281) }], [{ answer: 'no question' }],
+    'arbitrary'
+  ]) {
+    const bad = await call(h, { body: { ...input, history: invalid } });
+    assert.equal(bad.status, 400);
+  }
+  assert.equal(calls.length, 1);
 });
 
 test('AI-first follow-up is disabled in expired Preview and makes zero provider calls', async () => {
