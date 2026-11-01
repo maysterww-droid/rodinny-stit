@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Kontrola podezřelé zprávy | RODINNÝ ŠTÍT – interaktivní pilot</title>
+<title>Živá AI analýza 2.1.2 | RODINNÝ ŠTÍT</title>
 <link rel="canonical" href="https://rodinny-stit-ai-preview-makster.vercel.app/pilot.html">
 <meta http-equiv="refresh" content="0;url=https://rodinny-stit-ai-preview-makster.vercel.app/pilot.html">
 <script>window.location.replace("https://rodinny-stit-ai-preview-makster.vercel.app/pilot.html");</script>
-<meta name="description" content="Interaktivní pilot RODINNÝ ŠTÍT: zkontrolujte podezřelou zprávu, zjistěte varovné signály a bezpečný další krok. Česky, bez registrace.">
+<meta name="description" content="RODINNÝ ŠTÍT 2.1.2 nabízí živou AI analýzu. Tato stará adresa přesměruje návštěvníky na veřejný AI server.">
 <meta name="theme-color" content="#ffffff">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -39,9 +39,9 @@
 
 <!-- ============ 1. KONTROLA ZPRÁVY ============ -->
 <section class="screen active" id="home" aria-labelledby="home-title" tabindex="-1">
- <span class="pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 0.9</span>
+ <span class="pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Záložní místní kontrola – živá AI funguje online</span>
  <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
- <p class="lead">Vložte text nebo snímek obrazovky. Pilot vyhledá varovné signály podle vysvětlitelných pravidel a poradí, jak postupovat.</p>
+ <p class="lead">Vložte text nebo snímek obrazovky. Tato záložní stránka používá místní pravidla. <a href="https://rodinny-stit-ai-preview-makster.vercel.app/pilot.html">Otevřít veřejnou živou AI 2.1.2</a>.</p>
 
  <div class="tabs" role="tablist" aria-label="Způsob zadání">
   <button class="tab" role="tab" id="tab-text" aria-controls="panel-text" aria-selected="true" type="button" data-tab="text"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-doc"/></svg>Text</button>
@@ -62,7 +62,7 @@
    <button type="button" class="chip" onclick="maskNumbers()">Dlouhá čísla</button>
   </div>
   <button class="btn btn-primary btn-wide" type="button" onclick="analyze()"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-search"/></svg>Zkontrolovat zprávu</button>
-  <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Kontrola proběhne <b>lokálně ve vašem prohlížeči</b> podle pravidel. Není připojen živý AI model. Nevkládejte hesla, PIN ani kódy.</span></div>
+  <div id="aiMode" class="mode" role="status" aria-live="polite"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><span>Záložní místní pravidla běží v prohlížeči. Živá AI již funguje ve veřejném pilotu 2.1.2. Nevkládejte hesla, PIN ani kódy.</span></div>
  </div>
 
  <div id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden>
@@ -108,7 +108,7 @@
   </div>
  </div>
 
- <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b>Jde o soutěžní pilot. Vyhodnocení je orientační, vychází z lokálních pravidel, nikoli ze živého AI modelu, a není zárukou bezpečnosti. Používejte raději smyšlené nebo anonymizované příklady.</div></div>
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b>Jde o starší záložní místní režim. Aktuální veřejná verze 2.1.2 již používá živou AI. Obě metody jsou orientační a nejsou zárukou bezpečnosti. Používejte smyšlené nebo anonymizované příklady.</div></div>
 </section>
 
 <!-- ============ 2. VÝSLEDEK ============ -->
@@ -138,7 +138,7 @@
   <button class="btn btn-ghost btn-wide" type="button" onclick="resetAll()">Zkontrolovat jinou zprávu</button>
   <button class="btn btn-ghost btn-wide" type="button" onclick="go('after')"><svg class="ico" aria-hidden="true" style="color:var(--amber)"><use href="assets/icons.svg#i-lifebuoy"/></svg>Už jsem jednal(a) – co teď?</button>
  </div>
- <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b><span id="resultNote">Výsledek pochází z lokálních orientačních pravidel v prohlížeči, nikoli z AI modelu ani databáze podvodů. Neověřuje odesílatele a není zárukou bezpečnosti.</span></div></div>
+ <div class="notice"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-info"/></svg><div><b>Důležité upozornění</b><span id="resultNote">Tento záložní výsledek pochází z místních pravidel. Živá AI FIRST 2.1.2 běží na veřejném serveru. Žádná metoda neověřuje odesílatele a není zárukou bezpečnosti.</span></div></div>
 </section>
 
 <!-- ============ 3. OVĚŘENÍ ============ -->
