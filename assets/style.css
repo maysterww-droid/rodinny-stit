@@ -390,3 +390,7 @@ mark{background:#ffe2a6;color:inherit;border-radius:4px;padding:0 2px;box-shadow
 .app-footer a{font-weight:600}
 @media (min-width:760px){.card{padding:24px}.risk{padding:22px}.sos{grid-template-columns:repeat(4,1fr)}}
 @media (max-width:380px){.badge{font-size:10.5px;letter-spacing:.03em}.hero h1{margin-top:12px}}
+
+/* Živá AI 2.1.2 – stručný návod k živé ukázce bez změny schválené grafiky. */
+.hero-demo-hint{margin:2px 0 0;color:#385677;font-size:13px;line-height:1.5;max-width:430px}
+@media(max-width:480px){.hero-demo-hint{font-size:12.5px}}
