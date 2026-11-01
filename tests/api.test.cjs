@@ -421,3 +421,22 @@ test('AI-first follow-up is disabled in expired Preview and makes zero provider 
   assert.equal(response.json.error, 'ai_unavailable');
   assert.equal(calls.length, 0);
 });
+
+
+test('rate-limit namespaces isolate public AI from protected preview and fail closed if malformed', async () => {
+  const calls = [];
+  function store() {
+    return {kind:'test', reserve: async request => { calls.push(request.keys); return 'ok'; },
+      refund: async () => {} };
+  }
+  const a=setup({RATE_LIMIT_NAMESPACE:'rsprivate'},{store:store()});
+  const b=setup({RATE_LIMIT_NAMESPACE:'rspublic'},{store:store()});
+  assert.equal((await call(a.h,{body:ok()})).status,200);
+  assert.equal((await call(b.h,{body:ok()})).status,200);
+  assert.ok(Object.values(calls[0]).every(k => k.startsWith('rsprivate:')));
+  assert.ok(Object.values(calls[1]).every(k => k.startsWith('rspublic:')));
+  assert.notDeepEqual(calls[0],calls[1]);
+  const bad=setup({RATE_LIMIT_NAMESPACE:'../other'});
+  assert.equal((await call(bad.h,{body:ok()})).status,503);
+  assert.equal(bad.calls.length,0);
+});
