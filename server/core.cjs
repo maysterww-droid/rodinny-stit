@@ -37,6 +37,7 @@ function readConfig(env) {
     allowedVercelEnvs: (env.AI_ALLOWED_VERCEL_ENVS || 'preview').split(',').map(s => s.trim()).filter(Boolean),
     testExpiresAt: env.AI_TEST_EXPIRES_AT ? Date.parse(env.AI_TEST_EXPIRES_AT) : null,
     salt: env.RATE_LIMIT_SALT || '',
+    quotaNamespace: /^[a-z][a-z0-9_-]{1,31}$/i.test(env.RATE_LIMIT_NAMESPACE || 'rs') ? (env.RATE_LIMIT_NAMESPACE || 'rs') : null,
     maxChars: num('MAX_CHARS', 3000),
     maxTextBytes: num('MAX_TEXT_BYTES', 6000),
     maxBodyBytes: num('MAX_BODY_BYTES', 16384),
@@ -170,6 +171,7 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     if (!cfg.apiKey) return 'not_configured';
     if (!store || typeof store.reserve !== 'function' || typeof store.refund !== 'function' || store.kind === 'memory' && env.ALLOW_MEMORY_STORE !== 'true') return 'no_rate_limit_store';
     if (!cfg.salt || cfg.salt.length < 16) return 'no_salt';
+    if (!cfg.quotaNamespace) return 'invalid_quota_namespace';
     if (!cfg.origins.length && !cfg.allowSameOrigin) return 'no_origins';
     if (!cfg.vercelEnv || !cfg.allowedVercelEnvs.includes(cfg.vercelEnv)) return 'env_not_allowed'; // fail closed: no VERCEL_ENV or production
     if (cfg.testExpiresAt !== null && (!Number.isFinite(cfg.testExpiresAt) || now() >= cfg.testExpiresAt)) return 'test_window_closed'; // temporary one-call QA, fail closed on expiry
@@ -239,11 +241,11 @@ function createHandler({ env = process.env, store, fetchImpl = fetch, now = () =
     const budgetMicro = Math.floor(cfg.dailyBudgetUsd * 1e6), monthMicro = Math.floor(cfg.monthlyBudgetUsd * 1e6);
 
     const quotaKeys = {
-      hour: `rs:ip:h:${hour}:${ipKey}`,
-      ipDay: `rs:ip:d:${day}:${ipKey}`,
-      globalDay: `rs:g:req:${day}`,
-      dayBudget: `rs:g:usd:${day}`,
-      monthBudget: `rs:g:usdm:${month}`
+      hour: `${cfg.quotaNamespace}:ip:h:${hour}:${ipKey}`,
+      ipDay: `${cfg.quotaNamespace}:ip:d:${day}:${ipKey}`,
+      globalDay: `${cfg.quotaNamespace}:g:req:${day}`,
+      dayBudget: `${cfg.quotaNamespace}:g:usd:${day}`,
+      monthBudget: `${cfg.quotaNamespace}:g:usdm:${month}`
     };
     try {
       // Single atomic Redis EVAL: no provider call unless all quotas and both budgets are reserved.
