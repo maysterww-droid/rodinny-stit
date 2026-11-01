@@ -599,3 +599,21 @@ textarea.ai-question-input{min-height:92px;font-size:16px;padding:12px}
 .ai-question-result #aiQuestionUncertainty{font-size:12.5px;color:#657587;margin-top:12px}
 .ai-question-source{font-size:12px!important;color:#597b7a!important;font-weight:700}
 @media(max-width:380px){.ai-first-intro,.ai-question-box{padding:13px}.ai-first-intro h2,.ai-question-heading h2{font-size:17px}}
+
+
+/* 2.1 · rychlá cesta k první AI kontrole. Schválená grafika štítu a animace zůstává. */
+.ph-jump{display:inline-flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;
+  padding:10px 13px;border-radius:13px;background:#1565d8;color:#fff;font-weight:800;font-size:14px;
+  text-decoration:none;box-shadow:0 8px 18px rgba(15,79,167,.24)}
+.ph-jump:hover,.ph-jump:focus-visible{background:#0d55bd;color:#fff;outline-offset:3px}
+#msg{scroll-margin-top:86px}
+.ai-question-evidence{margin:10px 0!important;padding:9px 11px;border-radius:12px;
+  background:#eff7ff;color:#28547d;font-size:13px!important;line-height:1.45}
+.ai-question-evidence[hidden]{display:none}
+@media(max-width:600px){
+  .ai-first-intro{margin:10px 0 12px;padding:12px}
+  .ai-first-features{display:none}
+  .ai-first-intro .ai-availability{margin-top:9px}
+  .ai-first-intro .ai-first-top p{font-size:13px;line-height:1.45}
+  .ph-jump{font-size:13px;padding:10px 11px;max-width:100%}
+}
