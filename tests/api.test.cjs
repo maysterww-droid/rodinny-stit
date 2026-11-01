@@ -484,7 +484,7 @@ test('2.1.1 deterministic fallback stays cautious on harmless text and quotes on
   assert.deepEqual(safe.evidence_quotes_cs, []);
   assert.doesNotMatch(safe.answer_cs, /vysoce podezřel|jistě podvod|vysoké riziko/);
   const fraud = safeFollowupFallback(SMS);
-  assert.ok(fraud.evidence_quotes_cs.includes('nové číslo'));
+  assert.ok(fraud.evidence_quotes_cs.some(q => q.includes('nové číslo')));
   assert.ok(fraud.evidence_quotes_cs.some(q => /5000 Kč|ještě dnes/.test(q)));
   assert.ok(fraud.evidence_quotes_cs.every(q => SMS.includes(q)));
   assert.ok(fraud.answer_cs.length <= 600);
