@@ -153,12 +153,12 @@ function validateFollowup(p, sourceText = null) {
 function safeFollowupFallback(sourceText) {
   const source = String(sourceText || '');
   const patterns = [
-    /nov[ée]\\s+číslo/iu,
-    /\\b(?:pošli|pošlete|zaplaťte|převeďte)\\b[^.!?\\n]{0,65}/iu,
-    /\\b\\d[\\d ]{0,12}\\s*(?:Kč|CZK)\\b/iu,
-    /\\bještě\\s+dnes\\b/iu,
-    /\\b(?:ihned|okamžitě)\\b/iu,
-    /\\b(?:nevolejte|nevolej|nikomu\\s+neříkej)\\b/iu
+    /nov[ée]\s+číslo/iu,
+    /\b(?:pošli|pošlete|zaplaťte|převeďte)\b[^.!?\n]{0,65}/iu,
+    /\b\d[\d ]{0,12}\s*(?:Kč|CZK)\b/iu,
+    /\bještě\s+dnes\b/iu,
+    /\b(?:ihned|okamžitě)\b/iu,
+    /\b(?:nevolejte|nevolej|nikomu\s+neříkej)\b/iu
   ];
   const quotes = [];
   for (const pattern of patterns) {
