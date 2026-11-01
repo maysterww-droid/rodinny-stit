@@ -47,6 +47,7 @@
    <span class="pill ph-pill"><svg class="ico" aria-hidden="true"><use href="assets/icons.svg#i-scan"/></svg>Kontrola zprávy · pilot 2.0</span>
    <h1 id="home-title">Zkontrolujte podezřelou zprávu</h1>
    <p class="ph-lead">Vložte SMS, e-mail, snímek obrazovky nebo popis hovoru. Ukážeme varovné signály a poradíme, co dělat dál.</p>
+   <a class="ph-jump" href="#msg">Vyzkoušet AI kontrolu <span aria-hidden="true">↓</span></a>
   </div>
   <div class="ph-stage" role="img" aria-label="Ukázka: telefon s podezřelou SMS „Ahoj mami, mám nové číslo. Pošli mi prosím 5000 Kč ještě dnes.“, kterou ochranný štít zkontroloval a označil varováním jako podezřelou.">
    <i class="ph-orbit back" aria-hidden="true"></i>
@@ -215,8 +216,8 @@
   </div>
   <label class="ai-question-label" for="aiQuestion">Moje otázka k této zprávě</label>
   <textarea id="aiQuestion" class="input ai-question-input" maxlength="280" placeholder="Např. Proč po mně chce nové číslo účtu?" oninput="updateAiQuestionPreview()"></textarea>
-  <div class="ai-preview ai-question-preview"><b>Otázka před odesláním (osobní údaje mohou zůstat):</b><div id="aiQuestionPreview" aria-live="polite">(zatím prázdné)</div></div>
-  <label class="consent"><input type="checkbox" id="aiQuestionAgree" onchange="recordAiQuestionConsent()"><span>Souhlasím s opětovným odesláním upravené původní zprávy a této otázky k AI.</span></label>
+  <div class="ai-preview ai-question-preview"><b>Co odešlete k AI (včetně případné poslední otázky a odpovědi):</b><div id="aiQuestionPreview" aria-live="polite">(zatím prázdné)</div></div>
+  <label class="consent"><input type="checkbox" id="aiQuestionAgree" onchange="recordAiQuestionConsent()"><span>Souhlasím s odesláním upravené zprávy, této otázky a případné poslední otázky s odpovědí k AI.</span></label>
   <button id="aiQuestionBtn" class="btn btn-primary btn-wide" type="button" onclick="sendAiQuestion()">Zeptat se AI</button>
   <button id="aiQuestionCancel" class="btn btn-ghost btn-wide" type="button" onclick="cancelAiQuestion()" hidden>Zrušit otázku</button>
   <p id="aiQuestionStatus" class="status" role="status" aria-live="polite">Otázka se neodešle bez samostatného souhlasu. Každá odpověď je samostatná a může se mýlit.</p>
@@ -224,9 +225,10 @@
    <p id="aiQuestionSource" class="ai-question-source"></p>
    <h3>Odpověď</h3><p id="aiQuestionAnswer"></p>
    <h3>Bezpečný další krok</h3><p id="aiQuestionStep"></p>
+   <p id="aiQuestionEvidence" class="ai-question-evidence" hidden></p>
    <p id="aiQuestionUncertainty"></p>
   </div>
-  <small>AI nezjistí, kdo zprávu skutečně odeslal. Předchozí otázky ani odpovědi se znovu neposílají.</small>
+  <small>AI nezjistí, kdo zprávu skutečně odeslal. Při další otázce se může s novým souhlasem odeslat poslední otázka a odpověď; nic se neukládá jako trvalá konverzace.</small>
  </section>
 
  <p id="shareState" class="status hidden" role="status" aria-live="polite"></p>
