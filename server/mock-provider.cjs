@@ -33,6 +33,7 @@ function createMockFetch({ scenario = () => 'auto', calls = [] } = {}) {
           : 'Ze samotné zprávy nelze spolehlivě určit totožnost odesílatele. Pozorně zvažte, zda od vás někdo žádá platbu, údaje nebo rychlé jednání.';
       return jsonRes(200, mockResponse({
         answer_cs: explanation,
+        evidence_quotes_cs: [],
         next_step_cs: 'Neodpovídejte na neověřenou žádost a kontaktujte odesílatele přes dříve známý kanál.',
         uncertainty_cs: 'SIMULACE — tuto odpověď vytvořil testovací mock, nikoli živá AI.'
       }));
