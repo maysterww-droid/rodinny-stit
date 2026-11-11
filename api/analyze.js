@@ -1,10 +1,16 @@
 'use strict';
-// Vercel Serverless Function (Node.js runtime): POST /api/analyze, GET /api/analyze (dostupnost)
-const { createHandler } = require('../server/core.cjs');
-const { upstashStore } = require('../server/store.cjs');
-
-const store = upstashStore({
-  url: process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN
-});
-module.exports = createHandler({ env: process.env, store });
+// PUBLIC AI SHUTDOWN, 2026-11-11. Restore only after explicit owner approval.
+// No OpenAI, Upstash, or paid provider imports on this public endpoint.
+module.exports = function pausedPublicAi(req, res) {
+  const method = String(req.method || 'GET').toUpperCase();
+  const isStatus = method === 'GET';
+  res.statusCode = isStatus ? 200 : method === 'POST' ? 503 : 405;
+  res.setHeader('Content-Type', 'application/json; charset=utf-8');
+  res.setHeader('Cache-Control', 'no-store');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  return res.end(JSON.stringify(
+    isStatus
+      ? { ok: true, ai: false, mode: 'local_only', maxChars: 3000 }
+      : { ok: false, error: method === 'POST' ? 'ai_unavailable' : 'method_not_allowed' }
+  ));
+};
