@@ -1,5 +1,5 @@
 /* RODINNÝ ŠTÍT · transparentní klientský demonstrátor 0.9
- * Místní záložní režim; živá AI FIRST 2.1.2 funguje na veřejném Vercel serveru.
+ * Veřejná AI je pozastavena; místní orientační pravidla fungují bez serveru.
  * Vyhodnocení = lokální vysvětlitelná pravidla (classify). OCR = Tesseract.js načtený až na vyžádání.
  */
 'use strict';
@@ -55,7 +55,7 @@ function demo(name = 'relative') {
   $('msg').value = demoExamples[name] || demoExamples.relative;
   updateCount();
   go('home'); selectTab('text');
-  setMode('', 'Vložena <b>smyšlená ukázka</b>. Stiskněte „Zkontrolovat zprávu“. Tato záložní kontrola běží místně; živá AI je dostupná ve veřejném pilotu.');
+  setMode('', 'Vložena <b>smyšlená ukázka</b>. Stiskněte „Zkontrolovat zprávu“. Kontrola běží místně, bez serveru a bez placené AI.');
   $('msg').focus();
   $('msg').scrollIntoView({ block: 'center', behavior: 'smooth' });
 }
@@ -217,7 +217,7 @@ function verified(real) {
 function resetAll() {
   $('msg').value = ''; updateCount(); $('shot').value = ''; $('shotPreview').classList.add('hidden'); $('ocrState').classList.add('hidden'); $('ocrBtn').classList.add('hidden'); $('ocrProgress').classList.add('hidden');
   currentShot = null; if (shotUrl) { URL.revokeObjectURL(shotUrl); shotUrl = null; }
-  setMode('', 'Tato záložní kontrola běží <b>místně v prohlížeči</b>. Živá AI funguje na veřejném serveru RODINNÝ ŠTÍT 2.1.2. Nevkládejte hesla, PIN ani kódy.');
+  setMode('', 'Kontrola běží <b>místně v prohlížeči</b>. Veřejná AI je dočasně vypnuta. Nevkládejte hesla, PIN ani kódy.');
   selectTab('text'); go('home');
 }
 
